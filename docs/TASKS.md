@@ -8,18 +8,18 @@
 
 ## Tuần 1 — Làm quen vòng lặp
 
-- [ ] **T1.1** Cài Node.js, tạo project Next.js chạy được ở máy (`npm run dev`)
-- [ ] **T1.2** Đẩy lên GitHub, deploy Vercel, mở được trên điện thoại
-- [ ] **T1.3** Sửa một dòng chữ → push → thấy nó đổi trên điện thoại sau 1 phút
+- [x] **T1.1** Cài Node.js, tạo project Next.js chạy được ở máy (`npm run dev`)
+- [x] **T1.2** Đẩy lên GitHub, deploy Vercel, mở được trên điện thoại
+- [x] **T1.3** Sửa một dòng chữ → push → thấy nó đổi trên điện thoại sau 1 phút
 
 > 🎯 Mốc tuần 1: bạn hiểu vòng lặp *sửa code → đẩy lên → thấy kết quả*. Chưa cần hiểu React.
 
 ## Tuần 2 — Dữ liệu chạm được màn hình
 
-- [ ] **T2.1** Tạo project Supabase, chạy migration tạo bảng theo SCHEMA.md
-- [ ] **T2.2** Bật Row Level Security cho tất cả bảng
-- [ ] **T2.3** Nhập tay 20 câu hỏi + bảng skill_tags (dùng file Excel đã chuẩn bị)
-- [ ] **T2.4** Trang `/questions` hiển thị danh sách câu hỏi lấy từ database
+- [x] **T2.1** Tạo project Supabase, chạy migration tạo bảng theo SCHEMA.md
+- [x] **T2.2** Bật Row Level Security cho tất cả bảng
+- [x] **T2.3** Nhập tay 20 câu hỏi + bảng skill_tags (dùng file Excel đã chuẩn bị)
+- [x] **T2.4** Trang `/questions` hiển thị danh sách câu hỏi lấy từ database
 
 > 🎯 Mốc tuần 2: dữ liệu thật từ database hiện lên web. Đây là lúc thấy "à, nó hoạt động thế này".
 
@@ -92,4 +92,5 @@ Ghi mỗi lần làm xong một nhiệm vụ. Dòng này là thứ giúp bạn (
 
 | Ngày | Nhiệm vụ | Xong gì | Còn vướng gì |
 |---|---|---|---|
-| | | | |
+| 2026-08-16 | T1.1–T1.3 | Khung Next.js chạy được, đẩy GitHub, deploy Vercel, vòng lặp sửa→push→thấy đổi trên điện thoại hoạt động | Ban đầu Vercel tự clone repo riêng do GitHub App chưa cấp quyền vào repo gốc — đã cấp quyền và import lại |
+| 2026-08-16 | T2.1–T2.4 | Tạo project Supabase, chạy migration 11 bảng, bật RLS (chưa có policy), seed 20 câu (lấy từ đề thi vào 10 Hà Nội thay vì tự soạn) + 6 skill_tags, trang `/questions` đọc dữ liệu thật | Trang `/questions` lúc đầu rỗng vì RLS chặn anon key — đổi sang service role key ở server; RLS còn để trống policy, sẽ làm khi có đăng nhập thật (T3) |
