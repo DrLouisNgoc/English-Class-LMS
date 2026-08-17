@@ -1,13 +1,21 @@
 import { getQuestions } from "@/lib/queries/questions";
+import { signOutTeacher } from "@/lib/actions/auth";
 
 export default async function QuestionsPage() {
   const questions = await getQuestions();
 
   return (
     <div className="mx-auto max-w-3xl p-6">
-      <h1 className="mb-4 text-xl font-semibold text-zinc-900">
-        Ngân hàng câu hỏi
-      </h1>
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="text-xl font-semibold text-zinc-900">
+          Ngân hàng câu hỏi
+        </h1>
+        <form action={signOutTeacher}>
+          <button type="submit" className="text-sm text-zinc-500 underline">
+            Đăng xuất
+          </button>
+        </form>
+      </div>
 
       {questions.length === 0 ? (
         <p className="text-zinc-500">Chưa có câu hỏi nào.</p>

@@ -25,7 +25,7 @@
 
 ## Tuần 3 — Đăng nhập
 
-- [ ] **T3.1** GV đăng nhập bằng email (Supabase Auth)
+- [x] **T3.1** GV đăng nhập bằng email (Supabase Auth)
 - [ ] **T3.2** GV tạo lớp, hệ thống sinh mã lớp ngẫu nhiên
 - [ ] **T3.3** GV thêm học sinh: nhập tên → hệ thống sinh username + PIN 6 số → hiện ra để in phát cho HS
 - [ ] **T3.4** HS đăng nhập bằng mã lớp + username + PIN (PIN phải được băm)
@@ -94,3 +94,4 @@ Ghi mỗi lần làm xong một nhiệm vụ. Dòng này là thứ giúp bạn (
 |---|---|---|---|
 | 2026-08-16 | T1.1–T1.3 | Khung Next.js chạy được, đẩy GitHub, deploy Vercel, vòng lặp sửa→push→thấy đổi trên điện thoại hoạt động | Ban đầu Vercel tự clone repo riêng do GitHub App chưa cấp quyền vào repo gốc — đã cấp quyền và import lại |
 | 2026-08-16 | T2.1–T2.4 | Tạo project Supabase, chạy migration 11 bảng, bật RLS (chưa có policy), seed 20 câu (lấy từ đề thi vào 10 Hà Nội thay vì tự soạn) + 6 skill_tags, trang `/questions` đọc dữ liệu thật | Trang `/questions` lúc đầu rỗng vì RLS chặn anon key — đổi sang service role key ở server; RLS còn để trống policy, sẽ làm khi có đăng nhập thật (T3) |
+| 2026-08-17 | T3.1 | GV đăng nhập bằng email qua Supabase Auth. Thêm `@supabase/ssr` để giữ phiên đăng nhập qua cookie, `middleware.ts` chặn `/questions` khi chưa đăng nhập, migration 0003 liên kết `teachers.id` = `auth.users.id`, trang `/teacher-login` + nút đăng xuất | Tài khoản GV đầu tiên tạo thủ công qua Supabase Dashboard, chưa có màn hình đăng ký |
