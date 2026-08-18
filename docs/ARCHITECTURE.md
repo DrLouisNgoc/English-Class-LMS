@@ -7,7 +7,7 @@
 english-lms/
 ├── .env.example
 ├── .env.local                    # (gitignore) khoá Supabase thật
-├── middleware.ts                 # MỘT chỗ duy nhất kiểm tra quyền GV/HS
+├── proxy.ts                      # MỘT chỗ duy nhất kiểm tra quyền GV/HS
 │
 ├── CLAUDE.md                     # Claude Code tự đọc ở gốc mỗi phiên
 ├── README.md                     # dành cho người, không phải AI

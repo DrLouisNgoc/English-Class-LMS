@@ -16,15 +16,15 @@ Chỉ ba câu này. Mọi thứ khác để sau.
 
 **GV-1 — Giao bài**
 Là giáo viên, tôi chọn 15–25 câu từ ngân hàng câu hỏi (lọc theo khối, kỹ năng, độ khó), giao cho một lớp, đặt hạn nộp.
-*Xong khi:* bài xuất hiện trong danh sách của mọi học sinh trong lớp đó.
+_Xong khi:_ bài xuất hiện trong danh sách của mọi học sinh trong lớp đó.
 
 **HS-1 — Làm bài**
 Là học sinh, tôi mở link trên điện thoại, đăng nhập bằng mã lớp + tên đăng nhập + PIN, làm bài, nộp, và thấy ngay điểm cùng phần giải thích của các câu sai.
-*Xong khi:* mất mạng giữa chừng rồi vào lại vẫn không mất câu đã làm.
+_Xong khi:_ mất mạng giữa chừng rồi vào lại vẫn không mất câu đã làm.
 
 **GV-2 — Xem kết quả**
 Là giáo viên, tôi mở một bài đã giao và thấy: ai đã nộp, ai chưa, điểm từng em, và câu nào cả lớp sai nhiều nhất.
-*Xong khi:* tôi nhìn bảng đó và biết ngay buổi sau cần chữa gì.
+_Xong khi:_ tôi nhìn bảng đó và biết ngay buổi sau cần chữa gì.
 
 ## 3. KHÔNG làm trong phiên bản này
 
@@ -54,17 +54,20 @@ Mục tiêu ưu tiên: khác biệt hoá lớp dạy thêm với các lớp truy
 rơi vào MVP.
 
 **Dễ, làm sớm sau MVP:**
+
 - Thẻ báo cáo tuần dạng ảnh dọc (kiểu Instagram Story) gửi Zalo phụ huynh —
   ưu tiên cao nhất trong nhóm này, hiệu ứng lan truyền tự nhiên
 - Huy hiệu theo kỹ năng thay vì điểm số ("Đã thông thạo hiện tại hoàn thành")
 - Câu hỏi 60 giây/ngày khi mở app — tạo thói quen, không phải nghĩa vụ
 
 **Trung bình, cân nhắc thời điểm:**
+
 - Học sinh ghi âm đọc bài, GV gửi voice note chữa lại (không cần AI chấm âm)
 - Bảng xếp hạng theo tổ/nhóm nhỏ (không xếp hạng cá nhân — tránh học sinh yếu nản)
 - Góc "lỗi sai kinh điển của lớp tuần này" dựa trên dữ liệu thật
 
 **Xa, chỉ nghĩ tới sau khi MVP chạy ổn định nhiều tháng:**
+
 - Học sinh cũ để lại lời khuyên cho học sinh mới theo chủ đề khó
 - Buổi thi đấu trực tiếp cuối tháng, chiếu bảng xếp hạng realtime tại lớp
 
@@ -75,6 +78,7 @@ rơi vào MVP.
 ## 5. Tiêu chí "MVP thành công"
 
 Sau 3 tuần chạy thật với lớp:
+
 - Tỉ lệ nộp bài đúng hạn ≥ `[?]`% (ghi lại con số hiện tại của bạn để so sánh)
 - Không có sự cố mất bài làm
 - Bạn thực sự mở bảng điểm trước mỗi buổi dạy

@@ -3,7 +3,7 @@ import { updateSession } from "@/lib/supabase/middleware";
 
 // MỘT chỗ duy nhất kiểm tra quyền GV/HS (theo ARCHITECTURE.md).
 // Chưa đăng nhập mà vào trang GV → đá về /teacher-login.
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { response, user } = await updateSession(request);
 
   const isTeacherRoute = request.nextUrl.pathname.startsWith("/questions");

@@ -7,9 +7,7 @@ export default async function QuestionsPage() {
   return (
     <div className="mx-auto max-w-3xl p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900">
-          Ngân hàng câu hỏi
-        </h1>
+        <h1 className="text-xl font-semibold text-zinc-900">Ngân hàng câu hỏi</h1>
         <form action={signOutTeacher}>
           <button type="submit" className="text-sm text-zinc-500 underline">
             Đăng xuất
@@ -22,17 +20,12 @@ export default async function QuestionsPage() {
       ) : (
         <ul className="flex flex-col gap-3">
           {questions.map((question) => (
-            <li
-              key={question.id}
-              className="rounded border border-zinc-200 p-4"
-            >
+            <li key={question.id} className="rounded border border-zinc-200 p-4">
               <p className="text-sm text-zinc-500">
                 Khối {question.grade} · {question.difficulty} · {question.kind}
               </p>
               <p className="mt-1 text-zinc-900">{question.content}</p>
-              <p className="mt-1 text-sm text-emerald-700">
-                Đáp án: {question.correct_answer}
-              </p>
+              <p className="mt-1 text-sm text-emerald-700">Đáp án: {question.correct_answer}</p>
             </li>
           ))}
         </ul>

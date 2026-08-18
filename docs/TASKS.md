@@ -12,7 +12,7 @@
 - [x] **T1.2** Đẩy lên GitHub, deploy Vercel, mở được trên điện thoại
 - [x] **T1.3** Sửa một dòng chữ → push → thấy nó đổi trên điện thoại sau 1 phút
 
-> 🎯 Mốc tuần 1: bạn hiểu vòng lặp *sửa code → đẩy lên → thấy kết quả*. Chưa cần hiểu React.
+> 🎯 Mốc tuần 1: bạn hiểu vòng lặp _sửa code → đẩy lên → thấy kết quả_. Chưa cần hiểu React.
 
 ## Tuần 2 — Dữ liệu chạm được màn hình
 
@@ -90,8 +90,8 @@
 Ghi mỗi lần làm xong một nhiệm vụ. Dòng này là thứ giúp bạn (và AI) quay lại
 đúng mạch sau vài ngày bận.
 
-| Ngày | Nhiệm vụ | Xong gì | Còn vướng gì |
-|---|---|---|---|
-| 2026-08-16 | T1.1–T1.3 | Khung Next.js chạy được, đẩy GitHub, deploy Vercel, vòng lặp sửa→push→thấy đổi trên điện thoại hoạt động | Ban đầu Vercel tự clone repo riêng do GitHub App chưa cấp quyền vào repo gốc — đã cấp quyền và import lại |
-| 2026-08-16 | T2.1–T2.4 | Tạo project Supabase, chạy migration 11 bảng, bật RLS (chưa có policy), seed 20 câu (lấy từ đề thi vào 10 Hà Nội thay vì tự soạn) + 6 skill_tags, trang `/questions` đọc dữ liệu thật | Trang `/questions` lúc đầu rỗng vì RLS chặn anon key — đổi sang service role key ở server; RLS còn để trống policy, sẽ làm khi có đăng nhập thật (T3) |
-| 2026-08-17 | T3.1 | GV đăng nhập bằng email qua Supabase Auth. Thêm `@supabase/ssr` để giữ phiên đăng nhập qua cookie, `middleware.ts` chặn `/questions` khi chưa đăng nhập, migration 0003 liên kết `teachers.id` = `auth.users.id`, trang `/teacher-login` + nút đăng xuất | Tài khoản GV đầu tiên tạo thủ công qua Supabase Dashboard, chưa có màn hình đăng ký |
+| Ngày       | Nhiệm vụ  | Xong gì                                                                                                                                                                                                                                                  | Còn vướng gì                                                                                                                                          |
+| ---------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-16 | T1.1–T1.3 | Khung Next.js chạy được, đẩy GitHub, deploy Vercel, vòng lặp sửa→push→thấy đổi trên điện thoại hoạt động                                                                                                                                                 | Ban đầu Vercel tự clone repo riêng do GitHub App chưa cấp quyền vào repo gốc — đã cấp quyền và import lại                                             |
+| 2026-08-16 | T2.1–T2.4 | Tạo project Supabase, chạy migration 11 bảng, bật RLS (chưa có policy), seed 20 câu (lấy từ đề thi vào 10 Hà Nội thay vì tự soạn) + 6 skill_tags, trang `/questions` đọc dữ liệu thật                                                                    | Trang `/questions` lúc đầu rỗng vì RLS chặn anon key — đổi sang service role key ở server; RLS còn để trống policy, sẽ làm khi có đăng nhập thật (T3) |
+| 2026-08-17 | T3.1      | GV đăng nhập bằng email qua Supabase Auth. Thêm `@supabase/ssr` để giữ phiên đăng nhập qua cookie, `middleware.ts` chặn `/questions` khi chưa đăng nhập, migration 0003 liên kết `teachers.id` = `auth.users.id`, trang `/teacher-login` + nút đăng xuất | Tài khoản GV đầu tiên tạo thủ công qua Supabase Dashboard, chưa có màn hình đăng ký                                                                   |

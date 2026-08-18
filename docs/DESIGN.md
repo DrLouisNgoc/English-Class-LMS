@@ -21,6 +21,7 @@ sinh và phụ huynh Việt Nam, nhưng làm ấm áp và động viên thay vì
 là điểm khác biệt so với ed-tech kiểu phương Tây lạnh lùng — vừa quen vừa mới.
 
 **Màu:**
+
 - primary (vàng nghệ ấm, gợi "sao bé ngoan"): `#E3993A`
 - accent (xanh mực giáo viên, nút chính/liên kết): `#1F5C56`
 - success (xanh lá dịu, câu đúng): `#4B8F5E`
@@ -29,6 +30,7 @@ là điểm khác biệt so với ed-tech kiểu phương Tây lạnh lùng — 
 - text (đen ánh xanh, không đen tuyệt đối — đỡ gắt mắt trên điện thoại): `#212B2A`
 
 **Font:**
+
 - Tiêu đề: Be Vietnam Pro (600/700) — font người Việt thiết kế, hỗ trợ dấu tốt, có cá tính
 - Nội dung / điểm số: Inter — rõ ràng, hỗ trợ dấu tiếng Việt tốt, dễ đọc bảng điểm trên màn hình nhỏ
 
