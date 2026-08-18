@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClasses } from "@/lib/queries/classes";
 import { createClass } from "@/lib/actions/classes";
@@ -79,9 +80,9 @@ export default async function ClassesPage({
         <ul className="mt-6 flex flex-col gap-3">
           {classes.map((klass) => (
             <li key={klass.id} className="rounded border border-zinc-200 p-4">
-              <p className="text-zinc-900">
+              <Link href={`/classes/${klass.id}`} className="text-zinc-900 underline">
                 {klass.name} · Khối {klass.grade}
-              </p>
+              </Link>
               <p className="mt-1 text-sm text-zinc-500">
                 Mã lớp:{" "}
                 <span className="font-mono font-semibold text-zinc-900">{klass.join_code}</span>

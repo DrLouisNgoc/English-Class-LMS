@@ -24,3 +24,22 @@ export async function getClasses(teacherId: string): Promise<ClassRow[]> {
 
   return data;
 }
+
+// Đọc 1 lớp theo id, chỉ trả về nếu đúng là lớp của teacherId này — dùng cho
+// trang chi tiết lớp, tránh GV xem được lớp của người khác qua sửa URL.
+export async function getClassById(classId: string, teacherId: string): Promise<ClassRow | null> {
+  const supabase = createServerClient();
+
+  const { data, error } = await supabase
+    .from("classes")
+    .select("id, name, grade, join_code, is_active")
+    .eq("id", classId)
+    .eq("teacher_id", teacherId)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Không đọc được thông tin lớp: ${error.message}`);
+  }
+
+  return data;
+}
