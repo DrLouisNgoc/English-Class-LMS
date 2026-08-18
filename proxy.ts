@@ -6,7 +6,9 @@ import { updateSession } from "@/lib/supabase/middleware";
 export async function proxy(request: NextRequest) {
   const { response, user } = await updateSession(request);
 
-  const isTeacherRoute = request.nextUrl.pathname.startsWith("/questions");
+  const isTeacherRoute =
+    request.nextUrl.pathname.startsWith("/questions") ||
+    request.nextUrl.pathname.startsWith("/classes");
 
   if (isTeacherRoute && !user) {
     const loginUrl = new URL("/teacher-login", request.url);
@@ -17,5 +19,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/questions/:path*"],
+  matcher: ["/questions/:path*", "/classes/:path*"],
 };
