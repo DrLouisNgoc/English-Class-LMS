@@ -103,3 +103,52 @@ export async function addStudent(classId: string, formData: FormData) {
 
   redirect(`/classes/${classId}?newUsername=${encodeURIComponent(username)}&newPin=${pin}`);
 }
+
+// Server action GV reset PIN của 1 học sinh — sinh PIN mới, ghi đè pin_hash cũ.
+// Kiểm tra học sinh đó có đang học lớp của đúng GV này không, tránh GV sửa URL
+// để reset PIN học sinh của người khác.
+export async function resetStudentPin(classId: string, studentId: string) {
+  const teacherId = await getCurrentUserId();
+  if (!teacherId) {
+    redirect("/teacher-login");
+  }
+
+  const klass = await getClassById(classId, teacherId);
+  if (!klass) {
+    redirect("/classes");
+  }
+
+  const supabase = createServerClient();
+
+  const { data: enrollment } = await supabase
+    .from("enrollments")
+    .select("students!inner(username)")
+    .eq("class_id", classId)
+    .eq("student_id", studentId)
+    .is("left_at", null)
+    .maybeSingle();
+
+  // Supabase trả về "students" là 1 object (quan hệ nhiều-1: mỗi enrollment
+  // ứng với đúng 1 học sinh) — kiểu TS suy ra mảng chỉ là suy đoán sai vì
+  // client này không có generated types, ép kiểu lại cho đúng thực tế.
+  const student = enrollment?.students as unknown as { username: string } | undefined;
+  if (!student) {
+    redirect(
+      `/classes/${classId}?error=${encodeURIComponent("Không tìm thấy học sinh này trong lớp.")}`,
+    );
+  }
+
+  const pin = randomPin();
+  const { error } = await supabase
+    .from("students")
+    .update({ pin_hash: hashPin(pin) })
+    .eq("id", studentId);
+
+  if (error) {
+    redirect(
+      `/classes/${classId}?error=${encodeURIComponent(`Không reset được PIN: ${error.message}`)}`,
+    );
+  }
+
+  redirect(`/classes/${classId}?newUsername=${encodeURIComponent(student.username)}&newPin=${pin}`);
+}

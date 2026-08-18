@@ -25,7 +25,9 @@ english-lms/
 ├── app/
 │   ├── (auth)/teacher-login, student-login
 │   ├── (teacher)/classes, questions, assignments
-│   └── (student)/assignments
+│   └── student/home, assignments        # KHÔNG dùng route group (student) —
+│                                         # cần tiền tố /student/... thật trên URL
+│                                         # để proxy.ts chặn gọn bằng 1 dòng
 │
 ├── components/
 │   ├── ui/                        # KHÔNG chứa logic nghiệp vụ

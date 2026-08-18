@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClassById } from "@/lib/queries/classes";
 import { getStudentsInClass } from "@/lib/queries/students";
-import { addStudent } from "@/lib/actions/students";
+import { addStudent, resetStudentPin } from "@/lib/actions/students";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -46,7 +46,7 @@ export default async function ClassDetailPage({
       {newUsername && newPin && (
         <div className="mb-4 rounded border border-emerald-300 bg-emerald-50 p-4">
           <p className="font-medium text-emerald-800">
-            Đã tạo học sinh — in phiếu này phát cho em, PIN chỉ hiện được 1 lần:
+            In phiếu này phát cho em, PIN chỉ hiện được 1 lần:
           </p>
           <p className="mt-2 text-lg">
             Username: <span className="font-mono font-semibold">{newUsername}</span> · PIN:{" "}
@@ -84,14 +84,27 @@ export default async function ClassDetailPage({
         <p className="mt-6 text-zinc-500">Lớp chưa có học sinh nào.</p>
       ) : (
         <ul className="mt-6 flex flex-col gap-3">
-          {students.map((student) => (
-            <li key={student.id} className="rounded border border-zinc-200 p-4">
-              <p className="text-zinc-900">{student.full_name}</p>
-              <p className="mt-1 text-sm text-zinc-500">
-                Username: <span className="font-mono">{student.username}</span>
-              </p>
-            </li>
-          ))}
+          {students.map((student) => {
+            const resetPinForStudent = resetStudentPin.bind(null, id, student.id);
+            return (
+              <li
+                key={student.id}
+                className="flex items-center justify-between rounded border border-zinc-200 p-4"
+              >
+                <div>
+                  <p className="text-zinc-900">{student.full_name}</p>
+                  <p className="mt-1 text-sm text-zinc-500">
+                    Username: <span className="font-mono">{student.username}</span>
+                  </p>
+                </div>
+                <form action={resetPinForStudent}>
+                  <button type="submit" className="text-sm text-zinc-500 underline">
+                    Reset PIN
+                  </button>
+                </form>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
