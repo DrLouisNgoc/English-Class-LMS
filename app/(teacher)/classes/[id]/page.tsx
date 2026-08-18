@@ -37,11 +37,21 @@ export default async function ClassDetailPage({
         ← Danh sách lớp
       </Link>
 
-      <h1 className="mt-2 mb-1 text-xl font-semibold text-zinc-900">{klass.name}</h1>
-      <p className="mb-4 text-sm text-zinc-500">
-        Khối {klass.grade} · Mã lớp:{" "}
-        <span className="font-mono font-semibold text-zinc-900">{klass.join_code}</span>
-      </p>
+      <div className="mt-2 mb-4 flex items-center justify-between">
+        <div>
+          <h1 className="mb-1 text-xl font-semibold text-zinc-900">{klass.name}</h1>
+          <p className="text-sm text-zinc-500">
+            Khối {klass.grade} · Mã lớp:{" "}
+            <span className="font-mono font-semibold text-zinc-900">{klass.join_code}</span>
+          </p>
+        </div>
+        <Link
+          href={`/classes/${id}/assign`}
+          className="rounded bg-black px-4 py-2 text-sm text-white hover:bg-gray-800"
+        >
+          Giao bài
+        </Link>
+      </div>
 
       {newUsername && newPin && (
         <div className="mb-4 rounded border border-emerald-300 bg-emerald-50 p-4">
