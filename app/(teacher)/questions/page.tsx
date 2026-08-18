@@ -1,6 +1,11 @@
 import { getQuestions } from "@/lib/queries/questions";
 import { signOutTeacher } from "@/lib/actions/auth";
 
+// Không prerender tĩnh lúc build — trang này cần đọc Supabase lúc có người
+// thật vào xem, không phải lúc build (biến môi trường "Sensitive" không đọc
+// được ổn định ở bước build).
+export const dynamic = "force-dynamic";
+
 export default async function QuestionsPage() {
   const questions = await getQuestions();
 
