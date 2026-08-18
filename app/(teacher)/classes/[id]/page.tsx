@@ -4,6 +4,7 @@ import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClassById } from "@/lib/queries/classes";
 import { getStudentsInClass } from "@/lib/queries/students";
 import { addStudent, resetStudentPin } from "@/lib/actions/students";
+import { getAssignmentsForClass } from "@/lib/queries/assignments";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -29,6 +30,7 @@ export default async function ClassDetailPage({
   }
 
   const students = await getStudentsInClass(id);
+  const assignments = await getAssignmentsForClass(id);
   const addStudentWithClassId = addStudent.bind(null, id);
 
   return (
@@ -90,6 +92,32 @@ export default async function ClassDetailPage({
 
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 
+      <h2 className="mt-8 mb-2 text-sm font-medium text-zinc-500">Bài đã giao</h2>
+      {assignments.length === 0 ? (
+        <p className="text-zinc-500">Chưa giao bài nào.</p>
+      ) : (
+        <ul className="flex flex-col gap-2">
+          {assignments.map((assignment) => (
+            <li key={assignment.id}>
+              <Link
+                href={`/classes/${id}/assignments/${assignment.id}`}
+                className="block rounded border border-zinc-200 p-4 hover:bg-zinc-50"
+              >
+                <p className="text-zinc-900">{assignment.title}</p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Hạn nộp:{" "}
+                  {new Date(assignment.due_at).toLocaleString("vi-VN", {
+                    dateStyle: "short",
+                    timeStyle: "short",
+                  })}
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <h2 className="mt-8 mb-2 text-sm font-medium text-zinc-500">Học sinh</h2>
       {students.length === 0 ? (
         <p className="mt-6 text-zinc-500">Lớp chưa có học sinh nào.</p>
       ) : (
@@ -101,12 +129,12 @@ export default async function ClassDetailPage({
                 key={student.id}
                 className="flex items-center justify-between rounded border border-zinc-200 p-4"
               >
-                <div>
-                  <p className="text-zinc-900">{student.full_name}</p>
+                <Link href={`/classes/${id}/students/${student.id}`}>
+                  <p className="text-zinc-900 underline">{student.full_name}</p>
                   <p className="mt-1 text-sm text-zinc-500">
                     Username: <span className="font-mono">{student.username}</span>
                   </p>
-                </div>
+                </Link>
                 <form action={resetPinForStudent}>
                   <button type="submit" className="text-sm text-zinc-500 underline">
                     Reset PIN

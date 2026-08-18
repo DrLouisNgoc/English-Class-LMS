@@ -76,6 +76,144 @@ export async function getAssignmentQuestions(assignmentId: string): Promise<Assi
   return data.map((row) => row.questions as unknown as AssignmentQuestion);
 }
 
+// Đọc danh sách bài đã giao của 1 lớp — dùng cho trang chi tiết lớp của GV.
+export async function getAssignmentsForClass(classId: string): Promise<AssignmentInfo[]> {
+  const supabase = createServerClient();
+
+  const { data, error } = await supabase
+    .from("assignments")
+    .select("id, title, due_at")
+    .eq("class_id", classId)
+    .order("due_at", { ascending: false });
+
+  if (error) {
+    throw new Error(`Không đọc được danh sách bài giao: ${error.message}`);
+  }
+
+  return data;
+}
+
+export type QuestionMissRow = {
+  question_id: string;
+  content: string;
+  wrong_count: number;
+  answered_count: number;
+};
+
+// Thống kê câu sai nhiều nhất của 1 bài giao — chỉ tính trên các lượt ĐÃ NỘP
+// (attempts.submitted_at khác null), sắp giảm dần theo số lần sai (T6.2).
+export async function getQuestionMissStats(assignmentId: string): Promise<QuestionMissRow[]> {
+  const supabase = createServerClient();
+
+  const { data: assignmentQuestions, error: aqError } = await supabase
+    .from("assignment_questions")
+    .select("question_id, position, questions(content)")
+    .eq("assignment_id", assignmentId)
+    .order("position", { ascending: true });
+
+  if (aqError) {
+    throw new Error(`Không đọc được câu hỏi của bài giao: ${aqError.message}`);
+  }
+
+  const { data: submittedAttempts, error: attemptError } = await supabase
+    .from("attempts")
+    .select("id")
+    .eq("assignment_id", assignmentId)
+    .not("submitted_at", "is", null);
+
+  if (attemptError) {
+    throw new Error(`Không đọc được lượt làm bài: ${attemptError.message}`);
+  }
+
+  const attemptIds = submittedAttempts.map((a) => a.id);
+  if (attemptIds.length === 0) {
+    return assignmentQuestions.map((row) => ({
+      question_id: row.question_id,
+      content: (row.questions as unknown as { content: string }).content,
+      wrong_count: 0,
+      answered_count: 0,
+    }));
+  }
+
+  const { data: answers, error: answersError } = await supabase
+    .from("answers")
+    .select("question_id, is_correct")
+    .in("attempt_id", attemptIds);
+
+  if (answersError) {
+    throw new Error(`Không đọc được câu trả lời: ${answersError.message}`);
+  }
+
+  const stats = new Map<string, { wrong: number; answered: number }>();
+  for (const answer of answers) {
+    const entry = stats.get(answer.question_id) ?? { wrong: 0, answered: 0 };
+    entry.answered++;
+    if (!answer.is_correct) entry.wrong++;
+    stats.set(answer.question_id, entry);
+  }
+
+  return assignmentQuestions
+    .map((row) => {
+      const entry = stats.get(row.question_id) ?? { wrong: 0, answered: 0 };
+      return {
+        question_id: row.question_id,
+        content: (row.questions as unknown as { content: string }).content,
+        wrong_count: entry.wrong,
+        answered_count: entry.answered,
+      };
+    })
+    .sort((a, b) => b.wrong_count - a.wrong_count);
+}
+
+export type AssignmentReportRow = {
+  student_id: string;
+  full_name: string;
+  submitted: boolean;
+  score: number | null;
+};
+
+// Bảng điểm 1 bài giao: mỗi học sinh đang học trong lớp đã nộp chưa, điểm bao
+// nhiêu — dùng cho trang bảng điểm của GV (T6.1).
+export async function getAssignmentReport(
+  assignmentId: string,
+  classId: string,
+): Promise<AssignmentReportRow[]> {
+  const supabase = createServerClient();
+
+  const { data: enrollments, error: enrollError } = await supabase
+    .from("enrollments")
+    .select("students(id, full_name)")
+    .eq("class_id", classId)
+    .is("left_at", null);
+
+  if (enrollError) {
+    throw new Error(`Không đọc được danh sách học sinh: ${enrollError.message}`);
+  }
+
+  const { data: attempts, error: attemptError } = await supabase
+    .from("attempts")
+    .select("student_id, submitted_at, score")
+    .eq("assignment_id", assignmentId);
+
+  if (attemptError) {
+    throw new Error(`Không đọc được lượt làm bài: ${attemptError.message}`);
+  }
+
+  const attemptByStudentId = new Map(attempts.map((a) => [a.student_id, a]));
+
+  return enrollments
+    .flatMap((row) => row.students)
+    .map((student) => {
+      const attempt = attemptByStudentId.get(student.id);
+      return {
+        student_id: student.id,
+        full_name: student.full_name,
+        submitted: Boolean(attempt?.submitted_at),
+        score: attempt?.submitted_at ? attempt.score : null,
+      };
+    });
+}
+
 // Đọc bài giao của các lớp mà học sinh đang học (bỏ qua lớp đã rời —
 // left_at khác null) — dùng cho trang chủ học sinh, sắp theo hạn nộp gần nhất.
 export async function getAssignmentsForStudent(studentId: string): Promise<StudentAssignment[]> {

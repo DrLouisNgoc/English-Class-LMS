@@ -50,9 +50,9 @@
 
 ## Tuần 6 — Giáo viên nhìn thấy gì
 
-- [ ] **T6.1** Bảng điểm một bài: ai nộp, ai chưa, điểm từng em
-- [ ] **T6.2** Thống kê câu sai nhiều nhất của bài đó
-- [ ] **T6.3** Trang một học sinh: lịch sử các bài đã làm + tỉ lệ đúng theo từng kỹ năng
+- [x] **T6.1** Bảng điểm một bài: ai nộp, ai chưa, điểm từng em
+- [x] **T6.2** Thống kê câu sai nhiều nhất của bài đó
+- [x] **T6.3** Trang một học sinh: lịch sử các bài đã làm + tỉ lệ đúng theo từng kỹ năng
 
 > 🎯 Mốc tuần 6: bạn mở bảng này trước buổi dạy và biết ngay cần chữa gì.
 
@@ -102,3 +102,4 @@ Ghi mỗi lần làm xong một nhiệm vụ. Dòng này là thứ giúp bạn (
 | 2026-08-18 | T4.1      | Trang `/classes/[id]/assign`: GV lọc câu hỏi theo khối/độ khó/kỹ năng (query string), tick chọn câu, nhập tiêu đề + hạn nộp → tạo 1 dòng `assignments` + nhiều dòng `assignment_questions` giữ thứ tự. Thêm `getFilteredQuestions`/`getSkillTags` vào `lib/queries/questions.ts`                                                        | Chưa có màn hình HS thấy bài được giao (T4.2)                                                                                                                                     |
 | 2026-08-18 | T4.2      | Trang `/student/home`: thêm `getAssignmentsForStudent` (join qua `enrollments` lấy các lớp HS đang học, rồi lấy `assignments` của các lớp đó), hiện danh sách bài + tên lớp + hạn nộp, sắp theo hạn nộp gần nhất                                                                                                                         | Chưa làm được bài — chỉ mới thấy danh sách (T4.3 trở đi)                                                                                                                          |
 | 2026-08-18 | T4.3–T4.7 | Trang `/student/assignments/[id]`: `AssignmentRunner` (client component) hiện 1 câu/màn, thanh tiến độ, nút Trước/Sau, tự lưu đáp án qua server action `saveAnswer` ngay khi chọn/gõ. `getOrCreateAttempt` tái dùng lượt làm dở thay vì tạo mới mỗi lần mở — giữ tiến độ khi thoát ra vào lại. Nộp bài gọi `submitAttempt`: chấm ở server (so `given_answer` với `correct_answer` đọc trực tiếp từ DB, không qua trình duyệt), ghi `is_correct` + `score`, chuyển sang `/student/assignments/[id]/result` hiện điểm + câu sai + đáp án đúng + giải thích. `getAssignmentQuestions` cố ý không lấy cột `correct_answer` | Tuần 4–5 hoàn tất về code — chưa test tay đầy đủ trên trình duyệt/điện thoại thật (F12 kiểm tra `correct_answer` không lộ, test thoát/vào lại giữa chừng)                          |
+| 2026-08-18 | T6.1–T6.3 | Trang `/classes/[id]/assignments/[assignmentId]`: bảng điểm (ai nộp/chưa, điểm từng em qua `getAssignmentReport`) + thống kê câu sai nhiều nhất (`getQuestionMissStats`, chỉ tính trên lượt đã nộp). Trang `/classes/[id]/students/[studentId]`: lịch sử bài đã nộp (`getStudentAttemptHistory`) + tỉ lệ đúng theo từng kỹ năng (`getStudentSkillStats`, join qua `question_tags`/`skill_tags`). Thêm link từ trang lớp sang cả 2 trang mới                                              | Chưa test tay — cần kiểm tra số liệu đúng khi có nhiều HS/nhiều bài; `getStudentAttemptHistory` gộp bài của mọi lớp HS đó học, chưa lọc theo lớp đang xem                          |
