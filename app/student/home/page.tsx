@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { createServerClient } from "@/lib/supabase/server";
 import { STUDENT_SESSION_COOKIE, verifyStudentSessionValue } from "@/lib/supabase/studentSession";
 import { getAssignmentsForStudent } from "@/lib/queries/assignments";
@@ -42,7 +43,12 @@ export default async function StudentHomePage() {
         <ul className="flex flex-col gap-3">
           {assignments.map((assignment) => (
             <li key={assignment.id} className="rounded border border-zinc-200 p-4">
-              <p className="text-zinc-900">{assignment.title}</p>
+              <Link
+                href={`/student/assignments/${assignment.id}`}
+                className="text-zinc-900 underline"
+              >
+                {assignment.title}
+              </Link>
               <p className="mt-1 text-sm text-zinc-500">
                 {assignment.class_name} · Hạn nộp:{" "}
                 {new Date(assignment.due_at).toLocaleString("vi-VN", {

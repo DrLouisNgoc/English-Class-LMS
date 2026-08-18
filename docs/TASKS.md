@@ -38,11 +38,11 @@
 
 - [x] **T4.1** GV chọn câu hỏi (lọc theo khối/kỹ năng/độ khó) và tạo bài giao cho lớp
 - [x] **T4.2** HS đăng nhập thấy danh sách bài được giao + hạn nộp
-- [ ] **T4.3** Màn hình làm bài: hiện 1 câu mỗi màn hình, có nút trước/sau, thanh tiến độ
-- [ ] **T4.4** Lưu câu trả lời **ngay khi bấm chọn** (không đợi nộp)
-- [ ] **T4.5** Thoát ra vào lại vẫn giữ nguyên bài đang làm dở
-- [ ] **T4.6** Nộp bài → **server chấm** → trả về điểm
-- [ ] **T4.7** Màn hình kết quả: điểm, câu nào sai, đáp án đúng, giải thích tiếng Việt
+- [x] **T4.3** Màn hình làm bài: hiện 1 câu mỗi màn hình, có nút trước/sau, thanh tiến độ
+- [x] **T4.4** Lưu câu trả lời **ngay khi bấm chọn** (không đợi nộp)
+- [x] **T4.5** Thoát ra vào lại vẫn giữ nguyên bài đang làm dở
+- [x] **T4.6** Nộp bài → **server chấm** → trả về điểm
+- [x] **T4.7** Màn hình kết quả: điểm, câu nào sai, đáp án đúng, giải thích tiếng Việt
 
 > 🎯 Mốc tuần 5: một học sinh làm trọn vẹn một bài và thấy điểm.
 > ⚠️ Kiểm tra bắt buộc: mở F12 → tab Network → xác nhận `correct_answer` KHÔNG
@@ -101,3 +101,4 @@ Ghi mỗi lần làm xong một nhiệm vụ. Dòng này là thứ giúp bạn (
 | 2026-08-18 | T3.5      | GV reset PIN học sinh: nút "Reset PIN" cạnh mỗi học sinh trong `/classes/[id]`, sinh PIN mới ghi đè `pin_hash`, hiện PIN mới 1 lần y như lúc tạo học sinh                                                                                                                                                                                 | Hoàn tất Tuần 3 — mốc "một học sinh thật đăng nhập được trên điện thoại" đã đạt về mặt kỹ thuật, còn thiếu bước test bằng điện thoại thật theo cảnh báo trong TASKS.md           |
 | 2026-08-18 | T4.1      | Trang `/classes/[id]/assign`: GV lọc câu hỏi theo khối/độ khó/kỹ năng (query string), tick chọn câu, nhập tiêu đề + hạn nộp → tạo 1 dòng `assignments` + nhiều dòng `assignment_questions` giữ thứ tự. Thêm `getFilteredQuestions`/`getSkillTags` vào `lib/queries/questions.ts`                                                        | Chưa có màn hình HS thấy bài được giao (T4.2)                                                                                                                                     |
 | 2026-08-18 | T4.2      | Trang `/student/home`: thêm `getAssignmentsForStudent` (join qua `enrollments` lấy các lớp HS đang học, rồi lấy `assignments` của các lớp đó), hiện danh sách bài + tên lớp + hạn nộp, sắp theo hạn nộp gần nhất                                                                                                                         | Chưa làm được bài — chỉ mới thấy danh sách (T4.3 trở đi)                                                                                                                          |
+| 2026-08-18 | T4.3–T4.7 | Trang `/student/assignments/[id]`: `AssignmentRunner` (client component) hiện 1 câu/màn, thanh tiến độ, nút Trước/Sau, tự lưu đáp án qua server action `saveAnswer` ngay khi chọn/gõ. `getOrCreateAttempt` tái dùng lượt làm dở thay vì tạo mới mỗi lần mở — giữ tiến độ khi thoát ra vào lại. Nộp bài gọi `submitAttempt`: chấm ở server (so `given_answer` với `correct_answer` đọc trực tiếp từ DB, không qua trình duyệt), ghi `is_correct` + `score`, chuyển sang `/student/assignments/[id]/result` hiện điểm + câu sai + đáp án đúng + giải thích. `getAssignmentQuestions` cố ý không lấy cột `correct_answer` | Tuần 4–5 hoàn tất về code — chưa test tay đầy đủ trên trình duyệt/điện thoại thật (F12 kiểm tra `correct_answer` không lộ, test thoát/vào lại giữa chừng)                          |
