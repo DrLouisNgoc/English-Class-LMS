@@ -36,7 +36,7 @@
 
 ## Tuần 4–5 — Trái tim của app
 
-- [ ] **T4.1** GV chọn câu hỏi (lọc theo khối/kỹ năng/độ khó) và tạo bài giao cho lớp
+- [x] **T4.1** GV chọn câu hỏi (lọc theo khối/kỹ năng/độ khó) và tạo bài giao cho lớp
 - [ ] **T4.2** HS đăng nhập thấy danh sách bài được giao + hạn nộp
 - [ ] **T4.3** Màn hình làm bài: hiện 1 câu mỗi màn hình, có nút trước/sau, thanh tiến độ
 - [ ] **T4.4** Lưu câu trả lời **ngay khi bấm chọn** (không đợi nộp)
@@ -99,3 +99,4 @@ Ghi mỗi lần làm xong một nhiệm vụ. Dòng này là thứ giúp bạn (
 | 2026-08-18 | T3.3      | Trang `/classes/[id]`: GV thêm học sinh (chỉ nhập tên) → server tự sinh username (tên + số ngẫu nhiên, duy nhất trong lớp) và PIN 6 số, băm PIN bằng `crypto.scrypt` (Node có sẵn, không thêm thư viện). PIN gốc chỉ hiện 1 lần ngay sau khi tạo để in phát                                                                               | Chưa có màn hình đăng nhập học sinh dùng username/PIN này (T3.4) và chưa có nút reset PIN (T3.5)                                                                                 |
 | 2026-08-18 | T3.4      | HS đăng nhập bằng mã lớp + username + PIN. Không dùng Supabase Auth (HS không có email) — tự ký cookie phiên riêng (`crypto.createHmac`), băm/so PIN bằng `timingSafeEqual` tránh lộ thời gian so sánh. Đổi `app/(student)` route group thành `app/student` thư mục thật để `proxy.ts` chặn gọn 1 tiền tố URL, cập nhật `ARCHITECTURE.md` | Cần thêm biến môi trường mới `STUDENT_SESSION_SECRET` (chuỗi bí mật tự đặt) vào `.env.local` và Vercel; trang `/student/home` mới chỉ là màn chào tạm, chưa có bài tập thật (T4) |
 | 2026-08-18 | T3.5      | GV reset PIN học sinh: nút "Reset PIN" cạnh mỗi học sinh trong `/classes/[id]`, sinh PIN mới ghi đè `pin_hash`, hiện PIN mới 1 lần y như lúc tạo học sinh                                                                                                                                                                                 | Hoàn tất Tuần 3 — mốc "một học sinh thật đăng nhập được trên điện thoại" đã đạt về mặt kỹ thuật, còn thiếu bước test bằng điện thoại thật theo cảnh báo trong TASKS.md           |
+| 2026-08-18 | T4.1      | Trang `/classes/[id]/assign`: GV lọc câu hỏi theo khối/độ khó/kỹ năng (query string), tick chọn câu, nhập tiêu đề + hạn nộp → tạo 1 dòng `assignments` + nhiều dòng `assignment_questions` giữ thứ tự. Thêm `getFilteredQuestions`/`getSkillTags` vào `lib/queries/questions.ts`                                                        | Chưa có màn hình HS thấy bài được giao (T4.2)                                                                                                                                     |

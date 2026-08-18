@@ -24,6 +24,10 @@ Giáo viên tiếng Anh, MỚI HỌC LẬP TRÌNH. Điều này thay đổi mọ
 - **Không tự động chỉnh sửa file spec, schema hay database migration** đã có, trừ khi được yêu cầu rõ.
 - Nếu một nhiệm vụ cần sửa quá 4 file, dừng lại và đề xuất chia nhỏ.
 
+## Git
+
+- Commit message **không có** dòng `Co-Authored-By: Claude`
+
 ## Quy ước code
 
 - TypeScript, không dùng `any` trừ khi có lý do và ghi chú lại
