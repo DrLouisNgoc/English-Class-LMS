@@ -4,6 +4,7 @@ import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClassById } from "@/lib/queries/classes";
 import { getFilteredQuestions, getSkillTags } from "@/lib/queries/questions";
 import { createAssignment } from "@/lib/actions/assignments";
+import SubmitButton from "@/components/SubmitButton";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -170,12 +171,12 @@ export default async function AssignPage({
           </ul>
         )}
 
-        <button
-          type="submit"
-          className="mt-4 rounded bg-black px-4 py-2 text-white hover:bg-gray-800"
+        <SubmitButton
+          pendingText="Đang tạo…"
+          className="mt-4 rounded bg-black px-4 py-2 text-white hover:bg-gray-800 disabled:opacity-40"
         >
           Tạo bài giao
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );

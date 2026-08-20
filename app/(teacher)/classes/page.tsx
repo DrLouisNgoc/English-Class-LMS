@@ -4,6 +4,7 @@ import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClasses } from "@/lib/queries/classes";
 import { createClass } from "@/lib/actions/classes";
 import { signOutTeacher } from "@/lib/actions/auth";
+import SubmitButton from "@/components/SubmitButton";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -67,9 +68,12 @@ export default async function ClassesPage({
           </select>
         </div>
 
-        <button type="submit" className="rounded bg-black px-4 py-2 text-white hover:bg-gray-800">
+        <SubmitButton
+          pendingText="Đang tạo…"
+          className="rounded bg-black px-4 py-2 text-white hover:bg-gray-800 disabled:opacity-40"
+        >
           Tạo lớp
-        </button>
+        </SubmitButton>
       </form>
 
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}

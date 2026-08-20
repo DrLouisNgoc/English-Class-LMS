@@ -5,6 +5,7 @@ import { getClassById } from "@/lib/queries/classes";
 import { getStudentsInClass } from "@/lib/queries/students";
 import { addStudent, resetStudentPin } from "@/lib/actions/students";
 import { getAssignmentsForClass } from "@/lib/queries/assignments";
+import SubmitButton from "@/components/SubmitButton";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -85,9 +86,12 @@ export default async function ClassDetailPage({
           />
         </div>
 
-        <button type="submit" className="rounded bg-black px-4 py-2 text-white hover:bg-gray-800">
+        <SubmitButton
+          pendingText="Đang thêm…"
+          className="rounded bg-black px-4 py-2 text-white hover:bg-gray-800 disabled:opacity-40"
+        >
           Thêm học sinh
-        </button>
+        </SubmitButton>
       </form>
 
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
@@ -136,9 +140,9 @@ export default async function ClassDetailPage({
                   </p>
                 </Link>
                 <form action={resetPinForStudent}>
-                  <button type="submit" className="text-sm text-zinc-500 underline">
+                  <SubmitButton pendingText="Đang reset…" className="text-sm text-zinc-500 underline disabled:opacity-40">
                     Reset PIN
-                  </button>
+                  </SubmitButton>
                 </form>
               </li>
             );

@@ -1,4 +1,5 @@
 import { signInStudent } from "@/lib/actions/studentAuth";
+import SubmitButton from "@/components/SubmitButton";
 
 export default async function StudentLoginPage({
   searchParams,
@@ -56,9 +57,12 @@ export default async function StudentLoginPage({
 
         {error && <p className="text-sm text-red-600">{error}</p>}
 
-        <button type="submit" className="rounded bg-black px-4 py-2 text-white hover:bg-gray-800">
+        <SubmitButton
+          pendingText="Đang đăng nhập…"
+          className="rounded bg-black px-4 py-2 text-white hover:bg-gray-800 disabled:opacity-40"
+        >
           Đăng nhập
-        </button>
+        </SubmitButton>
       </form>
     </main>
   );
