@@ -58,19 +58,28 @@
 
 ## Tuần 7 — Chạy thử hẹp
 
-- [ ] **T7.1** Tự làm 3 bài từ đầu đến cuối với tư cách học sinh
-- [ ] **T7.2** Thử các trường hợp xấu: bật máy bay giữa chừng, bấm nộp hai lần, để trống, gõ tiếng Việt có dấu
+- [x] **T7.1** Tự làm 3 bài từ đầu đến cuối với tư cách học sinh
+- [x] **T7.2** Thử các trường hợp xấu: bật máy bay giữa chừng, bấm nộp hai lần, để trống, gõ tiếng Việt có dấu
 - [ ] **T7.3** **Cho 3–5 học sinh làm tại lớp, có mặt bạn.** Ngồi im quan sát, không nhắc.
 - [ ] **T7.4** Ghi lại mọi chỗ các em khựng lại
 
 > 🎯 Đây là tuần giá trị nhất của cả dự án. Đừng bỏ.
+> Kết quả T7.1–T7.2 (2026-08-20/21): không phát hiện lỗi logic/code — chỗ
+> khựng duy nhất là độ trễ mạng (đã giảm bằng đổi region Tokyo, phần còn lại
+> là đường truyền, không sửa thêm được bằng code). Phát hiện 1 bug thật qua
+> quá trình test: bấm nút nhiều lần lúc trang chậm tạo dữ liệu trùng → đã sửa
+> (xem T8.1 và `decisions.md` 2026-08-20). T7.3/T7.4 CHƯA làm — cần lớp thật.
 
 ## Tuần 8 — Sửa và mở rộng
 
-- [ ] **T8.1** Sửa các lỗi từ T7.4 theo thứ tự nghiêm trọng
-- [ ] **T8.2** In phiếu đăng nhập cho cả lớp
-- [ ] **T8.3** Giao bài thật đầu tiên cho toàn lớp
-- [ ] **T8.4** Ghi lại: tỉ lệ nộp đúng hạn, số lần có sự cố
+- [x] **T8.1** Sửa các lỗi từ T7.4 theo thứ tự nghiêm trọng — chưa có T7.4 nên
+      chưa có danh sách lỗi thật, nhưng đã chủ động sửa bug double-submit phát
+      hiện được trong lúc test T7.1/T7.2 (mọi nút submit tự khoá khi đang gửi)
+- [ ] **T8.2** In phiếu đăng nhập cho cả lớp — GV tự xử lý, chưa xác nhận xong
+- [ ] **T8.3** Giao bài thật đầu tiên cho toàn lớp — chưa làm
+- [ ] **T8.4** Ghi lại: tỉ lệ nộp đúng hạn, số lần có sự cố — **công cụ đã có**
+      (dashboard tự tính ở `/classes` và `/classes/[id]`), nhưng chưa có dữ
+      liệu thật vì chưa giao bài thật (T8.3)
 
 ---
 
@@ -103,3 +112,6 @@ Ghi mỗi lần làm xong một nhiệm vụ. Dòng này là thứ giúp bạn (
 | 2026-08-18 | T4.2      | Trang `/student/home`: thêm `getAssignmentsForStudent` (join qua `enrollments` lấy các lớp HS đang học, rồi lấy `assignments` của các lớp đó), hiện danh sách bài + tên lớp + hạn nộp, sắp theo hạn nộp gần nhất                                                                                                                         | Chưa làm được bài — chỉ mới thấy danh sách (T4.3 trở đi)                                                                                                                          |
 | 2026-08-18 | T4.3–T4.7 | Trang `/student/assignments/[id]`: `AssignmentRunner` (client component) hiện 1 câu/màn, thanh tiến độ, nút Trước/Sau, tự lưu đáp án qua server action `saveAnswer` ngay khi chọn/gõ. `getOrCreateAttempt` tái dùng lượt làm dở thay vì tạo mới mỗi lần mở — giữ tiến độ khi thoát ra vào lại. Nộp bài gọi `submitAttempt`: chấm ở server (so `given_answer` với `correct_answer` đọc trực tiếp từ DB, không qua trình duyệt), ghi `is_correct` + `score`, chuyển sang `/student/assignments/[id]/result` hiện điểm + câu sai + đáp án đúng + giải thích. `getAssignmentQuestions` cố ý không lấy cột `correct_answer` | Tuần 4–5 hoàn tất về code — chưa test tay đầy đủ trên trình duyệt/điện thoại thật (F12 kiểm tra `correct_answer` không lộ, test thoát/vào lại giữa chừng)                          |
 | 2026-08-18 | T6.1–T6.3 | Trang `/classes/[id]/assignments/[assignmentId]`: bảng điểm (ai nộp/chưa, điểm từng em qua `getAssignmentReport`) + thống kê câu sai nhiều nhất (`getQuestionMissStats`, chỉ tính trên lượt đã nộp). Trang `/classes/[id]/students/[studentId]`: lịch sử bài đã nộp (`getStudentAttemptHistory`) + tỉ lệ đúng theo từng kỹ năng (`getStudentSkillStats`, join qua `question_tags`/`skill_tags`). Thêm link từ trang lớp sang cả 2 trang mới                                              | Chưa test tay — cần kiểm tra số liệu đúng khi có nhiều HS/nhiều bài; `getStudentAttemptHistory` gộp bài của mọi lớp HS đó học, chưa lọc theo lớp đang xem                          |
+| 2026-08-19 | Vận hành  | Test trên Vercel production lần đầu: đăng nhập → làm bài → nộp → chấm điểm chạy được thật. Sửa lỗi biến môi trường `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY` bị tích "Sensitive" (che khỏi build) → bỏ tích, redeploy hết lỗi. Thêm `vercel.json` chuyển region sang Tokyo (hnd1) — giảm độ trễ đáng kể so với region mặc định (Washington) vì Supabase ở Nhật, GV ở VN | Phát sinh bug: lúc trang còn chậm, bấm "Thêm học sinh" nhiều lần liên tiếp tạo ra 15 học sinh trùng ("Nguyen Minh Ngoc") trong lớp test — chưa dọn lúc đó |
+| 2026-08-20 | T7.1–T7.2, T8.1 | Dọn 14 học sinh trùng (viết script tạm chỉ đọc trước để duyệt, xoá xong kiểm tra không ai đã có `attempts` mới xoá). Sửa tận gốc bug double-submit: thêm `components/SubmitButton.tsx` dùng `useFormStatus`, áp cho mọi form ghi dữ liệu (Thêm học sinh, Tạo bài giao, Tạo lớp, Reset PIN, Đăng nhập học sinh) — nút tự khoá + đổi chữ "Đang…" lúc server đang xử lý. Chạy T7.1 (3 luồng trọn vẹn GV→HS→nộp→điểm) và T7.2 (ca xấu: mất mạng giữa chừng, bấm nộp 2 lần, bỏ trống câu, gõ dấu tiếng Việt) trên production | Không phát hiện lỗi code, chỉ còn độ trễ mạng (không sửa thêm được nhiều). T7.3/T7.4 (học sinh thật tại lớp) chưa làm |
+| 2026-08-21 | Đổi cơ chế đăng nhập HS + Dashboard GV | Đổi từ sinh username/PIN ngẫu nhiên sang username+mật khẩu tự chọn: GV tự gõ khi thêm HS (`lib/actions/students.ts`), thêm trang tự đăng ký `/student-register` (`registerStudent` trong `lib/actions/studentAuth.ts`), đổi ô "PIN 6 số" ở `/student-login` thành "Mật khẩu" thường. GV tạo lớp giờ tự gõ được mã lớp (để trống vẫn tự sinh như cũ, `lib/actions/classes.ts`). Thêm nút "Xoá khỏi lớp" (`components/RemoveStudentButton.tsx`, soft-delete qua `left_at`). Thêm dashboard số liệu: `lib/queries/dashboard.ts` — tổng quan toàn bộ GV (`getTeacherDashboardStats`, hiện ở `/classes`) và riêng từng lớp (`getClassDashboardStats`, `getClassSkillMissStats` top 5 kỹ năng hay sai, `getStudentsNeedingAttention` — nộp <70% bài hoặc điểm thấp hơn lớp ≥1.5, hiện ở `/classes/[id]`). Xem chi tiết lý do đổi trong `decisions.md` | T8.2 (in phiếu) GV tự làm, T8.3 (giao bài thật) chưa làm — dashboard T8.4 mới có công cụ, chưa có dữ liệu thật để xem |

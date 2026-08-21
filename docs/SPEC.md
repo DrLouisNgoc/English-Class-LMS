@@ -19,7 +19,7 @@ Là giáo viên, tôi chọn 15–25 câu từ ngân hàng câu hỏi (lọc the
 _Xong khi:_ bài xuất hiện trong danh sách của mọi học sinh trong lớp đó.
 
 **HS-1 — Làm bài**
-Là học sinh, tôi mở link trên điện thoại, đăng nhập bằng mã lớp + tên đăng nhập + PIN, làm bài, nộp, và thấy ngay điểm cùng phần giải thích của các câu sai.
+Là học sinh, tôi mở link trên điện thoại, đăng nhập bằng mã lớp + tên đăng nhập + mật khẩu (tự đăng ký hoặc GV tạo sẵn), làm bài, nộp, và thấy ngay điểm cùng phần giải thích của các câu sai.
 _Xong khi:_ mất mạng giữa chừng rồi vào lại vẫn không mất câu đã làm.
 
 **GV-2 — Xem kết quả**
@@ -43,7 +43,7 @@ _Xong khi:_ tôi nhìn bảng đó và biết ngay buổi sau cần chữa gì.
 
 1. **Chấm bài chạy ở server.** Không bao giờ gửi đáp án đúng xuống trình duyệt trước khi học sinh nộp.
 2. **Lưu từng câu trả lời ngay khi học sinh bấm chọn**, không đợi lúc nộp.
-3. **Đăng nhập cực đơn giản:** mã lớp + tên đăng nhập + PIN 6 số. Giáo viên tạo sẵn và reset được. Không email, không xác thực.
+3. **Đăng nhập cực đơn giản:** mã lớp + tên đăng nhập + mật khẩu. Học sinh tự đăng ký bằng mã lớp GV cấp (`/student-register`), hoặc GV tự tạo sẵn (tự gõ username/mật khẩu, không sinh ngẫu nhiên nữa — đổi ngày 2026-08-21, xem `decisions.md`). GV reset được mật khẩu. Không email, không xác thực 2 lớp.
 4. **Mobile-first.** Thiết kế cho màn hình 360px trước, màn hình lớn tính sau.
 5. Học sinh không được xem bài của học sinh khác.
 
@@ -87,4 +87,4 @@ Nếu ba điều trên không đạt, **đừng xây thêm tính năng** — s�
 
 ## 6. Stack
 
-Next.js (App Router) · Supabase (Postgres + Storage) · Tailwind · deploy Vercel (region Singapore)
+Next.js (App Router) · Supabase (Postgres + Storage, region Nhật) · Tailwind · deploy Vercel (region Tokyo/hnd1 — đổi từ Washington ngày 2026-08-19 để gần Supabase + người dùng VN hơn)

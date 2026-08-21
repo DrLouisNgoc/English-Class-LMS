@@ -32,8 +32,8 @@
 | ---------- | ----------- | ------------------------------ |
 | id         | uuid        |                                |
 | full_name  | text        |                                |
-| username   | text        | duy nhất trong phạm vi một lớp |
-| pin_hash   | text        | **băm, không lưu PIN thô**     |
+| username   | text        | duy nhất trong phạm vi một lớp (kiểm tra ở app, không có ràng buộc unique trong DB), luôn lưu chữ thường |
+| pin_hash   | text        | **băm bằng scrypt, không lưu chữ thường.** Tên cột giữ nguyên từ lúc còn là PIN ngẫu nhiên, nhưng từ 2026-08-21 chứa mật khẩu do GV hoặc chính học sinh tự đặt — xem `decisions.md` |
 | created_at | timestamptz |                                |
 
 ### enrollments
