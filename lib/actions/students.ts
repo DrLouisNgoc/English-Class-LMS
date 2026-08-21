@@ -6,18 +6,6 @@ import { createServerClient } from "@/lib/supabase/server";
 import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClassById } from "@/lib/queries/classes";
 
-// Bỏ dấu tiếng Việt để ra username gõ được bằng bàn phím thường.
-function stripDiacritics(text: string): string {
-  return text.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D");
-}
-
-// Lấy từ cuối cùng của họ tên làm gốc username — ở Việt Nam đây thường là tên gọi hàng ngày.
-function usernameBase(fullName: string): string {
-  const words = stripDiacritics(fullName.trim()).split(/\s+/);
-  const lastWord = words[words.length - 1] ?? "hs";
-  return lastWord.toLowerCase().replace(/[^a-z]/g, "") || "hs";
-}
-
 function randomPin(): string {
   return String(Math.floor(Math.random() * 1_000_000)).padStart(6, "0");
 }
@@ -30,9 +18,9 @@ function hashPin(pin: string): string {
   return `${salt}:${hash}`;
 }
 
-// Server action GV thêm học sinh vào lớp. Tự sinh username (duy nhất trong
-// lớp) và PIN 6 số, băm PIN trước khi lưu — PIN gốc chỉ hiện ra đúng 1 lần
-// qua query string ngay sau khi tạo, không lưu ở đâu khác.
+// Server action GV thêm học sinh vào lớp. GV tự gõ username + mật khẩu (không
+// tự sinh nữa) — chỉ kiểm tra username chưa ai dùng trong lớp này, rồi băm
+// mật khẩu trước khi lưu (không bao giờ lưu mật khẩu dạng chữ thường).
 export async function addStudent(classId: string, formData: FormData) {
   const teacherId = await getCurrentUserId();
   if (!teacherId) {
@@ -45,43 +33,42 @@ export async function addStudent(classId: string, formData: FormData) {
   }
 
   const fullName = formData.get("full_name");
-  if (typeof fullName !== "string" || !fullName.trim()) {
-    redirect(`/classes/${classId}?error=${encodeURIComponent("Vui lòng nhập tên học sinh.")}`);
-  }
+  const usernameRaw = formData.get("username");
+  const password = formData.get("password");
 
-  const supabase = createServerClient();
-  const base = usernameBase(fullName);
-
-  let username = "";
-  const maxAttempts = 10;
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const candidate = attempt === 0 ? base : `${base}${Math.floor(Math.random() * 90 + 10)}`;
-
-    const { data: existing } = await supabase
-      .from("enrollments")
-      .select("students!inner(username)")
-      .eq("class_id", classId)
-      .eq("students.username", candidate)
-      .maybeSingle();
-
-    if (!existing) {
-      username = candidate;
-      break;
-    }
-  }
-
-  if (!username) {
+  if (
+    typeof fullName !== "string" ||
+    !fullName.trim() ||
+    typeof usernameRaw !== "string" ||
+    !usernameRaw.trim() ||
+    typeof password !== "string" ||
+    !password.trim()
+  ) {
     redirect(
-      `/classes/${classId}?error=${encodeURIComponent("Không sinh được username, thử lại.")}`,
+      `/classes/${classId}?error=${encodeURIComponent("Vui lòng nhập đủ tên, username và mật khẩu.")}`,
     );
   }
 
-  const pin = randomPin();
-  const pinHash = hashPin(pin);
+  const username = usernameRaw.trim().toLowerCase();
+  const supabase = createServerClient();
+
+  const { data: existing } = await supabase
+    .from("enrollments")
+    .select("students!inner(username)")
+    .eq("class_id", classId)
+    .eq("students.username", username)
+    .is("left_at", null)
+    .maybeSingle();
+
+  if (existing) {
+    redirect(
+      `/classes/${classId}?error=${encodeURIComponent(`Username "${username}" đã có học sinh khác trong lớp dùng.`)}`,
+    );
+  }
 
   const { data: student, error: studentError } = await supabase
     .from("students")
-    .insert({ full_name: fullName.trim(), username, pin_hash: pinHash })
+    .insert({ full_name: fullName.trim(), username, pin_hash: hashPin(password) })
     .select("id")
     .single();
 
@@ -101,7 +88,7 @@ export async function addStudent(classId: string, formData: FormData) {
     );
   }
 
-  redirect(`/classes/${classId}?newUsername=${encodeURIComponent(username)}&newPin=${pin}`);
+  redirect(`/classes/${classId}?added=${encodeURIComponent(fullName.trim())}`);
 }
 
 // Server action GV reset PIN của 1 học sinh — sinh PIN mới, ghi đè pin_hash cũ.
@@ -151,4 +138,35 @@ export async function resetStudentPin(classId: string, studentId: string) {
   }
 
   redirect(`/classes/${classId}?newUsername=${encodeURIComponent(student.username)}&newPin=${pin}`);
+}
+
+// Server action GV cho học sinh rời lớp — chỉ đánh dấu left_at, KHÔNG xoá
+// bảng students/attempts, để giữ lại lịch sử điểm đã làm.
+export async function removeStudentFromClass(classId: string, studentId: string) {
+  const teacherId = await getCurrentUserId();
+  if (!teacherId) {
+    redirect("/teacher-login");
+  }
+
+  const klass = await getClassById(classId, teacherId);
+  if (!klass) {
+    redirect("/classes");
+  }
+
+  const supabase = createServerClient();
+
+  const { error } = await supabase
+    .from("enrollments")
+    .update({ left_at: new Date().toISOString() })
+    .eq("class_id", classId)
+    .eq("student_id", studentId)
+    .is("left_at", null);
+
+  if (error) {
+    redirect(
+      `/classes/${classId}?error=${encodeURIComponent(`Không xoá được học sinh: ${error.message}`)}`,
+    );
+  }
+
+  redirect(`/classes/${classId}`);
 }

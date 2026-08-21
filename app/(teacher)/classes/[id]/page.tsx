@@ -6,6 +6,7 @@ import { getStudentsInClass } from "@/lib/queries/students";
 import { addStudent, resetStudentPin } from "@/lib/actions/students";
 import { getAssignmentsForClass } from "@/lib/queries/assignments";
 import SubmitButton from "@/components/SubmitButton";
+import RemoveStudentButton from "@/components/RemoveStudentButton";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ export default async function ClassDetailPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; newUsername?: string; newPin?: string }>;
+  searchParams: Promise<{ error?: string; newUsername?: string; newPin?: string; added?: string }>;
 }) {
   const teacherId = await getCurrentUserId();
   if (!teacherId) {
@@ -23,7 +24,7 @@ export default async function ClassDetailPage({
   }
 
   const { id } = await params;
-  const { error, newUsername, newPin } = await searchParams;
+  const { error, newUsername, newPin, added } = await searchParams;
 
   const klass = await getClassById(id, teacherId);
   if (!klass) {
@@ -56,13 +57,21 @@ export default async function ClassDetailPage({
         </Link>
       </div>
 
+      {added && (
+        <div className="mb-4 rounded border border-emerald-300 bg-emerald-50 p-4">
+          <p className="text-emerald-800">
+            Đã thêm học sinh <span className="font-semibold">{added}</span>.
+          </p>
+        </div>
+      )}
+
       {newUsername && newPin && (
         <div className="mb-4 rounded border border-emerald-300 bg-emerald-50 p-4">
           <p className="font-medium text-emerald-800">
-            In phiếu này phát cho em, PIN chỉ hiện được 1 lần:
+            Mật khẩu mới, phát phiếu này cho em (chỉ hiện được 1 lần):
           </p>
           <p className="mt-2 text-lg">
-            Username: <span className="font-mono font-semibold">{newUsername}</span> · PIN:{" "}
+            Username: <span className="font-mono font-semibold">{newUsername}</span> · Mật khẩu:{" "}
             <span className="font-mono font-semibold">{newPin}</span>
           </p>
         </div>
@@ -82,6 +91,34 @@ export default async function ClassDetailPage({
             type="text"
             required
             placeholder="Nguyễn Văn An"
+            className="rounded border border-gray-300 px-3 py-2"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="username" className="text-sm font-medium">
+            Username
+          </label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            required
+            placeholder="an"
+            className="rounded border border-gray-300 px-3 py-2"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="password" className="text-sm font-medium">
+            Mật khẩu
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="text"
+            required
+            placeholder="Tự đặt cho em"
             className="rounded border border-gray-300 px-3 py-2"
           />
         </div>
@@ -139,11 +176,18 @@ export default async function ClassDetailPage({
                     Username: <span className="font-mono">{student.username}</span>
                   </p>
                 </Link>
-                <form action={resetPinForStudent}>
-                  <SubmitButton pendingText="Đang reset…" className="text-sm text-zinc-500 underline disabled:opacity-40">
-                    Reset PIN
-                  </SubmitButton>
-                </form>
+                <div className="flex items-center gap-4">
+                  <form action={resetPinForStudent}>
+                    <SubmitButton pendingText="Đang reset…" className="text-sm text-zinc-500 underline disabled:opacity-40">
+                      Reset PIN
+                    </SubmitButton>
+                  </form>
+                  <RemoveStudentButton
+                    classId={id}
+                    studentId={student.id}
+                    studentName={student.full_name}
+                  />
+                </div>
               </li>
             );
           })}

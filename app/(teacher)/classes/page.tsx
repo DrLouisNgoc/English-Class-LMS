@@ -68,6 +68,20 @@ export default async function ClassesPage({
           </select>
         </div>
 
+        <div className="flex flex-col gap-1">
+          <label htmlFor="join_code" className="text-sm font-medium">
+            Mã lớp (để trống thì tự sinh)
+          </label>
+          <input
+            id="join_code"
+            name="join_code"
+            type="text"
+            placeholder="VD: LOP8A"
+            maxLength={10}
+            className="rounded border border-gray-300 px-3 py-2 uppercase"
+          />
+        </div>
+
         <SubmitButton
           pendingText="Đang tạo…"
           className="rounded bg-black px-4 py-2 text-white hover:bg-gray-800 disabled:opacity-40"

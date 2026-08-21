@@ -26,6 +26,7 @@ export async function createClass(formData: FormData) {
 
   const name = formData.get("name");
   const gradeRaw = formData.get("grade");
+  const customJoinCodeRaw = formData.get("join_code");
 
   if (typeof name !== "string" || !name.trim()) {
     redirect("/classes?error=" + encodeURIComponent("Vui lòng nhập tên lớp."));
@@ -36,8 +37,41 @@ export async function createClass(formData: FormData) {
     redirect("/classes?error=" + encodeURIComponent("Khối lớp phải là số từ 6 đến 9."));
   }
 
+  const customJoinCode =
+    typeof customJoinCodeRaw === "string" && customJoinCodeRaw.trim()
+      ? customJoinCodeRaw.trim().toUpperCase()
+      : null;
+
+  if (customJoinCode && !/^[A-Z0-9]{3,10}$/.test(customJoinCode)) {
+    redirect(
+      "/classes?error=" +
+        encodeURIComponent("Mã lớp chỉ gồm chữ/số, dài 3-10 ký tự."),
+    );
+  }
+
   const supabase = createServerClient();
 
+  // GV tự chọn mã lớp: chỉ thử đúng 1 lần, báo lỗi rõ nếu trùng để GV tự đổi mã khác.
+  if (customJoinCode) {
+    const { error } = await supabase.from("classes").insert({
+      teacher_id: teacherId,
+      name: name.trim(),
+      join_code: customJoinCode,
+      grade,
+    });
+
+    if (error) {
+      const message =
+        error.code === "23505"
+          ? `Mã lớp "${customJoinCode}" đã có lớp khác dùng, chọn mã khác.`
+          : `Không tạo được lớp: ${error.message}`;
+      redirect("/classes?error=" + encodeURIComponent(message));
+    }
+
+    redirect("/classes");
+  }
+
+  // Không gõ mã lớp: tự sinh ngẫu nhiên, thử lại nếu trùng.
   const maxAttempts = 5;
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const joinCode = generateJoinCode();
