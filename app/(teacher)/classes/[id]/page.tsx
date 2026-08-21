@@ -5,6 +5,7 @@ import { getClassById } from "@/lib/queries/classes";
 import { getStudentsInClass } from "@/lib/queries/students";
 import { addStudent, resetStudentPin } from "@/lib/actions/students";
 import { getAssignmentsForClass } from "@/lib/queries/assignments";
+import { getClassDashboardStats } from "@/lib/queries/dashboard";
 import SubmitButton from "@/components/SubmitButton";
 import RemoveStudentButton from "@/components/RemoveStudentButton";
 
@@ -33,6 +34,7 @@ export default async function ClassDetailPage({
 
   const students = await getStudentsInClass(id);
   const assignments = await getAssignmentsForClass(id);
+  const stats = await getClassDashboardStats(id);
   const addStudentWithClassId = addStudent.bind(null, id);
 
   return (
@@ -55,6 +57,29 @@ export default async function ClassDetailPage({
         >
           Giao bài
         </Link>
+      </div>
+
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="rounded border border-zinc-200 p-4">
+          <p className="text-2xl font-semibold text-zinc-900">{stats.studentCount}</p>
+          <p className="text-sm text-zinc-500">Học sinh</p>
+        </div>
+        <div className="rounded border border-zinc-200 p-4">
+          <p className="text-2xl font-semibold text-zinc-900">{stats.assignmentCount}</p>
+          <p className="text-sm text-zinc-500">Bài đã giao</p>
+        </div>
+        <div className="rounded border border-zinc-200 p-4">
+          <p className="text-2xl font-semibold text-zinc-900">
+            {stats.onTimeRate === null ? "—" : `${stats.onTimeRate}%`}
+          </p>
+          <p className="text-sm text-zinc-500">Nộp đúng hạn</p>
+        </div>
+        <div className="rounded border border-zinc-200 p-4">
+          <p className="text-2xl font-semibold text-zinc-900">
+            {stats.averageScore === null ? "—" : stats.averageScore}
+          </p>
+          <p className="text-sm text-zinc-500">Điểm trung bình</p>
+        </div>
       </div>
 
       {added && (

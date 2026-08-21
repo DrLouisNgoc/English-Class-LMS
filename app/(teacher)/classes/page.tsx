@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClasses } from "@/lib/queries/classes";
+import { getTeacherDashboardStats } from "@/lib/queries/dashboard";
 import { createClass } from "@/lib/actions/classes";
 import { signOutTeacher } from "@/lib/actions/auth";
 import SubmitButton from "@/components/SubmitButton";
@@ -21,6 +22,7 @@ export default async function ClassesPage({
 
   const { error } = await searchParams;
   const classes = await getClasses(teacherId);
+  const stats = await getTeacherDashboardStats(teacherId);
 
   return (
     <div className="mx-auto max-w-3xl p-6">
@@ -31,6 +33,27 @@ export default async function ClassesPage({
             Đăng xuất
           </button>
         </form>
+      </div>
+
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="rounded border border-zinc-200 p-4">
+          <p className="text-2xl font-semibold text-zinc-900">{stats.classCount}</p>
+          <p className="text-sm text-zinc-500">Lớp</p>
+        </div>
+        <div className="rounded border border-zinc-200 p-4">
+          <p className="text-2xl font-semibold text-zinc-900">{stats.studentCount}</p>
+          <p className="text-sm text-zinc-500">Học sinh</p>
+        </div>
+        <div className="rounded border border-zinc-200 p-4">
+          <p className="text-2xl font-semibold text-zinc-900">{stats.assignmentCount}</p>
+          <p className="text-sm text-zinc-500">Bài đã giao</p>
+        </div>
+        <div className="rounded border border-zinc-200 p-4">
+          <p className="text-2xl font-semibold text-zinc-900">
+            {stats.onTimeRate === null ? "—" : `${stats.onTimeRate}%`}
+          </p>
+          <p className="text-sm text-zinc-500">Nộp đúng hạn</p>
+        </div>
       </div>
 
       <form
