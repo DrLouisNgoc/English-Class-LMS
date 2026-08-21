@@ -5,7 +5,11 @@ import { getClassById } from "@/lib/queries/classes";
 import { getStudentsInClass } from "@/lib/queries/students";
 import { addStudent, resetStudentPin } from "@/lib/actions/students";
 import { getAssignmentsForClass } from "@/lib/queries/assignments";
-import { getClassDashboardStats } from "@/lib/queries/dashboard";
+import {
+  getClassDashboardStats,
+  getClassSkillMissStats,
+  getStudentsNeedingAttention,
+} from "@/lib/queries/dashboard";
 import SubmitButton from "@/components/SubmitButton";
 import RemoveStudentButton from "@/components/RemoveStudentButton";
 
@@ -35,6 +39,8 @@ export default async function ClassDetailPage({
   const students = await getStudentsInClass(id);
   const assignments = await getAssignmentsForClass(id);
   const stats = await getClassDashboardStats(id);
+  const skillMisses = await getClassSkillMissStats(id);
+  const studentsNeedingAttention = await getStudentsNeedingAttention(id);
   const addStudentWithClassId = addStudent.bind(null, id);
 
   return (
@@ -81,6 +87,40 @@ export default async function ClassDetailPage({
           <p className="text-sm text-zinc-500">Điểm trung bình</p>
         </div>
       </div>
+
+      {(skillMisses.length > 0 || studentsNeedingAttention.length > 0) && (
+        <div className="mb-6 grid gap-4 sm:grid-cols-2">
+          {skillMisses.length > 0 && (
+            <div className="rounded border border-zinc-200 p-4">
+              <h2 className="mb-2 text-sm font-medium text-zinc-500">Kỹ năng cả lớp hay sai</h2>
+              <ul className="flex flex-col gap-1">
+                {skillMisses.map((skill) => (
+                  <li key={skill.skill_tag_id} className="flex justify-between text-sm">
+                    <span className="text-zinc-900">{skill.name_vi}</span>
+                    <span className="text-zinc-500">
+                      Sai {skill.wrong_count}/{skill.answered_count}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {studentsNeedingAttention.length > 0 && (
+            <div className="rounded border border-amber-300 bg-amber-50 p-4">
+              <h2 className="mb-2 text-sm font-medium text-amber-800">Học sinh cần chú ý</h2>
+              <ul className="flex flex-col gap-1">
+                {studentsNeedingAttention.map((student) => (
+                  <li key={student.student_id} className="text-sm">
+                    <span className="font-medium text-zinc-900">{student.full_name}</span>
+                    <span className="text-zinc-600"> — {student.reasons.join(", ")}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
 
       {added && (
         <div className="mb-4 rounded border border-emerald-300 bg-emerald-50 p-4">
