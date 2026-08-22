@@ -44,7 +44,7 @@ export default async function ClassDetailPage({
   const addStudentWithClassId = addStudent.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
+    <div className="mx-auto max-w-4xl p-6">
       <Link href="/classes" className="text-sm text-text/60 underline hover:text-ink">
         ← Danh sách lớp
       </Link>
@@ -156,7 +156,7 @@ export default async function ClassDetailPage({
             type="text"
             required
             placeholder="Nguyễn Văn An"
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           />
         </div>
 
@@ -170,7 +170,7 @@ export default async function ClassDetailPage({
             type="text"
             required
             placeholder="an"
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           />
         </div>
 
@@ -184,7 +184,7 @@ export default async function ClassDetailPage({
             type="text"
             required
             placeholder="Tự đặt cho em"
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           />
         </div>
 
@@ -241,11 +241,11 @@ export default async function ClassDetailPage({
                     Username: <span className="font-mono">{student.username}</span>
                   </p>
                 </Link>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <form action={resetPinForStudent}>
                     <SubmitButton
                       pendingText="Đang reset…"
-                      className="text-sm text-text/60 underline hover:text-ink disabled:opacity-40"
+                      className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40 disabled:opacity-40"
                     >
                       Reset PIN
                     </SubmitButton>

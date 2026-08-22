@@ -29,7 +29,7 @@ export default async function AssignmentReportPage({
   const submittedCount = report.filter((row) => row.submitted).length;
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
+    <div className="mx-auto max-w-4xl p-6">
       <Link href={`/classes/${id}`} className="text-sm text-text/60 underline hover:text-ink">
         ← {klass.name}
       </Link>

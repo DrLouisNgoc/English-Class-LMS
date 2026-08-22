@@ -58,6 +58,13 @@ export default async function StudentHomePage() {
         </div>
       </div>
 
+      <Link
+        href="/student/history"
+        className="mt-3 block rounded-full border border-ink/30 bg-white px-4 py-2 text-center text-sm font-medium text-ink hover:border-ink/40"
+      >
+        Xem lịch sử làm bài
+      </Link>
+
       <h2 className="mt-6 mb-2 text-sm font-medium text-text/60">Bài được giao</h2>
 
       {assignments.length === 0 ? (

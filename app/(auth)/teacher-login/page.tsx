@@ -29,7 +29,7 @@ export default function TeacherLoginPage() {
               name="email"
               type="email"
               required
-              className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+              className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
             />
           </div>
 
@@ -42,7 +42,7 @@ export default function TeacherLoginPage() {
               name="password"
               type="password"
               required
-              className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+              className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
             />
           </div>
 

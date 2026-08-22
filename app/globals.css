@@ -19,7 +19,9 @@
   /* Nền "trang giấy" sáng hơn nền chung — dùng cho các box (form, thẻ)
      để không bị lẫn vào đường kẻ ngang phía sau. */
   --surface: #fffcf5;
-  --surface-border: #e4dcc8;
+  /* Viền box đậm hơn bản gốc (#e4dcc8) — nhạt quá khiến box "chìm" vào
+     nền giấy, khó phân biệt ranh giới. */
+  --surface-border: color-mix(in srgb, var(--ink) 22%, #e4dcc8);
 
   /* Token ngữ nghĩa cho component shadcn/ui (Button, Input...) — map
      thẳng vào bảng màu "Vở tiếng Anh" ở trên, không dùng màu xám mặc
@@ -39,8 +41,8 @@
   --accent: color-mix(in srgb, var(--ink) 10%, var(--surface));
   --accent-foreground: var(--ink);
   --destructive: var(--red-pen);
-  --border: var(--surface-border);
-  --input: var(--surface-border);
+  --border: color-mix(in srgb, var(--ink) 20%, var(--surface-border));
+  --input: color-mix(in srgb, var(--ink) 20%, var(--surface-border));
   --ring: var(--ink);
   --radius: 0.75rem;
 }

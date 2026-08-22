@@ -25,16 +25,22 @@ export default async function ClassesPage({
   const stats = await getTeacherDashboardStats(teacherId);
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
+    <div className="mx-auto max-w-4xl p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <nav className="flex flex-wrap items-center gap-3">
           <h1 className="font-display text-xl font-semibold text-ink">Lớp của tôi</h1>
-          <Link href="/questions" className="text-sm text-text/60 underline hover:text-ink">
+          <Link
+            href="/questions"
+            className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+          >
             Ngân hàng câu hỏi
           </Link>
         </nav>
         <form action={signOutTeacher}>
-          <button type="submit" className="text-sm text-text/60 underline hover:text-ink">
+          <button
+            type="submit"
+            className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+          >
             Đăng xuất
           </button>
         </form>
@@ -75,7 +81,7 @@ export default async function ClassesPage({
             type="text"
             required
             placeholder="8A - Tối T3,T6"
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           />
         </div>
 
@@ -87,7 +93,7 @@ export default async function ClassesPage({
             id="grade"
             name="grade"
             required
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           >
             <option value="6">6</option>
             <option value="7">7</option>
@@ -106,7 +112,7 @@ export default async function ClassesPage({
             type="text"
             placeholder="VD: LOP8A"
             maxLength={10}
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 uppercase text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 uppercase text-text outline-none focus:border-ink"
           />
         </div>
 

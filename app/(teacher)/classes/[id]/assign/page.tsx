@@ -42,7 +42,7 @@ export default async function AssignPage({
   const createAssignmentForClass = createAssignment.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
+    <div className="mx-auto max-w-4xl p-6">
       <Link href={`/classes/${id}`} className="text-sm text-text/60 underline hover:text-ink">
         ← {klass.name}
       </Link>
@@ -62,7 +62,7 @@ export default async function AssignPage({
             id="grade"
             name="grade"
             defaultValue={grade ?? ""}
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           >
             <option value="">Tất cả</option>
             {GRADES.map((g) => (
@@ -81,7 +81,7 @@ export default async function AssignPage({
             id="difficulty"
             name="difficulty"
             defaultValue={difficulty ?? ""}
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           >
             <option value="">Tất cả</option>
             {DIFFICULTIES.map((d) => (
@@ -100,7 +100,7 @@ export default async function AssignPage({
             id="skill"
             name="skill"
             defaultValue={skill ?? ""}
-            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+            className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           >
             <option value="">Tất cả</option>
             {skillTags.map((tag) => (
@@ -113,7 +113,7 @@ export default async function AssignPage({
 
         <button
           type="submit"
-          className="rounded-full border border-ink/15 bg-white px-4 py-2 text-ink hover:border-ink/40"
+          className="rounded-full border border-ink/30 bg-white px-4 py-2 text-ink hover:border-ink/40"
         >
           Lọc
         </button>
@@ -131,7 +131,7 @@ export default async function AssignPage({
               type="text"
               required
               placeholder="BTVN tuần 4 - Bị động"
-              className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+              className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
             />
           </div>
 
@@ -144,7 +144,7 @@ export default async function AssignPage({
               name="due_at"
               type="datetime-local"
               required
-              className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+              className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
             />
           </div>
         </div>

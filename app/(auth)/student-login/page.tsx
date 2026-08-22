@@ -33,7 +33,7 @@ export default async function StudentLoginPage({
               type="text"
               required
               autoCapitalize="characters"
-              className="rounded-lg border border-ink/15 bg-white px-3 py-2 uppercase text-text outline-none focus:border-ink"
+              className="rounded-lg border border-ink/30 bg-white px-3 py-2 uppercase text-text outline-none focus:border-ink"
             />
           </div>
 
@@ -46,7 +46,7 @@ export default async function StudentLoginPage({
               name="username"
               type="text"
               required
-              className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+              className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
             />
           </div>
 
@@ -59,7 +59,7 @@ export default async function StudentLoginPage({
               name="password"
               type="password"
               required
-              className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
+              className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
             />
           </div>
 

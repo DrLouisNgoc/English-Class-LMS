@@ -11,16 +11,22 @@ export default async function QuestionsPage() {
   const questions = await getQuestions();
 
   return (
-    <div className="mx-auto max-w-3xl p-6">
+    <div className="mx-auto max-w-4xl p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <nav className="flex flex-wrap items-center gap-3">
           <h1 className="font-display text-xl font-semibold text-ink">Ngân hàng câu hỏi</h1>
-          <Link href="/classes" className="text-sm text-text/60 underline hover:text-ink">
+          <Link
+            href="/classes"
+            className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+          >
             Lớp học
           </Link>
         </nav>
         <form action={signOutTeacher}>
-          <button type="submit" className="text-sm text-text/60 underline hover:text-ink">
+          <button
+            type="submit"
+            className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+          >
             Đăng xuất
           </button>
         </form>
