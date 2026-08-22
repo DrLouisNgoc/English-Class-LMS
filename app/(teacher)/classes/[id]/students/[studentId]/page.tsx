@@ -37,7 +37,7 @@ export default async function StudentDetailPage({
   const skillStats = await getStudentSkillStats(studentId);
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-5xl p-6 md:p-10">
       <Link href={`/classes/${id}`} className="text-sm text-text/60 underline hover:text-ink">
         ← {klass.name}
       </Link>

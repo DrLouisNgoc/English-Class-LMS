@@ -44,14 +44,14 @@ export default async function ClassDetailPage({
   const addStudentWithClassId = addStudent.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-4xl p-6">
+    <div className="mx-auto max-w-5xl p-6 md:p-10">
       <Link href="/classes" className="text-sm text-text/60 underline hover:text-ink">
         ← Danh sách lớp
       </Link>
 
       <div className="mt-2 mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display mb-1 text-xl font-semibold text-ink">{klass.name}</h1>
+          <h1 className="font-display mb-1 text-xl font-semibold text-ink md:text-2xl">{klass.name}</h1>
           <p className="text-sm text-text/60">
             Khối {klass.grade} · Mã lớp:{" "}
             <span className="font-mono font-semibold text-ink">{klass.join_code}</span>
@@ -67,24 +67,24 @@ export default async function ClassDetailPage({
 
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-xl border border-surface-border bg-surface p-4">
-          <p className="font-display text-2xl font-semibold text-ink">{stats.studentCount}</p>
-          <p className="text-sm text-text/60">Học sinh</p>
+          <p className="font-display text-2xl font-semibold text-ink md:text-4xl">{stats.studentCount}</p>
+          <p className="text-sm text-text/60 md:text-base">Học sinh</p>
         </div>
         <div className="rounded-xl border border-surface-border bg-surface p-4">
-          <p className="font-display text-2xl font-semibold text-ink">{stats.assignmentCount}</p>
-          <p className="text-sm text-text/60">Bài đã giao</p>
+          <p className="font-display text-2xl font-semibold text-ink md:text-4xl">{stats.assignmentCount}</p>
+          <p className="text-sm text-text/60 md:text-base">Bài đã giao</p>
         </div>
         <div className="rounded-xl border border-surface-border bg-surface p-4">
-          <p className="font-display text-2xl font-semibold text-ink">
+          <p className="font-display text-2xl font-semibold text-ink md:text-4xl">
             {stats.onTimeRate === null ? "—" : `${stats.onTimeRate}%`}
           </p>
-          <p className="text-sm text-text/60">Nộp đúng hạn</p>
+          <p className="text-sm text-text/60 md:text-base">Nộp đúng hạn</p>
         </div>
         <div className="rounded-xl border border-surface-border bg-surface p-4">
-          <p className="font-display text-2xl font-semibold text-ink">
+          <p className="font-display text-2xl font-semibold text-ink md:text-4xl">
             {stats.averageScore === null ? "—" : stats.averageScore}
           </p>
-          <p className="text-sm text-text/60">Điểm trung bình</p>
+          <p className="text-sm text-text/60 md:text-base">Điểm trung bình</p>
         </div>
       </div>
 

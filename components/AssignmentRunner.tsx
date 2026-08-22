@@ -49,50 +49,54 @@ export default function AssignmentRunner({
 
   if (!question) {
     return (
-      <main className="ruled-paper mx-auto max-w-sm px-4 py-10">
+      <main className="ruled-paper mx-auto max-w-3xl px-4 py-10">
         <p className="text-text/60">Bài này chưa có câu hỏi nào.</p>
       </main>
     );
   }
 
   return (
-    <main className="ruled-paper mx-auto max-w-sm px-4 py-10">
+    <main className="ruled-paper mx-auto max-w-3xl px-4 py-10 md:py-16">
       <div className="flex overflow-hidden rounded-2xl border border-rule-line bg-white shadow-sm">
         {/* Lề đỏ dọc: mực tím tô dần xuống theo tiến độ làm bài, thay cho
             thanh progress ngang — giống lề vở học sinh thật */}
-        <div className="relative w-6 shrink-0 bg-paper">
-          <div className="absolute inset-y-0 left-4 w-px bg-red-pen/40" />
+        <div className="relative w-6 shrink-0 bg-paper md:w-10">
+          <div className="absolute inset-y-0 left-4 w-px bg-red-pen/40 md:left-7" />
           <div
-            className="absolute left-4 top-0 w-px bg-ink transition-all"
+            className="absolute left-4 top-0 w-px bg-ink transition-all md:left-7"
             style={{ height: `${progressPercent}%` }}
           />
-          <div className="absolute left-1.5 top-4 flex flex-col gap-3">
+          <div className="absolute left-1.5 top-4 flex flex-col gap-3 md:left-3 md:gap-5">
             {Array.from({ length: 6 }).map((_, i) => (
-              <span key={i} className="h-1.5 w-1.5 rounded-full bg-rule-line" />
+              <span key={i} className="h-1.5 w-1.5 rounded-full bg-rule-line md:h-2 md:w-2" />
             ))}
           </div>
         </div>
 
-        <div className="flex-1 px-5 py-6">
-          <h1 className="font-display text-xl font-semibold text-ink">{assignmentTitle}</h1>
+        <div className="flex-1 px-5 py-6 md:px-10 md:py-9">
+          <h1 className="font-display text-xl font-semibold text-ink md:text-2xl">
+            {assignmentTitle}
+          </h1>
 
-          <div className="mt-3 mb-4 flex items-center justify-between text-sm text-text/60">
+          <div className="mt-3 mb-4 flex items-center justify-between text-sm text-text/60 md:mb-6 md:text-base">
             <span>
               Câu {currentIndex + 1}/{total}
             </span>
             {isSaving && <span>Đang lưu…</span>}
           </div>
 
-          <p className="mb-5 text-base leading-relaxed text-text">{question.content}</p>
+          <p className="mb-5 text-base leading-relaxed text-text md:mb-8 md:text-xl md:leading-relaxed">
+            {question.content}
+          </p>
 
           {question.kind === "MCQ" && question.options ? (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 md:gap-3">
               {question.options.map((option) => {
                 const selected = answers[question.id] === option;
                 return (
                   <label
                     key={option}
-                    className={`flex cursor-pointer items-center gap-3 rounded-full border-2 px-4 py-2.5 transition-colors ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-full border-2 px-4 py-2.5 transition-colors md:px-6 md:py-4 md:text-lg ${
                       selected
                         ? "border-red-pen bg-red-pen/5 text-ink"
                         : "border-rule-line text-text hover:border-ink/40"
@@ -103,7 +107,7 @@ export default function AssignmentRunner({
                       name={`question-${question.id}`}
                       checked={selected}
                       onChange={() => handleAnswer(option)}
-                      className="accent-red-pen"
+                      className="accent-red-pen md:h-5 md:w-5"
                     />
                     {option}
                   </label>
@@ -116,17 +120,17 @@ export default function AssignmentRunner({
               value={answers[question.id] ?? ""}
               onChange={(e) => setAnswers((prev) => ({ ...prev, [question.id]: e.target.value }))}
               onBlur={(e) => handleAnswer(e.target.value)}
-              className="w-full border-b-2 border-ink/30 bg-transparent px-1 py-2 text-text outline-none focus:border-ink"
+              className="w-full border-b-2 border-ink/30 bg-transparent px-1 py-2 text-text outline-none focus:border-ink md:py-3 md:text-lg"
               placeholder="Điền vào chỗ trống…"
             />
           )}
 
-          <div className="mt-8 flex justify-between">
+          <div className="mt-8 flex justify-between md:mt-12">
             <button
               type="button"
               disabled={currentIndex === 0}
               onClick={() => setCurrentIndex((i) => i - 1)}
-              className="rounded-full border-2 border-rule-line px-4 py-2 text-text hover:border-ink/40 disabled:opacity-40"
+              className="rounded-full border-2 border-rule-line px-4 py-2 text-text hover:border-ink/40 disabled:opacity-40 md:px-7 md:py-3 md:text-lg"
             >
               Trước
             </button>
@@ -135,7 +139,7 @@ export default function AssignmentRunner({
                 type="button"
                 disabled={isSubmitting}
                 onClick={handleSubmit}
-                className="rounded-full bg-gold px-5 py-2 font-semibold text-ink-dark hover:bg-gold-dark disabled:opacity-40"
+                className="rounded-full bg-gold px-5 py-2 font-semibold text-ink-dark hover:bg-gold-dark disabled:opacity-40 md:px-8 md:py-3 md:text-lg"
               >
                 {isSubmitting ? "Đang nộp…" : "Nộp bài"}
               </button>
@@ -143,7 +147,7 @@ export default function AssignmentRunner({
               <button
                 type="button"
                 onClick={() => setCurrentIndex((i) => i + 1)}
-                className="rounded-full bg-ink px-5 py-2 text-white hover:bg-ink-dark"
+                className="rounded-full bg-ink px-5 py-2 text-white hover:bg-ink-dark md:px-8 md:py-3 md:text-lg"
               >
                 Sau
               </button>
