@@ -77,6 +77,88 @@ export async function getTeacherDashboardStats(teacherId: string): Promise<Teach
   };
 }
 
+export type StudentDashboardStats = {
+  assignedCount: number;
+  submittedCount: number;
+  onTimeRate: number | null;
+  averageScore: number | null;
+};
+
+// Số liệu tổng quan cho 1 học sinh: gộp tất cả bài được giao ở mọi lớp em
+// đang học, chỉ tính lượt đã nộp cho điểm trung bình/tỉ lệ đúng hạn.
+export async function getStudentDashboardStats(studentId: string): Promise<StudentDashboardStats> {
+  const supabase = createServerClient();
+
+  const { data: enrollments, error: enrollError } = await supabase
+    .from("enrollments")
+    .select("class_id")
+    .eq("student_id", studentId)
+    .is("left_at", null);
+
+  if (enrollError) {
+    throw new Error(`Không đọc được danh sách lớp: ${enrollError.message}`);
+  }
+
+  const classIds = enrollments.map((e) => e.class_id);
+  if (classIds.length === 0) {
+    return { assignedCount: 0, submittedCount: 0, onTimeRate: null, averageScore: null };
+  }
+
+  const { data: assignments, error: assignmentError } = await supabase
+    .from("assignments")
+    .select("id, due_at")
+    .in("class_id", classIds);
+
+  if (assignmentError) {
+    throw new Error(`Không đọc được danh sách bài giao: ${assignmentError.message}`);
+  }
+
+  const assignmentIds = assignments.map((a) => a.id);
+  const dueAtByAssignmentId = new Map(assignments.map((a) => [a.id, a.due_at]));
+
+  let submittedCount = 0;
+  let onTimeRate: number | null = null;
+  let averageScore: number | null = null;
+
+  if (assignmentIds.length > 0) {
+    const { data: submittedAttempts, error: attemptError } = await supabase
+      .from("attempts")
+      .select("assignment_id, submitted_at, score")
+      .eq("student_id", studentId)
+      .in("assignment_id", assignmentIds)
+      .not("submitted_at", "is", null);
+
+    if (attemptError) {
+      throw new Error(`Không đọc được lượt nộp bài: ${attemptError.message}`);
+    }
+
+    submittedCount = submittedAttempts.length;
+
+    if (submittedCount > 0) {
+      const onTimeCount = submittedAttempts.filter((attempt) => {
+        const dueAt = dueAtByAssignmentId.get(attempt.assignment_id);
+        return dueAt && attempt.submitted_at && attempt.submitted_at <= dueAt;
+      }).length;
+      onTimeRate = Math.round((onTimeCount / submittedCount) * 100);
+
+      const scores = submittedAttempts
+        .map((a) => a.score)
+        .filter((score): score is number => score !== null);
+      if (scores.length > 0) {
+        const sum = scores.reduce((total, score) => total + score, 0);
+        averageScore = Math.round((sum / scores.length) * 10) / 10;
+      }
+    }
+  }
+
+  return {
+    assignedCount: assignmentIds.length,
+    submittedCount,
+    onTimeRate,
+    averageScore,
+  };
+}
+
 export type ClassDashboardStats = {
   studentCount: number;
   assignmentCount: number;

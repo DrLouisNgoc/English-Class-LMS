@@ -14,36 +14,55 @@
 - Mobile trước (360–390px), màn hình lớn tính sau.
 - Font phải có đủ dấu tiếng Việt — kiểm tra trước khi chọn trên Google Fonts.
 
-## Token (đã chốt)
+## Token (đã chốt — bản "Vở tiếng Anh", cập nhật 22/8)
 
-**Ý tưởng cốt lõi:** số hoá hình ảnh "bút đỏ chấm bài" quen thuộc với mọi học
-sinh và phụ huynh Việt Nam, nhưng làm ấm áp và động viên thay vì đáng sợ. Đây
-là điểm khác biệt so với ed-tech kiểu phương Tây lạnh lùng — vừa quen vừa mới.
+> Bản token màu vàng/xanh mực bên dưới (bản đầu) đã bị thay bằng bản này khi
+> thực sự bắt tay thiết kế UI (không làm trước khi có trang thật, xem trò
+> chuyện lúc thiết kế trang làm bài). Giữ lại token này làm chuẩn — trang mới
+> tạo phải dùng đúng các biến trong `app/globals.css`, không tự bịa màu mới.
 
-**Màu:**
+**Ý tưởng cốt lõi:** chất liệu vở học sinh tiếng Anh thật — giấy kẻ ngang, lề
+đỏ, mực tím quen thuộc thời đi học, con dấu/bút đỏ chấm bài của giáo viên.
+Khác ed-tech phương Tây lạnh lùng — vừa quen thuộc với học sinh Việt Nam, vừa
+có điểm nhấn riêng (con dấu điểm số, khoanh tròn đáp án như phiếu bài tập thật).
 
-- primary (vàng nghệ ấm, gợi "sao bé ngoan"): `#E3993A`
-- accent (xanh mực giáo viên, nút chính/liên kết): `#1F5C56`
-- success (xanh lá dịu, câu đúng): `#4B8F5E`
-- error / sửa lỗi (đỏ mực chấm bài — dùng có chủ đích, xem "Điểm nhấn" dưới): `#C2483B`
-- background (trắng ấm trung tính, KHÔNG dùng màu kem be — đó là khuôn mẫu AI phổ biến): `#FAFAF8`
-- text (đen ánh xanh, không đen tuyệt đối — đỡ gắt mắt trên điện thoại): `#212B2A`
+**Biến CSS** (định nghĩa ở `app/globals.css`, dùng qua class Tailwind
+`bg-*`/`text-*`/`border-*` tương ứng):
 
-**Font:**
+| Biến CSS | Class Tailwind | Mã màu | Dùng cho |
+|---|---|---|---|
+| `--paper` | `bg-paper` | `#efe7d2` | Nền `body` toàn site (đã có kẻ dòng ngang) |
+| `--surface` | `bg-surface` | `#fffcf5` | Nền các "thẻ"/box (form, card, list item) — **bắt buộc** có, không để trong suốt vì sẽ bị đè bởi kẻ dòng nền |
+| `--surface-border` | `border-surface-border` | `#e4dcc8` | Viền thẻ |
+| `--ink` | `text-ink` / `bg-ink` | `#4c3f7a` | Tiêu đề, link, nút chính (mực tím) |
+| `--ink-dark` | `hover:bg-ink-dark` | `#382e5c` | Hover của nút/link màu ink |
+| `--text` | `text-text` | `#332b47` | Chữ nội dung thường (dùng `/60` cho chữ phụ, VD `text-text/60`) |
+| `--red-pen` | `text-red-pen` / `border-red-pen` | `#c0392b` | Lỗi form, câu sai, điểm nhấn "chấm bài" |
+| `--gold` | `bg-gold` | `#e0a526` | Nút CTA nổi bật (VD "Nộp bài"), cảnh báo nhẹ |
+| `--correct` | `text-correct` | `#4c9a5b` | Câu đúng, thông báo thành công |
+| `--rule-line` | (dùng trong `body`) | `#d9cba5` | Đường kẻ ngang nền giấy |
 
-- Tiêu đề: Be Vietnam Pro (600/700) — font người Việt thiết kế, hỗ trợ dấu tốt, có cá tính
-- Nội dung / điểm số: Inter — rõ ràng, hỗ trợ dấu tiếng Việt tốt, dễ đọc bảng điểm trên màn hình nhỏ
+**Font** (khai báo ở `app/layout.tsx` qua `next/font/google`):
 
-**Khoảng cách:** dùng thang cố định `4 / 8 / 12 / 16 / 24 / 32px`, không tự chọn
-tuỳ hứng.
+- Tiêu đề: **Baloo 2** (600/700), class `font-display` — font tròn, hơi giống nét chữ viết tay học sinh, dùng tiết chế (chỉ tiêu đề)
+- Nội dung: **Be Vietnam Pro** (400/500/600) — mặc định của `body`, không cần thêm class
+
+**Quy tắc bắt buộc khi tạo trang mới:**
+
+1. Mọi box/card/form phải có `bg-surface border border-surface-border` (hoặc
+   `bg-white` cho card nổi hẳn như trang làm bài) — không để viền không có
+   nền, sẽ bị kẻ dòng ngang của `body` đè lên, rất khó nhìn (lỗi đã gặp 2 lần).
+2. Không dùng `text-zinc-*`, `text-gray-*`, `bg-black`, `border-gray-300` mặc
+   định của Tailwind nữa — dùng đúng token trong bảng trên.
+3. Nút chính: `rounded-full bg-ink hover:bg-ink-dark text-white`. Input:
+   `rounded-lg border border-ink/15 bg-white focus:border-ink`.
 
 ## Điểm nhấn duy nhất — màn hình kết quả sau khi nộp bài
 
-Câu đúng: hiện dấu ✓ nét vẽ tay màu xanh mực (accent). Câu sai: chú thích kiểu
-"bút đỏ" nhẹ nhàng (màu error) kèm giải thích tiếng Việt — đóng khung như một
-lời sửa của giáo viên ("cùng sửa nhé"), không phải dấu ✗ đỏ chói gây sợ hãi.
-Đây là chỗ duy nhất được đầu tư chăm chút kỹ; mọi màn hình khác giữ tối giản,
-kỷ luật, dùng đúng token trên.
+Điểm số hiện như con dấu tròn màu đỏ (`border-red-pen`, xoay nhẹ `-rotate-3`)
+giống con dấu chấm bài thật. Câu đúng: dấu ✓ màu `--correct`. Câu sai: dấu ✗
+màu `--red-pen`, kèm đáp án đúng + giải thích tiếng Việt. Đây là chỗ đầu tư
+chăm chút kỹ nhất; mọi màn hình khác giữ tối giản, dùng đúng token trên.
 
 ## Thứ tự làm
 

@@ -33,35 +33,48 @@ export default async function AssignmentResultPage({
   }
 
   return (
-    <main className="mx-auto max-w-sm px-4 py-10">
-      <Link href="/student/home" className="text-sm text-zinc-500 underline">
+    <main className="ruled-paper mx-auto max-w-sm px-4 py-10">
+      <Link href="/student/home" className="text-sm text-ink/70 underline hover:text-ink">
         ← Trang chủ
       </Link>
 
-      <h1 className="mt-2 mb-1 text-xl font-semibold text-zinc-900">Kết quả</h1>
-      <p className="mb-6 text-3xl font-bold text-emerald-700">{result.score} điểm</p>
+      <h1 className="font-display mt-2 mb-6 text-xl font-semibold text-ink">Kết quả</h1>
+
+      {/* Điểm số đóng dấu như con dấu chấm bài của giáo viên */}
+      <div className="mb-8 flex justify-center">
+        <div className="flex -rotate-3 flex-col items-center justify-center rounded-full border-4 border-red-pen px-6 py-5 text-red-pen">
+          <span className="font-display text-4xl font-bold">{result.score}</span>
+          <span className="text-xs font-medium tracking-wide">ĐIỂM</span>
+        </div>
+      </div>
 
       <ul className="flex flex-col gap-3">
         {result.questions.map((q, index) => (
           <li
             key={q.question_id}
-            className={`rounded border p-4 ${
-              q.is_correct ? "border-emerald-300 bg-emerald-50" : "border-red-300 bg-red-50"
+            className={`rounded-xl border bg-white p-4 ${
+              q.is_correct ? "border-correct/30" : "border-red-pen/30"
             }`}
           >
-            <p className="text-sm text-zinc-500">
-              Câu {index + 1} · {q.is_correct ? "Đúng" : "Sai"}
+            <p className="flex items-center gap-2 text-sm font-medium">
+              <span className={q.is_correct ? "text-correct" : "text-red-pen"}>
+                {q.is_correct ? "✓" : "✗"}
+              </span>
+              <span className="text-text/60">Câu {index + 1}</span>
             </p>
-            <p className="mt-1 text-zinc-900">{q.content}</p>
-            <p className="mt-2 text-sm text-zinc-700">
-              Bạn trả lời: <span className="font-medium">{q.given_answer ?? "(bỏ trống)"}</span>
+            <p className="mt-1 text-text">{q.content}</p>
+            <p className="mt-2 text-sm text-text/70">
+              Bạn trả lời:{" "}
+              <span className="font-medium text-ink">{q.given_answer ?? "(bỏ trống)"}</span>
             </p>
             {!q.is_correct && (
-              <p className="mt-1 text-sm text-zinc-700">
-                Đáp án đúng: <span className="font-medium">{q.correct_answer}</span>
+              <p className="mt-1 text-sm text-text/70">
+                Đáp án đúng: <span className="font-medium text-correct">{q.correct_answer}</span>
               </p>
             )}
-            {q.explanation && <p className="mt-2 text-sm text-zinc-600 italic">{q.explanation}</p>}
+            {q.explanation && (
+              <p className="mt-2 text-sm text-text/60 italic">{q.explanation}</p>
+            )}
           </li>
         ))}
       </ul>

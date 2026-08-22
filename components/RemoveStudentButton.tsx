@@ -32,7 +32,7 @@ export default function RemoveStudentButton({ classId, studentId, studentName }:
       type="button"
       disabled={isPending}
       onClick={handleClick}
-      className="text-sm text-red-600 underline disabled:opacity-40"
+      className="text-sm text-red-pen underline disabled:opacity-40"
     >
       {isPending ? "Đang xoá…" : "Xoá khỏi lớp"}
     </button>

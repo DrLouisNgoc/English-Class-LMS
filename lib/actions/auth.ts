@@ -46,7 +46,7 @@ export async function signInTeacher(_prevState: { error?: string } | null, formD
     return { error: "Email hoặc mật khẩu không đúng." };
   }
 
-  redirect("/questions");
+  redirect("/classes");
 }
 
 // Server action đăng xuất GV — xoá phiên đăng nhập, quay về trang login.

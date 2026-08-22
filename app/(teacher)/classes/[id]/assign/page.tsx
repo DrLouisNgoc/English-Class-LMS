@@ -43,26 +43,26 @@ export default async function AssignPage({
 
   return (
     <div className="mx-auto max-w-3xl p-6">
-      <Link href={`/classes/${id}`} className="text-sm text-zinc-500 underline">
+      <Link href={`/classes/${id}`} className="text-sm text-text/60 underline hover:text-ink">
         ← {klass.name}
       </Link>
 
-      <h1 className="mt-2 mb-4 text-xl font-semibold text-zinc-900">Giao bài mới</h1>
+      <h1 className="font-display mt-2 mb-4 text-xl font-semibold text-ink">Giao bài mới</h1>
 
       {/* Bộ lọc: đổi lựa chọn rồi bấm "Lọc" để tải lại trang với query string mới. */}
       <form
         method="get"
-        className="mb-4 flex flex-wrap items-end gap-3 rounded border border-zinc-200 p-4"
+        className="mb-4 flex flex-wrap items-end gap-3 rounded-2xl border border-surface-border bg-surface p-4"
       >
         <div className="flex flex-col gap-1">
-          <label htmlFor="grade" className="text-sm font-medium">
+          <label htmlFor="grade" className="text-sm font-medium text-text">
             Khối
           </label>
           <select
             id="grade"
             name="grade"
             defaultValue={grade ?? ""}
-            className="rounded border border-gray-300 px-3 py-2"
+            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           >
             <option value="">Tất cả</option>
             {GRADES.map((g) => (
@@ -74,14 +74,14 @@ export default async function AssignPage({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="difficulty" className="text-sm font-medium">
+          <label htmlFor="difficulty" className="text-sm font-medium text-text">
             Độ khó
           </label>
           <select
             id="difficulty"
             name="difficulty"
             defaultValue={difficulty ?? ""}
-            className="rounded border border-gray-300 px-3 py-2"
+            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           >
             <option value="">Tất cả</option>
             {DIFFICULTIES.map((d) => (
@@ -93,14 +93,14 @@ export default async function AssignPage({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label htmlFor="skill" className="text-sm font-medium">
+          <label htmlFor="skill" className="text-sm font-medium text-text">
             Kỹ năng
           </label>
           <select
             id="skill"
             name="skill"
             defaultValue={skill ?? ""}
-            className="rounded border border-gray-300 px-3 py-2"
+            className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
           >
             <option value="">Tất cả</option>
             {skillTags.map((tag) => (
@@ -113,16 +113,16 @@ export default async function AssignPage({
 
         <button
           type="submit"
-          className="rounded bg-zinc-200 px-4 py-2 text-zinc-900 hover:bg-zinc-300"
+          className="rounded-full border border-ink/15 bg-white px-4 py-2 text-ink hover:border-ink/40"
         >
           Lọc
         </button>
       </form>
 
       <form action={createAssignmentForClass}>
-        <div className="mb-4 flex flex-wrap items-end gap-3 rounded border border-zinc-200 p-4">
+        <div className="mb-4 flex flex-wrap items-end gap-3 rounded-2xl border border-surface-border bg-surface p-4">
           <div className="flex flex-col gap-1">
-            <label htmlFor="title" className="text-sm font-medium">
+            <label htmlFor="title" className="text-sm font-medium text-text">
               Tiêu đề bài
             </label>
             <input
@@ -131,12 +131,12 @@ export default async function AssignPage({
               type="text"
               required
               placeholder="BTVN tuần 4 - Bị động"
-              className="rounded border border-gray-300 px-3 py-2"
+              className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label htmlFor="due_at" className="text-sm font-medium">
+            <label htmlFor="due_at" className="text-sm font-medium text-text">
               Hạn nộp
             </label>
             <input
@@ -144,26 +144,34 @@ export default async function AssignPage({
               name="due_at"
               type="datetime-local"
               required
-              className="rounded border border-gray-300 px-3 py-2"
+              className="rounded-lg border border-ink/15 bg-white px-3 py-2 text-text outline-none focus:border-ink"
             />
           </div>
         </div>
 
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-3 text-sm text-red-pen">{error}</p>}
 
         {questions.length === 0 ? (
-          <p className="mt-4 text-zinc-500">Không có câu hỏi nào khớp bộ lọc.</p>
+          <p className="mt-4 text-text/60">Không có câu hỏi nào khớp bộ lọc.</p>
         ) : (
           <ul className="mt-4 flex flex-col gap-2">
             {questions.map((question) => (
-              <li key={question.id} className="rounded border border-zinc-200 p-4">
+              <li
+                key={question.id}
+                className="rounded-xl border border-surface-border bg-surface p-4"
+              >
                 <label className="flex items-start gap-3">
-                  <input type="checkbox" name="question_id" value={question.id} className="mt-1" />
+                  <input
+                    type="checkbox"
+                    name="question_id"
+                    value={question.id}
+                    className="mt-1 accent-ink"
+                  />
                   <span>
-                    <span className="block text-sm text-zinc-500">
+                    <span className="block text-sm text-text/60">
                       Khối {question.grade} · {question.difficulty} · {question.kind}
                     </span>
-                    <span className="block text-zinc-900">{question.content}</span>
+                    <span className="block text-text">{question.content}</span>
                   </span>
                 </label>
               </li>
@@ -173,7 +181,7 @@ export default async function AssignPage({
 
         <SubmitButton
           pendingText="Đang tạo…"
-          className="mt-4 rounded bg-black px-4 py-2 text-white hover:bg-gray-800 disabled:opacity-40"
+          className="mt-4 rounded-full bg-ink px-4 py-2 text-white hover:bg-ink-dark disabled:opacity-40"
         >
           Tạo bài giao
         </SubmitButton>

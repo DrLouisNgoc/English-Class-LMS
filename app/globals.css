@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
+/* Bảng màu "Vở tiếng Anh": lấy từ chất liệu vở học sinh thật —
+   giấy vở ấm, mực tím quen thuộc, bút đỏ chấm bài của giáo viên. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #efe7d2;
+  --ink: #4c3f7a;
+  --ink-dark: #382e5c;
+  --text: #332b47;
+  --red-pen: #c0392b;
+  --gold: #e0a526;
+  --gold-dark: #b98816;
+  --correct: #4c9a5b;
+  --rule-line: #d9cba5;
+  /* Nền "trang giấy" sáng hơn nền chung — dùng cho các box (form, thẻ)
+     để không bị lẫn vào đường kẻ ngang phía sau. */
+  --surface: #fffcf5;
+  --surface-border: #e4dcc8;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-dark: var(--ink-dark);
+  --color-text: var(--text);
+  --color-red-pen: var(--red-pen);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-correct: var(--correct);
+  --color-rule-line: var(--rule-line);
+  --color-surface: var(--surface);
+  --color-surface-border: var(--surface-border);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--paper);
+  /* Kẻ dòng ngang mờ trên nền, giống giấy vở ô ly — áp cho toàn site */
+  /* Dòng kẻ làm nhạt hơn màu --rule-line gốc (dùng cho chấm lò xo vở) —
+     kẻ đậm quá dễ vô tình cắt ngang qua chữ, nhìn như bị gạch chân/gạch
+     ngang chữ khi dòng kẻ rơi đúng vào tiêu đề. */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 1.6rem,
+    color-mix(in srgb, var(--rule-line) 55%, transparent) 1.6rem,
+    color-mix(in srgb, var(--rule-line) 55%, transparent) calc(1.6rem + 1px)
+  );
+  color: var(--text);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+.ruled-paper {
+  /* Dòng kẻ làm nhạt hơn màu --rule-line gốc (dùng cho chấm lò xo vở) —
+     kẻ đậm quá dễ vô tình cắt ngang qua chữ, nhìn như bị gạch chân/gạch
+     ngang chữ khi dòng kẻ rơi đúng vào tiêu đề. */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 1.6rem,
+    color-mix(in srgb, var(--rule-line) 55%, transparent) 1.6rem,
+    color-mix(in srgb, var(--rule-line) 55%, transparent) calc(1.6rem + 1px)
+  );
 }
