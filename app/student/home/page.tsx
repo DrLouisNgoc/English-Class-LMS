@@ -37,12 +37,20 @@ export default async function StudentHomePage() {
         <h1 className="font-display text-2xl font-semibold text-ink md:text-3xl">
           Xin chào, {student.full_name}!
         </h1>
-        <Link
-          href="/student/history"
-          className="rounded-full border border-ink/30 bg-white px-4 py-2 text-sm font-medium text-ink hover:border-ink/40 md:text-base"
-        >
-          Xem lịch sử làm bài
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/student/skills"
+            className="rounded-full border border-ink/30 bg-white px-4 py-2 text-sm font-medium text-ink hover:border-ink/40 md:text-base"
+          >
+            Kỹ năng của em
+          </Link>
+          <Link
+            href="/student/history"
+            className="rounded-full border border-ink/30 bg-white px-4 py-2 text-sm font-medium text-ink hover:border-ink/40 md:text-base"
+          >
+            Xem lịch sử làm bài
+          </Link>
+        </div>
       </div>
 
       <div className="mt-6 grid grid-cols-3 gap-3 md:mt-8 md:gap-4">
