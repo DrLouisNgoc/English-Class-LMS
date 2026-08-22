@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
 
 /* Bảng màu "Vở tiếng Anh": lấy từ chất liệu vở học sinh thật —
    giấy vở ấm, mực tím quen thuộc, bút đỏ chấm bài của giáo viên. */
@@ -16,6 +20,29 @@
      để không bị lẫn vào đường kẻ ngang phía sau. */
   --surface: #fffcf5;
   --surface-border: #e4dcc8;
+
+  /* Token ngữ nghĩa cho component shadcn/ui (Button, Input...) — map
+     thẳng vào bảng màu "Vở tiếng Anh" ở trên, không dùng màu xám mặc
+     định của shadcn, để component mới không lệch tông với phần đã làm. */
+  --background: var(--paper);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface);
+  --popover-foreground: var(--text);
+  --primary: var(--ink);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface);
+  --secondary-foreground: var(--ink);
+  --muted: var(--surface-border);
+  --muted-foreground: #7d7460;
+  --accent: color-mix(in srgb, var(--ink) 10%, var(--surface));
+  --accent-foreground: var(--ink);
+  --destructive: var(--red-pen);
+  --border: var(--surface-border);
+  --input: var(--surface-border);
+  --ring: var(--ink);
+  --radius: 0.75rem;
 }
 
 @theme inline {
@@ -32,6 +59,32 @@
   --color-surface-border: var(--surface-border);
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
+  --font-heading: var(--font-sans);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 body {
@@ -62,4 +115,16 @@ body {
     color-mix(in srgb, var(--rule-line) 55%, transparent) 1.6rem,
     color-mix(in srgb, var(--rule-line) 55%, transparent) calc(1.6rem + 1px)
   );
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
