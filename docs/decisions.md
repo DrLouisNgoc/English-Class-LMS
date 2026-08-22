@@ -49,3 +49,36 @@ Lý do: bảng `enrollments` đã có sẵn cột `left_at` đúng cho việc n�
 khỏi lớp" chỉ set `left_at = now()`, không đụng tới `students`/`attempts` —
 giữ nguyên lịch sử điểm cũ, học sinh chỉ không đăng nhập được nữa (điều kiện
 đăng nhập/liệt kê học sinh lớp đều lọc `left_at is null`).
+
+## 2026-08-22 — Không dùng plugin sinh design system tự động
+
+**Bối cảnh:** thử cài `ui-ux-pro-max` (plugin GitHub) để hỗ trợ thiết kế.
+
+**Kết quả:** plugin không nạp được — `marketplace.json` của nó dùng field `"id"`
+không tương thích với Claude Code 2.1.126. Đã gỡ sạch.
+
+**Quyết định:** không tìm plugin thay thế. Cách plugin đó hoạt động (chọn từ 79
+style dựng sẵn + 192 palette theo ngành) đi ngược điều đang cần: thiết kế phải
+bám chất liệu cụ thể của sản phẩm này (vở học sinh, bút đỏ chấm bài), không phải
+ghép công thức có sẵn — đó chính là thứ tạo ra giao diện "AI slop".
+
+**Cách làm thay thế:** thiết kế một trang thật trước (trang làm bài), rồi mới rút
+token màu/font dùng chung ra từ đó. Không dựng design system trừu tượng trước khi
+có trang thật.
+
+## 2026-08-22 — Không dùng Figma cho dự án này
+
+**Lý do:** vòng lặp "sửa code → chụp ảnh trình duyệt thật → xem lại" nhanh và
+chính xác hơn dựng mockup rời trong Figma rồi code lại từ đầu. Ảnh chụp thật đã
+giúp phát hiện 4 lỗi giao diện mà nhìn code không thấy được.
+
+## 2026-08-22 — shadcn/ui: giữ token màu của dự án, không dùng màu mặc định
+
+**Vấn đề:** `shadcn init` ghi đè `app/globals.css` (chèn bảng màu xám mặc định) và
+`app/layout.tsx` (đổi font nội dung từ Be Vietnam Pro sang Geist).
+
+**Xử lý:** hoàn nguyên font, và ánh xạ các biến ngữ nghĩa của shadcn vào bảng màu
+"Vở tiếng Anh" (`--primary: var(--ink)`, `--destructive: var(--red-pen)`,
+`--card: var(--surface)`…). Nhờ vậy mọi component shadcn thêm sau này tự động
+đúng tông, không phải sửa từng cái. Đã bỏ khối `.dark` vì dự án không dùng
+chế độ tối.
