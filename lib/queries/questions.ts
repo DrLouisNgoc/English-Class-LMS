@@ -47,7 +47,9 @@ export async function getQuestionById(id: string): Promise<QuestionDetail | null
 
   const { data, error } = await supabase
     .from("questions")
-    .select("id, kind, grade, difficulty, content, options, correct_answer, explanation, source, status")
+    .select(
+      "id, kind, grade, difficulty, content, options, correct_answer, explanation, source, status",
+    )
     .eq("id", id)
     .maybeSingle();
 

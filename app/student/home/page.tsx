@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createServerClient } from "@/lib/supabase/server";
 import { STUDENT_SESSION_COOKIE, verifyStudentSessionValue } from "@/lib/supabase/studentSession";
+import { signOutStudent } from "@/lib/actions/studentAuth";
 import { getAssignmentsForStudent } from "@/lib/queries/assignments";
 import { getStudentDashboardStats } from "@/lib/queries/dashboard";
 import NotebookPage from "@/components/NotebookPage";
@@ -51,6 +52,14 @@ export default async function StudentHomePage() {
           >
             Xem lịch sử làm bài
           </Link>
+          <form action={signOutStudent}>
+            <button
+              type="submit"
+              className="rounded-full border border-ink/30 bg-white px-4 py-2 text-sm font-medium text-ink hover:border-ink/40 md:text-base"
+            >
+              Đăng xuất
+            </button>
+          </form>
         </div>
       </div>
 

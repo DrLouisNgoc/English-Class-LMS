@@ -76,7 +76,8 @@ function readQuestionForm(
       content: content.trim(),
       options,
       correctAnswer: options[correctIndex],
-      explanation: typeof explanation === "string" && explanation.trim() ? explanation.trim() : null,
+      explanation:
+        typeof explanation === "string" && explanation.trim() ? explanation.trim() : null,
       source: typeof source === "string" && source.trim() ? source.trim() : null,
       skillTagId: typeof skillTagId === "string" && skillTagId ? skillTagId : null,
     },
@@ -146,7 +147,9 @@ export async function createQuestion(formData: FormData) {
     .single();
 
   if (error) {
-    redirect("/questions/new?error=" + encodeURIComponent(`Không lưu được câu hỏi: ${error.message}`));
+    redirect(
+      "/questions/new?error=" + encodeURIComponent(`Không lưu được câu hỏi: ${error.message}`),
+    );
   }
 
   const tagError = await saveSkillTag(inserted!.id, fields.skillTagId);
@@ -191,7 +194,8 @@ export async function updateQuestion(questionId: string, formData: FormData) {
 
   if (error) {
     redirect(
-      `/questions/${questionId}?error=` + encodeURIComponent(`Không sửa được câu hỏi: ${error.message}`),
+      `/questions/${questionId}?error=` +
+        encodeURIComponent(`Không sửa được câu hỏi: ${error.message}`),
     );
   }
 
@@ -204,6 +208,113 @@ export async function updateQuestion(questionId: string, formData: FormData) {
   }
 
   redirect("/questions?updated=1");
+}
+
+// Một câu hỏi gửi lên từ màn hình xem trước của trang dán hàng loạt.
+export type BulkQuestionInput = {
+  content: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string | null;
+};
+
+// Server action lưu một lô câu hỏi vừa dán và xem trước xong.
+//
+// Trang xem trước đã kiểm tra dữ liệu một lần rồi, nhưng ở đây vẫn kiểm tra
+// lại: mọi thứ gửi từ trình duyệt lên đều có thể bị sửa, nên server không bao
+// giờ tin sẵn.
+export async function createQuestionsBulk(
+  questions: BulkQuestionInput[],
+  grade: number,
+  difficulty: string,
+  skillTagId: string | null,
+): Promise<{ error: string } | void> {
+  const teacherId = await getCurrentUserId();
+  if (!teacherId) {
+    redirect("/teacher-login");
+  }
+
+  if (!Array.isArray(questions) || questions.length === 0) {
+    return { error: "Không có câu hỏi nào để lưu." };
+  }
+
+  if (!Number.isInteger(grade) || grade < 6 || grade > 9) {
+    return { error: "Khối lớp phải là số từ 6 đến 9." };
+  }
+
+  if (!DIFFICULTIES.includes(difficulty)) {
+    return { error: "Độ khó không hợp lệ." };
+  }
+
+  const rows = [];
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    const soThuTu = i + 1;
+
+    if (typeof question.content !== "string" || !question.content.trim()) {
+      return { error: `Câu ${soThuTu} thiếu nội dung đề bài.` };
+    }
+
+    const options = Array.isArray(question.options)
+      ? question.options.map((option) => String(option).trim())
+      : [];
+
+    if (options.length !== 4 || options.some((option) => !option)) {
+      return { error: `Câu ${soThuTu} phải có đủ 4 phương án.` };
+    }
+
+    if (new Set(options).size !== options.length) {
+      return { error: `Câu ${soThuTu} có hai phương án trùng nội dung.` };
+    }
+
+    if (
+      !Number.isInteger(question.correctIndex) ||
+      question.correctIndex < 0 ||
+      question.correctIndex > 3
+    ) {
+      return { error: `Câu ${soThuTu} chưa chọn đáp án đúng.` };
+    }
+
+    rows.push({
+      teacher_id: teacherId,
+      kind: "MCQ",
+      grade,
+      difficulty,
+      content: question.content.trim(),
+      options,
+      correct_answer: options[question.correctIndex],
+      explanation:
+        typeof question.explanation === "string" && question.explanation.trim()
+          ? question.explanation.trim()
+          : null,
+      status: "da_duyet",
+    });
+  }
+
+  const supabase = createServerClient();
+
+  const { data: inserted, error } = await supabase.from("questions").insert(rows).select("id");
+
+  if (error) {
+    return { error: `Không lưu được: ${error.message}` };
+  }
+
+  // Gắn cùng một kỹ năng cho cả lô (nếu GV có chọn).
+  if (skillTagId && inserted) {
+    const { error: tagError } = await supabase.from("question_tags").insert(
+      inserted.map((row) => ({
+        question_id: row.id,
+        skill_tag_id: skillTagId,
+        is_primary: true,
+      })),
+    );
+
+    if (tagError) {
+      return { error: `Đã lưu câu hỏi nhưng không gắn được kỹ năng: ${tagError.message}` };
+    }
+  }
+
+  redirect(`/questions?imported=${rows.length}`);
 }
 
 // Server action GV xoá một câu hỏi.
@@ -226,7 +337,10 @@ export async function deleteQuestion(questionId: string) {
     .eq("question_id", questionId);
 
   if (usageError) {
-    redirect("/questions?error=" + encodeURIComponent(`Không kiểm tra được câu hỏi: ${usageError.message}`));
+    redirect(
+      "/questions?error=" +
+        encodeURIComponent(`Không kiểm tra được câu hỏi: ${usageError.message}`),
+    );
   }
 
   if (count && count > 0) {
@@ -250,7 +364,10 @@ export async function deleteQuestion(questionId: string) {
     .eq("question_id", questionId);
 
   if (tagError) {
-    redirect("/questions?error=" + encodeURIComponent(`Không xoá được kỹ năng của câu hỏi: ${tagError.message}`));
+    redirect(
+      "/questions?error=" +
+        encodeURIComponent(`Không xoá được kỹ năng của câu hỏi: ${tagError.message}`),
+    );
   }
 
   const { error } = await supabase.from("questions").delete().eq("id", questionId);

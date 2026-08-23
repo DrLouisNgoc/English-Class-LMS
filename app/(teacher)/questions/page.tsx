@@ -16,28 +16,33 @@ export default async function QuestionsPage({
     updated?: string;
     deleted?: string;
     hidden?: string;
+    imported?: string;
     error?: string;
   }>;
 }) {
-  const { saved, updated, deleted, hidden, error } = await searchParams;
+  const { saved, updated, deleted, hidden, imported, error } = await searchParams;
   const questions = await getQuestions();
 
   // Gộp các thông báo thành công vào một chỗ cho gọn.
   const notice = saved
     ? "Đã lưu câu hỏi mới."
-    : updated
-      ? "Đã lưu thay đổi."
-      : deleted
-        ? "Đã xoá câu hỏi."
-        : hidden
-          ? "Câu hỏi đã được giao trong bài tập nên được chuyển sang ẩn thay vì xoá. Bài cũ của học sinh vẫn giữ nguyên."
-          : null;
+    : imported
+      ? `Đã lưu ${imported} câu hỏi vào ngân hàng.`
+      : updated
+        ? "Đã lưu thay đổi."
+        : deleted
+          ? "Đã xoá câu hỏi."
+          : hidden
+            ? "Câu hỏi đã được giao trong bài tập nên được chuyển sang ẩn thay vì xoá. Bài cũ của học sinh vẫn giữ nguyên."
+            : null;
 
   return (
     <NotebookPage>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <nav className="flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-xl font-semibold text-ink md:text-2xl">Ngân hàng câu hỏi</h1>
+          <h1 className="font-display text-xl font-semibold text-ink md:text-2xl">
+            Ngân hàng câu hỏi
+          </h1>
           <Link
             href="/classes"
             className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
@@ -46,6 +51,12 @@ export default async function QuestionsPage({
           </Link>
         </nav>
         <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/questions/import"
+            className="rounded-full bg-gold px-3 py-1.5 text-sm font-medium text-ink hover:bg-gold-dark hover:text-white"
+          >
+            Dán nhiều câu
+          </Link>
           <Link
             href="/questions/new"
             className="rounded-full bg-ink px-3 py-1.5 text-sm font-medium text-white hover:bg-ink-dark"
@@ -80,7 +91,10 @@ export default async function QuestionsPage({
       ) : (
         <ul className="flex flex-col gap-3">
           {questions.map((question) => (
-            <li key={question.id} className="rounded-xl border border-surface-border bg-surface p-4">
+            <li
+              key={question.id}
+              className="rounded-xl border border-surface-border bg-surface p-4"
+            >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <p className="text-sm text-text/60">
                   Khối {question.grade} · {question.difficulty} · {question.kind}

@@ -194,3 +194,12 @@ export async function registerStudent(formData: FormData) {
 
   redirect("/student/home");
 }
+
+// Server action học sinh đăng xuất: xoá cookie phiên rồi quay về trang đăng nhập.
+// Cần thiết vì phiên của học sinh kéo dài 30 ngày — máy tính dùng chung ở nhà
+// thì em sau vào sẽ thấy luôn tài khoản của em trước.
+export async function signOutStudent() {
+  const cookieStore = await cookies();
+  cookieStore.delete(STUDENT_SESSION_COOKIE);
+  redirect("/student-login");
+}
