@@ -1,3 +1,4 @@
+import NotebookPage from "@/components/NotebookPage";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUserId } from "@/lib/supabase/session";
@@ -25,7 +26,7 @@ export default async function ClassesPage({
   const stats = await getTeacherDashboardStats(teacherId);
 
   return (
-    <div className="mx-auto max-w-5xl p-6 md:p-10">
+    <NotebookPage>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <nav className="flex flex-wrap items-center gap-3">
           <h1 className="font-display text-xl font-semibold text-ink md:text-2xl">Lớp của tôi</h1>
@@ -142,6 +143,6 @@ export default async function ClassesPage({
           ))}
         </ul>
       )}
-    </div>
+    </NotebookPage>
   );
 }

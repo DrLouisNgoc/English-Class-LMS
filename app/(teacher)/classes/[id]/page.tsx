@@ -1,3 +1,4 @@
+import NotebookPage from "@/components/NotebookPage";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUserId } from "@/lib/supabase/session";
@@ -44,7 +45,7 @@ export default async function ClassDetailPage({
   const addStudentWithClassId = addStudent.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-5xl p-6 md:p-10">
+    <NotebookPage>
       <Link href="/classes" className="text-sm text-text/60 underline hover:text-ink">
         ← Danh sách lớp
       </Link>
@@ -261,6 +262,6 @@ export default async function ClassDetailPage({
           })}
         </ul>
       )}
-    </div>
+    </NotebookPage>
   );
 }

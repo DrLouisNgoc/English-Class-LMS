@@ -1,3 +1,4 @@
+import NotebookPage from "@/components/NotebookPage";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getCurrentUserId } from "@/lib/supabase/session";
@@ -42,7 +43,7 @@ export default async function AssignPage({
   const createAssignmentForClass = createAssignment.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-5xl p-6 md:p-10">
+    <NotebookPage>
       <Link href={`/classes/${id}`} className="text-sm text-text/60 underline hover:text-ink">
         ← {klass.name}
       </Link>
@@ -186,6 +187,6 @@ export default async function AssignPage({
           Tạo bài giao
         </SubmitButton>
       </form>
-    </div>
+    </NotebookPage>
   );
 }

@@ -1,3 +1,4 @@
+import NotebookPage from "@/components/NotebookPage";
 import Link from "next/link";
 import { getQuestions } from "@/lib/queries/questions";
 import { signOutTeacher } from "@/lib/actions/auth";
@@ -11,7 +12,7 @@ export default async function QuestionsPage() {
   const questions = await getQuestions();
 
   return (
-    <div className="mx-auto max-w-5xl p-6 md:p-10">
+    <NotebookPage>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <nav className="flex flex-wrap items-center gap-3">
           <h1 className="font-display text-xl font-semibold text-ink md:text-2xl">Ngân hàng câu hỏi</h1>
@@ -47,6 +48,6 @@ export default async function QuestionsPage() {
           ))}
         </ul>
       )}
-    </div>
+    </NotebookPage>
   );
 }

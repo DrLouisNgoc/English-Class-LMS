@@ -77,3 +77,20 @@ chăm chút kỹ nhất; mọi màn hình khác giữ tối giản, dùng đúng
 Landing page marketing, illustration riêng, logo, Figma mockup đầy đủ trước khi
 code. Xem `SPEC.md` mục 4b cho danh sách ý tưởng khác biệt hoá — phần lớn thuộc
 Sau MVP.
+
+## Khung trang dùng chung — `components/NotebookPage.tsx`
+
+Mọi trang bên trong app (cả GV lẫn HS) bọc nội dung trong `<NotebookPage>`:
+một tờ giấy vở đặt trên mặt bàn tối màu (`bg-ink-dark`), có lỗ lò xo đục dọc
+mép trái (class `.punch-holes`) và lề đỏ.
+
+**Vì sao:** trên màn hình rộng, nội dung căn giữa để lại hai mảng trống lớn hai
+bên trông trống trải. Khung này lấp khoảng đó bằng bố cục **có ý nghĩa** (mặt
+bàn + tờ giấy) thay vì hoạ tiết trang trí suông, và khớp luôn với 4 trang đăng
+nhập vốn đã trình bày theo cách này.
+
+- `width="wide"` (mặc định) — trang nhiều số liệu, bảng
+- `width="narrow"` — trang đọc là chính
+
+Trang làm bài (`AssignmentRunner`) **không** dùng component này vì đã có khung
+giấy riêng kèm lề tô dần theo tiến độ; nó chỉ dùng cùng nền `bg-ink-dark`.
