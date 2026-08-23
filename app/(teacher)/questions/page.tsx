@@ -11,10 +11,27 @@ export const dynamic = "force-dynamic";
 export default async function QuestionsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{
+    saved?: string;
+    updated?: string;
+    deleted?: string;
+    hidden?: string;
+    error?: string;
+  }>;
 }) {
-  const { saved } = await searchParams;
+  const { saved, updated, deleted, hidden, error } = await searchParams;
   const questions = await getQuestions();
+
+  // Gộp các thông báo thành công vào một chỗ cho gọn.
+  const notice = saved
+    ? "Đã lưu câu hỏi mới."
+    : updated
+      ? "Đã lưu thay đổi."
+      : deleted
+        ? "Đã xoá câu hỏi."
+        : hidden
+          ? "Câu hỏi đã được giao trong bài tập nên được chuyển sang ẩn thay vì xoá. Bài cũ của học sinh vẫn giữ nguyên."
+          : null;
 
   return (
     <NotebookPage>
@@ -46,9 +63,15 @@ export default async function QuestionsPage({
         </div>
       </div>
 
-      {saved && (
+      {notice && (
         <p className="mb-4 rounded-lg border border-correct/40 bg-correct/5 px-3 py-2 text-sm text-correct">
-          Đã lưu câu hỏi mới.
+          {notice}
+        </p>
+      )}
+
+      {error && (
+        <p className="mb-4 rounded-lg border border-red-pen/40 bg-red-pen/5 px-3 py-2 text-sm text-red-pen">
+          {error}
         </p>
       )}
 
@@ -58,9 +81,22 @@ export default async function QuestionsPage({
         <ul className="flex flex-col gap-3">
           {questions.map((question) => (
             <li key={question.id} className="rounded-xl border border-surface-border bg-surface p-4">
-              <p className="text-sm text-text/60">
-                Khối {question.grade} · {question.difficulty} · {question.kind}
-              </p>
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <p className="text-sm text-text/60">
+                  Khối {question.grade} · {question.difficulty} · {question.kind}
+                  {question.status === "an" && (
+                    <span className="ml-2 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-xs text-gold-dark">
+                      Đã ẩn
+                    </span>
+                  )}
+                </p>
+                <Link
+                  href={`/questions/${question.id}`}
+                  className="rounded-full border border-ink/30 bg-white px-3 py-1 text-sm font-medium text-ink hover:border-ink/40"
+                >
+                  Sửa
+                </Link>
+              </div>
               <p className="mt-1 text-text">{question.content}</p>
               <p className="mt-1 text-sm text-correct">Đáp án: {question.correct_answer}</p>
             </li>

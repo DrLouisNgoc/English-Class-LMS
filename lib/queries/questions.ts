@@ -26,6 +26,57 @@ export async function getQuestions(): Promise<Question[]> {
   return data;
 }
 
+export type QuestionDetail = {
+  id: string;
+  kind: string;
+  grade: number;
+  difficulty: string;
+  content: string;
+  options: string[];
+  correct_answer: string;
+  explanation: string | null;
+  source: string | null;
+  status: string;
+  skill_tag_id: string | null;
+};
+
+// Đọc đầy đủ một câu hỏi để đổ vào form sửa. Khác getQuestions ở chỗ lấy thêm
+// options, explanation, source và kỹ năng chính đang gắn.
+export async function getQuestionById(id: string): Promise<QuestionDetail | null> {
+  const supabase = createServerClient();
+
+  const { data, error } = await supabase
+    .from("questions")
+    .select("id, kind, grade, difficulty, content, options, correct_answer, explanation, source, status")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Không đọc được câu hỏi: ${error.message}`);
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  // Cột options là kiểu jsonb nên TypeScript không biết trước bên trong là gì.
+  // Kiểm tra lại lúc chạy rồi mới ép về mảng chuỗi cho chắc.
+  const options = Array.isArray(data.options) ? data.options.map((option) => String(option)) : [];
+
+  const { data: tagRow, error: tagError } = await supabase
+    .from("question_tags")
+    .select("skill_tag_id")
+    .eq("question_id", id)
+    .eq("is_primary", true)
+    .maybeSingle();
+
+  if (tagError) {
+    throw new Error(`Không đọc được kỹ năng của câu hỏi: ${tagError.message}`);
+  }
+
+  return { ...data, options, skill_tag_id: tagRow?.skill_tag_id ?? null };
+}
+
 export type SkillTag = {
   id: string;
   code: string;
