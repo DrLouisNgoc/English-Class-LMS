@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { STUDENT_SESSION_COOKIE, verifyStudentSessionValue } from "@/lib/supabase/studentSession";
+import NotebookPage from "@/components/NotebookPage";
 import { getOrCreateAttempt, getAttemptResult } from "@/lib/queries/attempts";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo học sinh đang đăng nhập.
@@ -33,7 +34,7 @@ export default async function AssignmentResultPage({
   }
 
   return (
-    <main className="ruled-paper mx-auto max-w-3xl px-4 py-10 md:py-16">
+    <NotebookPage>
       <Link
         href="/student/home"
         className="text-sm text-ink/70 underline hover:text-ink md:text-base"
@@ -83,6 +84,6 @@ export default async function AssignmentResultPage({
           </li>
         ))}
       </ul>
-    </main>
+    </NotebookPage>
   );
 }

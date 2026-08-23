@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import NotebookPage from "@/components/NotebookPage";
 import { STUDENT_SESSION_COOKIE, verifyStudentSessionValue } from "@/lib/supabase/studentSession";
 import { getStudentSkillStats } from "@/lib/queries/students";
 
@@ -25,7 +26,7 @@ export default async function StudentSkillsPage() {
   const needPractice = ranked.filter((s) => s.percent < 70);
 
   return (
-    <main className="ruled-paper mx-auto max-w-3xl px-4 py-10 md:py-16">
+    <NotebookPage>
       <Link
         href="/student/home"
         className="text-sm text-ink/70 underline hover:text-ink md:text-base"
@@ -83,6 +84,6 @@ export default async function StudentSkillsPage() {
           </ul>
         </>
       )}
-    </main>
+    </NotebookPage>
   );
 }

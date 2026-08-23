@@ -119,6 +119,19 @@ body {
   );
 }
 
+/* Lỗ lò xo đục dọc mép trái tờ giấy — vẽ bằng gradient nên tự lặp lại
+   theo chiều cao trang, không cần đếm số lỗ. */
+.punch-holes {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--ink-dark) 20%, transparent) 0 6px,
+    transparent 6px
+  );
+  background-size: 100% 3rem;
+  background-position: 0 1.6rem;
+  background-repeat: repeat-y;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

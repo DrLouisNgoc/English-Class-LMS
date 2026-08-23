@@ -49,15 +49,16 @@ export default function AssignmentRunner({
 
   if (!question) {
     return (
-      <main className="ruled-paper mx-auto max-w-3xl px-4 py-10">
-        <p className="text-text/60">Bài này chưa có câu hỏi nào.</p>
+      <main className="flex min-h-screen items-center justify-center bg-ink-dark px-4 py-10">
+        <p className="rounded-2xl bg-paper px-6 py-5 text-text/60">Bài này chưa có câu hỏi nào.</p>
       </main>
     );
   }
 
   return (
-    <main className="ruled-paper mx-auto max-w-3xl px-4 py-10 md:py-16">
-      <div className="flex overflow-hidden rounded-2xl border border-rule-line bg-white shadow-sm">
+    // Tờ giấy làm bài đặt trên mặt bàn tối màu, giống các trang khác
+    <main className="flex min-h-screen items-start justify-center bg-ink-dark px-2 py-4 md:px-8 md:py-10">
+      <div className="ruled-paper flex w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl md:rounded-3xl">
         {/* Lề đỏ dọc: mực tím tô dần xuống theo tiến độ làm bài, thay cho
             thanh progress ngang — giống lề vở học sinh thật */}
         <div className="relative w-6 shrink-0 bg-paper md:w-10">
