@@ -82,3 +82,20 @@ giúp phát hiện 4 lỗi giao diện mà nhìn code không thấy được.
 `--card: var(--surface)`…). Nhờ vậy mọi component shadcn thêm sau này tự động
 đúng tông, không phải sửa từng cái. Đã bỏ khối `.dark` vì dự án không dùng
 chế độ tối.
+
+## 2026-08-23 — Trang trí phải là bố cục có nghĩa, không phải hoạ tiết lấp chỗ
+
+**Yêu cầu ban đầu:** trang quá đơn giản, đơn điệu, nhiều khoảng trống hai bên
+trên màn hình rộng — cần trang trí thêm cho đẹp và lấp đầy.
+
+**Quyết định:** lấp khoảng trống bằng **bố cục có lý do** thay vì hoạ tiết suông.
+Cụ thể: dựng khung `NotebookPage` — tờ giấy vở thật (lỗ lò xo, lề đỏ) đặt trên
+mặt bàn tối màu. Khoảng hai bên giờ là "mặt bàn", có vai trò rõ ràng, đồng thời
+khớp luôn với 4 trang đăng nhập vốn đã trình bày theo cách này từ trước.
+
+**Cố ý không làm:** doodle, sticker, gradient nền, khối trang trí rỗng. Lý do:
+đây là app học sinh dùng hằng ngày — hoạ tiết thừa gây mỏi mắt và làm loãng nội
+dung. Chỗ đáng "vui mắt" nhất (màn hình kết quả) đã có con dấu điểm đỏ rồi.
+
+**Thêm màu ở đâu:** các ô số liệu, mỗi ô một màu mực theo ý nghĩa — màu ở đây
+mang thông tin (phân biệt loại số liệu), không phải để cho đẹp.
