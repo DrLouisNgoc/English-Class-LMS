@@ -99,3 +99,49 @@ dung. Chỗ đáng "vui mắt" nhất (màn hình kết quả) đã có con dấ
 
 **Thêm màu ở đâu:** các ô số liệu, mỗi ô một màu mực theo ý nghĩa — màu ở đây
 mang thông tin (phân biệt loại số liệu), không phải để cho đẹp.
+
+## 2026-08-23 — Giao diện trống vì thiếu dữ liệu, không phải thiếu hoạ tiết
+
+**Yêu cầu ban đầu:** giao diện vẫn hơi trống, nghĩ rằng do chưa đủ tính năng.
+
+**Chẩn đoán ngược lại:** hạ tầng đã đủ (12 trang, dashboard GV, thống kê kỹ
+năng, lịch sử nộp bài) nhưng không có gì để hiển thị, vì ngân hàng chỉ có 20 câu
+seed và `/questions` là trang **chỉ đọc** — muốn thêm câu phải viết SQL tay.
+Nghĩa là GV chưa tự vận hành được app. Đây mới là nút thắt thật.
+
+**Quyết định:** ưu tiên tuyệt đối cho công cụ soạn câu hỏi (thêm/sửa/xoá + dán
+hàng loạt) trước mọi tính năng khác. Sau khi có nó, GV nhập đề của mình một buổi
+tối là toàn bộ dashboard tự đầy lên, không cần viết thêm dòng code nào.
+
+## 2026-08-23 — Câu hỏi mới lưu thẳng "da_duyet", không có bước duyệt
+
+Chỉ có một GV dùng app, tự soạn tự duyệt là vô nghĩa. Câu hỏi tạo qua giao diện
+lưu thẳng `status = "da_duyet"` để giao bài được ngay. Cột `status` vẫn giữ vì
+`getFilteredQuestions` đang lọc theo nó, và giá trị `"an"` được tận dụng cho
+việc ẩn câu hỏi (xem mục dưới).
+
+## 2026-08-23 — Xoá câu hỏi đã giao thì ẩn, không xoá thật
+
+`assignment_questions` và `answers` đều có khoá ngoại trỏ tới `questions`, không
+có `on delete cascade`. Xoá thật một câu đã giao sẽ hỏng dữ liệu bài cũ của học
+sinh. Nên: câu chưa dùng ở đâu thì xoá thật; câu đã nằm trong bài tập thì đổi
+`status = "an"` — biến mất khỏi trang giao bài mới, bài cũ giữ nguyên.
+
+## 2026-08-23 — App chỉ hỗ trợ trắc nghiệm đúng 4 phương án
+
+Form soạn câu và trang dán hàng loạt đều bắt buộc đúng 4 phương án. Đề tiếng Anh
+ở Việt Nam gần như luôn 4 phương án, và một luật duy nhất thì dễ nhớ hơn là mỗi
+chỗ một kiểu. Câu tách ra không đủ 4 phương án bị tô đỏ và chặn lưu.
+
+**Hệ quả cần biết:** nếu trong database có sẵn câu 3 phương án (từ seed hoặc
+nhập tay qua SQL), khi bấm Sửa sẽ phải điền thêm ô thứ 4 mới lưu được.
+
+## 2026-08-23 — Bảng xếp hạng chỉ hiện Top 5 và thứ hạng của chính mình
+
+SPEC ghi "học sinh không xem được bài của nhau". Bảng xếp hạng là vùng xám, nên
+giới hạn lại: `getClassLeaderboard` chỉ trả **tên + điểm tích luỹ** của bạn cùng
+lớp, và trang chỉ hiện 5 bạn đứng đầu cộng thứ hạng riêng của em. Bạn xếp cuối
+không bị nêu tên. Không bao giờ trả điểm từng bài của bạn khác.
+
+**Điểm tích luỹ, chuỗi ngày, huy hiệu đều tính ra từ `attempts`/`answers` sẵn
+có** — không thêm bảng, không thêm cột, nên không bao giờ lệch với điểm thật.

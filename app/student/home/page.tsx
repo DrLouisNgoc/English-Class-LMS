@@ -6,6 +6,7 @@ import { STUDENT_SESSION_COOKIE, verifyStudentSessionValue } from "@/lib/supabas
 import { signOutStudent } from "@/lib/actions/studentAuth";
 import { getAssignmentsForStudent } from "@/lib/queries/assignments";
 import { getStudentDashboardStats } from "@/lib/queries/dashboard";
+import { getStudentProgress } from "@/lib/queries/gamification";
 import NotebookPage from "@/components/NotebookPage";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo học sinh đang đăng nhập.
@@ -32,6 +33,7 @@ export default async function StudentHomePage() {
 
   const assignments = await getAssignmentsForStudent(studentId);
   const stats = await getStudentDashboardStats(studentId);
+  const progress = await getStudentProgress(studentId);
 
   return (
     <NotebookPage>
@@ -40,6 +42,12 @@ export default async function StudentHomePage() {
           Xin chào, {student.full_name}!
         </h1>
         <div className="flex flex-wrap gap-2">
+          <Link
+            href="/student/leaderboard"
+            className="rounded-full border border-ink/30 bg-white px-4 py-2 text-sm font-medium text-ink hover:border-ink/40 md:text-base"
+          >
+            Bảng xếp hạng
+          </Link>
           <Link
             href="/student/skills"
             className="rounded-full border border-ink/30 bg-white px-4 py-2 text-sm font-medium text-ink hover:border-ink/40 md:text-base"
@@ -82,6 +90,47 @@ export default async function StudentHomePage() {
             {stats.onTimeRate === null ? "—" : `${stats.onTimeRate}%`}
           </p>
           <p className="mt-1 text-sm text-text/60 md:text-base">Nộp đúng hạn</p>
+        </div>
+      </div>
+
+      {/* Khối thành tích: điểm tích luỹ, chuỗi ngày làm bài và huy hiệu đã đạt.
+          Tất cả tính ra từ các bài đã nộp, không có bảng điểm thưởng riêng. */}
+      <div className="mt-3 rounded-xl border border-red-pen/25 bg-red-pen/5 p-4 md:mt-4 md:p-6">
+        <div className="flex flex-wrap items-start gap-6 md:gap-10">
+          <div>
+            <p className="font-display text-2xl font-semibold text-red-pen md:text-4xl">
+              {progress.totalPoints}
+            </p>
+            <p className="mt-1 text-sm text-text/60 md:text-base">Điểm tích luỹ</p>
+          </div>
+          <div>
+            <p className="font-display text-2xl font-semibold text-red-pen md:text-4xl">
+              {progress.streakDays > 0 ? `🔥 ${progress.streakDays}` : "—"}
+            </p>
+            <p className="mt-1 text-sm text-text/60 md:text-base">Ngày liên tiếp</p>
+          </div>
+
+          <div className="min-w-40 flex-1">
+            <p className="mb-2 text-sm text-text/60 md:text-base">Huy hiệu</p>
+            {progress.badges.length === 0 ? (
+              <p className="text-sm text-text/50">
+                Nộp bài đầu tiên để nhận huy hiệu đầu tiên của em.
+              </p>
+            ) : (
+              <ul className="flex flex-wrap gap-2">
+                {progress.badges.map((badge) => (
+                  <li
+                    key={badge.title}
+                    title={badge.description}
+                    className="flex items-center gap-1.5 rounded-full border border-surface-border bg-white px-3 py-1.5 text-sm text-text"
+                  >
+                    <span aria-hidden>{badge.emoji}</span>
+                    {badge.title}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
 
