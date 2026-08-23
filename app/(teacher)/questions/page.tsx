@@ -8,7 +8,12 @@ import { signOutTeacher } from "@/lib/actions/auth";
 // được ổn định ở bước build).
 export const dynamic = "force-dynamic";
 
-export default async function QuestionsPage() {
+export default async function QuestionsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const { saved } = await searchParams;
   const questions = await getQuestions();
 
   return (
@@ -23,15 +28,29 @@ export default async function QuestionsPage() {
             Lớp học
           </Link>
         </nav>
-        <form action={signOutTeacher}>
-          <button
-            type="submit"
-            className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/questions/new"
+            className="rounded-full bg-ink px-3 py-1.5 text-sm font-medium text-white hover:bg-ink-dark"
           >
-            Đăng xuất
-          </button>
-        </form>
+            + Thêm câu hỏi
+          </Link>
+          <form action={signOutTeacher}>
+            <button
+              type="submit"
+              className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+            >
+              Đăng xuất
+            </button>
+          </form>
+        </div>
       </div>
+
+      {saved && (
+        <p className="mb-4 rounded-lg border border-correct/40 bg-correct/5 px-3 py-2 text-sm text-correct">
+          Đã lưu câu hỏi mới.
+        </p>
+      )}
 
       {questions.length === 0 ? (
         <p className="text-text/60">Chưa có câu hỏi nào.</p>
