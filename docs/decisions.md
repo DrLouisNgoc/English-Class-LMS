@@ -145,3 +145,60 @@ không bị nêu tên. Không bao giờ trả điểm từng bài của bạn kh
 
 **Điểm tích luỹ, chuỗi ngày, huy hiệu đều tính ra từ `attempts`/`answers` sẵn
 có** — không thêm bảng, không thêm cột, nên không bao giờ lệch với điểm thật.
+
+## 2026-08-24 — Dùng Claude làm bước ĐỌC đề, app vẫn là chỗ kiểm tra và lưu
+
+**Câu hỏi ban đầu:** có nên gắn OCR vào app để quét đề in trên giấy không?
+
+**Đã cân nhắc 3 hướng và loại cả 3:**
+
+- **Tesseract.js** (miễn phí, chạy trong trình duyệt): đọc sai dấu tiếng Việt,
+  nuốt dấu `____`, và gần như chắc chắn hỏng với đề in 2 cột — rất phổ biến.
+- **Google Vision / Azure** (~35đ/trang): đọc chữ tốt nhưng **chỉ ra chữ thô**,
+  vẫn phải qua `parseQuestions`, mà vẫn cần thẻ visa + khoá API.
+- **AI đọc ảnh qua API** (~150–500đ/trang): tốt nhất về chất lượng, nhưng cần
+  tài khoản trả tiền, thẻ visa, thêm biến môi trường, thêm thứ phải bảo trì.
+
+**Quyết định — hướng thứ tư, không tốn gì thêm:** GV dán text hoặc ảnh đề vào
+chat Claude; Claude trả về khối chữ đúng định dạng `lib/parseQuestions.ts` hiểu
+được, kèm sẵn `Đáp án:` và `Giải thích:` tiếng Việt; GV dán khối đó vào
+`/questions/import`. Claude làm phần khó (đọc, chia câu, viết giải thích), app
+vẫn chạy đủ mọi lớp kiểm tra trước khi lưu. Không thêm thư viện, không thêm khoá
+API, không thêm chi phí.
+
+**Cố ý KHÔNG cho Claude ghi thẳng SQL vào database.** Lý do:
+1. Bỏ qua toàn bộ lớp kiểm tra trong `readQuestionForm` (đủ 4 phương án, không
+   có phương án trùng nhau, `correct_answer` khớp từng ký tự với một trong 4
+   phương án). Sai một ký tự là cả lớp chọn đúng vẫn bị chấm sai, và GV không
+   phát hiện ra cho tới khi học sinh kêu.
+2. Ghi tay vào database thật chính là kiểu thao tác đã tạo ra 15 học sinh trùng
+   hồi 2026-08-19.
+3. Biến việc hằng tuần thành việc phải mở Claude Code — app coi như chưa xong.
+
+**Ranh giới:** nạp lần đầu số lượng lớn (vài trăm câu) thì đưa Claude xử lý một
+lượt là hợp lý. Việc hằng tuần bắt buộc đi qua giao diện app.
+
+## 2026-08-24 — Trộn đề hoãn lại vì ngân hàng chưa đủ nguyên liệu
+
+GV yêu cầu tính năng trộn đề theo mẫu đề chuẩn. Trước khi viết code, đã đếm thử
+ngân hàng thật và phát hiện chưa đủ điều kiện: 33/53 câu không có kỹ năng, 44/53
+câu cùng mức Trung bình, và 53 câu là quá mỏng (trộn đề chỉ có ý nghĩa khi ngân
+hàng gấp 3–4 lần số câu mỗi đề, tức khoảng 150–200 câu).
+
+Đã brainstorm xong và chốt hướng thi công (xem `TASKS.md` mục Sau MVP), nhưng
+hoãn lại. Làm ngay thì tính năng vẫn chạy nhưng ra đề xấu — không phải lỗi tính
+năng, mà là thiếu nguyên liệu.
+
+**Bài học: kiểm tra dữ liệu thật TRƯỚC khi làm tính năng phụ thuộc vào dữ liệu
+đó.** Mất 2 phút đếm, tiết kiệm cả buổi viết một thứ chưa dùng được.
+
+## 2026-08-24 — Trường dữ liệu mà tính năng sau phụ thuộc thì không nên để trống mặc định
+
+33/53 câu trong ngân hàng không có kỹ năng, vì `/questions/import` để ô "Kỹ năng"
+mặc định là "— Chưa gắn —" và GV bỏ qua khi nhập nhanh. Hậu quả: mọi tính năng
+dựa trên kỹ năng đều hụt nguyên liệu — trộn đề theo phần, thống kê điểm yếu của
+lớp, tự động giao bài theo lỗ hổng.
+
+**Rút kinh nghiệm cho các form sau:** trường nào mà tính năng tương lai phụ thuộc
+vào thì nên bắt buộc chọn, hoặc ít nhất cảnh báo rõ trước khi lưu — đừng để mặc
+định trống rồi hy vọng người dùng tự điền.
