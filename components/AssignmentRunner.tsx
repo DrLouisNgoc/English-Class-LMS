@@ -86,6 +86,21 @@ export default function AssignmentRunner({
             {isSaving && <span>Đang lưu…</span>}
           </div>
 
+          {/* Bài đọc hiểu: đoạn văn nằm ngay trên câu hỏi, lặp lại ở mọi câu
+              cùng bài đọc. Cố ý lặp thay vì cho đọc một lần rồi cất đi — em
+              không phải nhớ, không phải bấm ngược lại để xem. Đoạn dài thì
+              cuộn trong ô, không đẩy phần chọn đáp án xuống quá xa. */}
+          {question.passage_content && (
+            <div className="mb-5 max-h-72 overflow-y-auto rounded-xl border border-ink/20 bg-ink/5 p-4 md:mb-8 md:max-h-96 md:p-6">
+              <p className="mb-2 text-xs font-medium tracking-wide text-ink/60 uppercase">
+                Đọc đoạn văn sau
+              </p>
+              <p className="text-sm leading-relaxed whitespace-pre-wrap text-text md:text-lg md:leading-relaxed">
+                {question.passage_content}
+              </p>
+            </div>
+          )}
+
           <p className="mb-5 text-base leading-relaxed text-text md:mb-8 md:text-xl md:leading-relaxed">
             {question.content}
           </p>

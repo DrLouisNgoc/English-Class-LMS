@@ -54,6 +54,9 @@ export type AssignmentQuestion = {
   kind: string;
   content: string;
   options: string[] | null;
+  // Đoạn văn của bài đọc hiểu, null nếu là câu độc lập (C2). Chỉ lấy nội dung,
+  // KHÔNG lấy tên bài đọc — tên đó chỉ để thầy tìm lại bài, học sinh không cần.
+  passage_content: string | null;
 };
 
 // Đọc câu hỏi của 1 bài giao theo đúng thứ tự đã sắp — CỐ Ý không lấy cột
@@ -63,7 +66,7 @@ export async function getAssignmentQuestions(assignmentId: string): Promise<Assi
 
   const { data, error } = await supabase
     .from("assignment_questions")
-    .select("position, questions(id, kind, content, options)")
+    .select("position, questions(id, kind, content, options, passages(content))")
     .eq("assignment_id", assignmentId)
     .order("position", { ascending: true });
 
@@ -73,7 +76,19 @@ export async function getAssignmentQuestions(assignmentId: string): Promise<Assi
 
   // Supabase trả "questions" là 1 object (mỗi assignment_questions ứng với
   // đúng 1 câu hỏi) — kiểu TS suy ra mảng chỉ là suy đoán sai, ép lại cho đúng.
-  return data.map((row) => row.questions as unknown as AssignmentQuestion);
+  // "passages" bên trong cũng vậy: 1 câu hỏi thuộc tối đa 1 bài đọc.
+  return data.map((row) => {
+    const question = row.questions as unknown as Omit<AssignmentQuestion, "passage_content"> & {
+      passages: { content: string } | null;
+    };
+    return {
+      id: question.id,
+      kind: question.kind,
+      content: question.content,
+      options: question.options,
+      passage_content: question.passages?.content ?? null,
+    };
+  });
 }
 
 // Đọc danh sách bài đã giao của 1 lớp — dùng cho trang chi tiết lớp của GV.
