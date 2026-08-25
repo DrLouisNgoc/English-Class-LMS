@@ -53,6 +53,12 @@ export default async function QuestionsPage({
           >
             Lớp học
           </Link>
+          <Link
+            href="/passages"
+            className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+          >
+            Bài đọc hiểu
+          </Link>
         </nav>
         <div className="flex flex-wrap items-center gap-2">
           <Link
