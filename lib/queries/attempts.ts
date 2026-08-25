@@ -153,7 +153,7 @@ export type TeacherAttemptDetail = {
 //
 // Khác với getAttemptResult ở chỗ kiểm quyền: hàm kia hỏi "bài này có phải
 // của em học sinh đang đăng nhập không", hàm này hỏi "lớp chứa bài giao này
-// có phải lớp của cô đang đăng nhập không" — đi ngược chuỗi
+// có phải lớp của thầy đang đăng nhập không" — đi ngược chuỗi
 // attempts.assignment_id -> assignments.class_id -> classes.teacher_id.
 // Cùng một dữ liệu nhưng hai lối vào nên phải có hai luật quyền riêng.
 // Trả về null nếu không đúng quyền hoặc bài chưa nộp — trang gọi sẽ notFound().
@@ -177,7 +177,7 @@ export async function getAttemptDetailForTeacher(
     return null;
   }
 
-  // Bài giao này có thuộc đúng lớp trên URL, và lớp đó có đúng là của cô không.
+  // Bài giao này có thuộc đúng lớp trên URL, và lớp đó có đúng là của thầy không.
   const { data: assignment, error: assignmentError } = await supabase
     .from("assignments")
     .select("title, class_id, classes(teacher_id)")

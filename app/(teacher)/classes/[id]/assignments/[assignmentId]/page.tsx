@@ -47,11 +47,26 @@ export default async function AssignmentReportPage({
           {report.map((row) => (
             <li
               key={row.student_id}
-              className="flex items-center justify-between rounded-xl border border-surface-border bg-surface p-4"
+              className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-surface-border bg-surface p-4"
             >
-              <p className="text-text">{row.full_name}</p>
+              <div>
+                <p className="text-text">{row.full_name}</p>
+                {row.has_comment && <p className="mt-0.5 text-sm text-correct">✓ Đã có lời phê</p>}
+              </div>
+
               {row.submitted ? (
-                <p className="font-medium text-correct">{row.score} điểm</p>
+                <div className="flex items-center gap-4">
+                  <p className="font-medium text-correct">{row.score} điểm</p>
+                  {/* Chỉ bài đã nộp mới có attempt_id — chưa nộp thì không có gì để xem. */}
+                  {row.attempt_id && (
+                    <Link
+                      href={`/classes/${id}/assignments/${assignmentId}/attempts/${row.attempt_id}`}
+                      className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/50"
+                    >
+                      Xem bài →
+                    </Link>
+                  )}
+                </div>
               ) : (
                 <p className="text-sm text-text/60">Chưa nộp</p>
               )}

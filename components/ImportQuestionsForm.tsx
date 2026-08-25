@@ -148,7 +148,7 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
           />
           <p className="mt-2 text-xs text-text/50">
             Mỗi câu cần có số thứ tự (1. hoặc Câu 1:) và các phương án ghi A. B. C. D. Nếu trong đề
-            có sẵn dòng &quot;Đáp án: B&quot; thì sẽ được điền tự động; không có thì cô tự tích ở
+            có sẵn dòng &quot;Đáp án: B&quot; thì sẽ được điền tự động; không có thì thầy tự tích ở
             bước sau.
           </p>
           <button

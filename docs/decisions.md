@@ -228,7 +228,7 @@ Cái vẫn còn thiếu là: nếu code server action có bug (quên lọc theo 
 không có gì ở tầng database chặn lại — rủi ro thật, nhưng phải sửa bằng đổi
 kiến trúc đăng nhập học sinh (việc lớn, tách riêng), không sửa được bằng SQL.
 
-## 2026-08-24 — Thiết kế B4: lời phê của cô trên bài nộp
+## 2026-08-24 — Thiết kế B4: lời phê của thầy trên bài nộp
 
 Brainstorm xong qua skill `superpowers:brainstorming` + Plan Mode, đã duyệt.
 Ghi lại ở đây để phiên sau thi công không phải bàn lại.
@@ -268,5 +268,5 @@ dùng chung hàm.
   và `has_comment`).
 - **Đợt 2 — giao diện GV:** trang báo cáo (thêm nút "Xem bài →" + nhãn "Đã có
   lời phê") + trang mới `.../attempts/[attemptId]/page.tsx`.
-- **Đợt 3 — giao diện HS:** trang kết quả hiện khối "Lời phê của cô" nếu có.
+- **Đợt 3 — giao diện HS:** trang kết quả hiện khối "Lời phê của thầy" nếu có.
 

@@ -170,7 +170,7 @@ export type AssignmentReportRow = {
   full_name: string;
   submitted: boolean;
   score: number | null;
-  // Hai trường dưới phục vụ lời phê của cô (B4): attempt_id để dựng link sang
+  // Hai trường dưới phục vụ lời phê của thầy (B4): attempt_id để dựng link sang
   // trang xem bài, has_comment để hiện nhãn "Đã có lời phê" mà không phải đọc
   // cả nội dung lời phê ra chỉ để kiểm tra có hay không.
   attempt_id: string | null;
