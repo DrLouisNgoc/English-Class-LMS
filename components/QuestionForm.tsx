@@ -25,6 +25,8 @@ export type QuestionFormValues = {
   grade: number;
   difficulty: string;
   skillTagId: string | null;
+  // Bài đọc hiểu mà câu này dùng chung, null nếu là câu độc lập (C2).
+  passageId: string | null;
 };
 
 type Props = {
@@ -36,6 +38,9 @@ type Props = {
   values?: QuestionFormValues;
   // Nút phụ đặt cạnh nút lưu, ví dụ nút xoá ở trang sửa.
   extraAction?: React.ReactNode;
+  // Danh sách bài đọc hiểu của giáo viên, để chọn câu này thuộc bài nào (C2).
+  // Mặc định rỗng: trang nào chưa truyền vào thì ô chọn không hiện ra.
+  passages?: { id: string; title: string }[];
 };
 
 export default function QuestionForm({
@@ -45,6 +50,7 @@ export default function QuestionForm({
   pendingLabel,
   values,
   extraAction,
+  passages = [],
 }: Props) {
   return (
     <form action={action} className="flex flex-col gap-4">
@@ -167,6 +173,33 @@ export default function QuestionForm({
           </select>
         </div>
       </div>
+
+      {/* Ô chọn bài đọc chỉ hiện khi thầy đã soạn ít nhất 1 bài đọc — chưa có
+          bài nào thì hiện ô rỗng cũng chỉ làm form dài thêm vô ích. */}
+      {passages.length > 0 && (
+        <div className="rounded-2xl border border-surface-border bg-surface p-4">
+          <label htmlFor="passage_id" className="mb-1 block text-sm font-medium text-text">
+            Câu này thuộc bài đọc nào?{" "}
+            <span className="font-normal text-text/50">(không bắt buộc)</span>
+          </label>
+          <select
+            id="passage_id"
+            name="passage_id"
+            defaultValue={values?.passageId ?? ""}
+            className={inputClass}
+          >
+            <option value="">— Câu độc lập, không thuộc bài đọc nào —</option>
+            {passages.map((passage) => (
+              <option key={passage.id} value={passage.id}>
+                {passage.title}
+              </option>
+            ))}
+          </select>
+          <p className="mt-1 text-xs text-text/50">
+            Chọn bài đọc thì lúc làm bài, học sinh thấy đoạn văn ngay phía trên câu hỏi này.
+          </p>
+        </div>
+      )}
 
       <div className="rounded-2xl border border-surface-border bg-surface p-4">
         <label htmlFor="source" className="mb-1 block text-sm font-medium text-text">

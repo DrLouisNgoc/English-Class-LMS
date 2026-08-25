@@ -66,6 +66,8 @@ export type QuestionDetail = {
   source: string | null;
   status: string;
   skill_tag_id: string | null;
+  // Bài đọc hiểu câu này dùng chung, null nếu là câu độc lập (C2).
+  passage_id: string | null;
 };
 
 // Đọc đầy đủ một câu hỏi để đổ vào form sửa. Khác getQuestions ở chỗ lấy thêm
@@ -76,7 +78,7 @@ export async function getQuestionById(id: string): Promise<QuestionDetail | null
   const { data, error } = await supabase
     .from("questions")
     .select(
-      "id, kind, grade, difficulty, content, options, correct_answer, explanation, source, status",
+      "id, kind, grade, difficulty, content, options, correct_answer, explanation, source, status, passage_id",
     )
     .eq("id", id)
     .maybeSingle();

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUserId } from "@/lib/supabase/session";
 import { getSkillTags } from "@/lib/queries/questions";
+import { getPassages } from "@/lib/queries/passages";
 import { createQuestion } from "@/lib/actions/questions";
 import QuestionForm from "@/components/QuestionForm";
 
@@ -20,7 +21,7 @@ export default async function NewQuestionPage({
   }
 
   const { error } = await searchParams;
-  const skillTags = await getSkillTags();
+  const [skillTags, passages] = await Promise.all([getSkillTags(), getPassages(teacherId)]);
 
   return (
     <NotebookPage width="narrow">
@@ -44,6 +45,7 @@ export default async function NewQuestionPage({
       <QuestionForm
         action={createQuestion}
         skillTags={skillTags}
+        passages={passages}
         submitLabel="Lưu câu hỏi"
         pendingLabel="Đang lưu…"
       />

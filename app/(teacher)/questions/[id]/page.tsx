@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUserId } from "@/lib/supabase/session";
 import { getQuestionById, getSkillTags } from "@/lib/queries/questions";
+import { getPassages } from "@/lib/queries/passages";
 import { updateQuestion } from "@/lib/actions/questions";
 import QuestionForm from "@/components/QuestionForm";
 import DeleteQuestionButton from "@/components/DeleteQuestionButton";
@@ -30,7 +31,7 @@ export default async function EditQuestionPage({
     redirect("/questions");
   }
 
-  const skillTags = await getSkillTags();
+  const [skillTags, passages] = await Promise.all([getSkillTags(), getPassages(teacherId)]);
 
   // Trong database chỉ lưu nguyên văn đáp án đúng, không lưu vị trí. Tìm xem
   // nó đang là phương án thứ mấy để tích sẵn ô tròn tương ứng trong form.
@@ -75,6 +76,7 @@ export default async function EditQuestionPage({
       <QuestionForm
         action={updateThisQuestion}
         skillTags={skillTags}
+        passages={passages}
         submitLabel="Lưu thay đổi"
         pendingLabel="Đang lưu…"
         values={{
@@ -86,6 +88,7 @@ export default async function EditQuestionPage({
           grade: question.grade,
           difficulty: question.difficulty,
           skillTagId: question.skill_tag_id,
+          passageId: question.passage_id,
         }}
         extraAction={<DeleteQuestionButton questionId={id} />}
       />

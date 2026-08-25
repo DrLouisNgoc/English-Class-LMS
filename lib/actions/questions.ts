@@ -16,6 +16,8 @@ type QuestionFields = {
   explanation: string | null;
   source: string | null;
   skillTagId: string | null;
+  // Bài đọc hiểu câu này dùng chung, null nếu là câu độc lập (C2).
+  passageId: string | null;
 };
 
 // Đọc và kiểm tra dữ liệu form. Trả về lỗi dưới dạng chuỗi thay vì tự chuyển
@@ -67,6 +69,7 @@ function readQuestionForm(
   const explanation = formData.get("explanation");
   const source = formData.get("source");
   const skillTagId = formData.get("skill_tag_id");
+  const passageId = formData.get("passage_id");
 
   return {
     ok: true,
@@ -80,6 +83,7 @@ function readQuestionForm(
         typeof explanation === "string" && explanation.trim() ? explanation.trim() : null,
       source: typeof source === "string" && source.trim() ? source.trim() : null,
       skillTagId: typeof skillTagId === "string" && skillTagId ? skillTagId : null,
+      passageId: typeof passageId === "string" && passageId ? passageId : null,
     },
   };
 }
@@ -139,6 +143,7 @@ export async function createQuestion(formData: FormData) {
       correct_answer: fields.correctAnswer,
       explanation: fields.explanation,
       source: fields.source,
+      passage_id: fields.passageId,
       // Chỉ có một GV nên không cần bước duyệt: lưu là dùng giao bài được ngay.
       // Trang giao bài chỉ đọc câu có status "da_duyet".
       status: "da_duyet",
@@ -189,6 +194,7 @@ export async function updateQuestion(questionId: string, formData: FormData) {
       correct_answer: fields.correctAnswer,
       explanation: fields.explanation,
       source: fields.source,
+      passage_id: fields.passageId,
     })
     .eq("id", questionId);
 
