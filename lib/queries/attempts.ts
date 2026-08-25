@@ -71,6 +71,7 @@ export type AttemptResultQuestion = {
 
 export type AttemptResult = {
   score: number | null;
+  comment: string | null;
   questions: AttemptResultQuestion[];
 };
 
@@ -85,7 +86,7 @@ export async function getAttemptResult(
 
   const { data: attempt, error: attemptError } = await supabase
     .from("attempts")
-    .select("student_id, submitted_at, score, assignment_id")
+    .select("student_id, submitted_at, score, comment, assignment_id")
     .eq("id", attemptId)
     .maybeSingle();
 
@@ -134,5 +135,115 @@ export async function getAttemptResult(
     };
   });
 
-  return { score: attempt.score, questions };
+  return { score: attempt.score, comment: attempt.comment, questions };
+}
+
+export type TeacherAttemptDetail = {
+  student_id: string;
+  student_name: string;
+  assignment_title: string;
+  submitted_at: string;
+  score: number | null;
+  comment: string | null;
+  questions: AttemptResultQuestion[];
+};
+
+// Đọc chi tiết 1 bài đã nộp CHO GIÁO VIÊN xem (tính năng B4) — trước đây GV
+// chỉ thấy điểm số, không biết học sinh chọn gì ở từng câu.
+//
+// Khác với getAttemptResult ở chỗ kiểm quyền: hàm kia hỏi "bài này có phải
+// của em học sinh đang đăng nhập không", hàm này hỏi "lớp chứa bài giao này
+// có phải lớp của cô đang đăng nhập không" — đi ngược chuỗi
+// attempts.assignment_id -> assignments.class_id -> classes.teacher_id.
+// Cùng một dữ liệu nhưng hai lối vào nên phải có hai luật quyền riêng.
+// Trả về null nếu không đúng quyền hoặc bài chưa nộp — trang gọi sẽ notFound().
+export async function getAttemptDetailForTeacher(
+  attemptId: string,
+  classId: string,
+  teacherId: string,
+): Promise<TeacherAttemptDetail | null> {
+  const supabase = createServerClient();
+
+  const { data: attempt, error: attemptError } = await supabase
+    .from("attempts")
+    .select("student_id, submitted_at, score, comment, assignment_id, students(full_name)")
+    .eq("id", attemptId)
+    .maybeSingle();
+
+  if (attemptError) {
+    throw new Error(`Không đọc được lượt làm bài: ${attemptError.message}`);
+  }
+  if (!attempt || !attempt.submitted_at) {
+    return null;
+  }
+
+  // Bài giao này có thuộc đúng lớp trên URL, và lớp đó có đúng là của cô không.
+  const { data: assignment, error: assignmentError } = await supabase
+    .from("assignments")
+    .select("title, class_id, classes(teacher_id)")
+    .eq("id", attempt.assignment_id)
+    .eq("class_id", classId)
+    .maybeSingle();
+
+  if (assignmentError) {
+    throw new Error(`Không đọc được bài giao: ${assignmentError.message}`);
+  }
+  if (!assignment) {
+    return null;
+  }
+
+  const owner = assignment.classes as unknown as { teacher_id: string } | null;
+  if (owner?.teacher_id !== teacherId) {
+    return null;
+  }
+
+  const { data: assignmentQuestions, error: aqError } = await supabase
+    .from("assignment_questions")
+    .select("position, question_id, questions(content, correct_answer, explanation)")
+    .eq("assignment_id", attempt.assignment_id)
+    .order("position", { ascending: true });
+
+  if (aqError) {
+    throw new Error(`Không đọc được câu hỏi của bài giao: ${aqError.message}`);
+  }
+
+  const { data: answers, error: answersError } = await supabase
+    .from("answers")
+    .select("question_id, given_answer, is_correct")
+    .eq("attempt_id", attemptId);
+
+  if (answersError) {
+    throw new Error(`Không đọc được câu trả lời: ${answersError.message}`);
+  }
+
+  const answerByQuestionId = new Map(answers.map((a) => [a.question_id, a]));
+
+  const questions = assignmentQuestions.map((row) => {
+    const q = row.questions as unknown as {
+      content: string;
+      correct_answer: string;
+      explanation: string | null;
+    };
+    const answer = answerByQuestionId.get(row.question_id);
+    return {
+      question_id: row.question_id,
+      content: q.content,
+      correct_answer: q.correct_answer,
+      explanation: q.explanation,
+      given_answer: answer?.given_answer ?? null,
+      is_correct: answer?.is_correct ?? false,
+    };
+  });
+
+  const student = attempt.students as unknown as { full_name: string } | null;
+
+  return {
+    student_id: attempt.student_id,
+    student_name: student?.full_name ?? "(không rõ tên)",
+    assignment_title: assignment.title,
+    submitted_at: attempt.submitted_at,
+    score: attempt.score,
+    comment: attempt.comment,
+    questions,
+  };
 }

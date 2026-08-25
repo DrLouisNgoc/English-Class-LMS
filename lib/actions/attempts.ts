@@ -2,7 +2,9 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { createServerClient } from "@/lib/supabase/server";
+import { getCurrentUserId } from "@/lib/supabase/session";
 import { STUDENT_SESSION_COOKIE, verifyStudentSessionValue } from "@/lib/supabase/studentSession";
 
 // Server action HS gọi ngay khi chọn/gõ đáp án cho 1 câu — không đợi bấm nộp
@@ -117,4 +119,62 @@ export async function submitAttempt(assignmentId: string, attemptId: string) {
   }
 
   redirect(`/student/assignments/${assignmentId}/result`);
+}
+
+// Server action GV lưu (hoặc sửa) lời phê cho 1 bài học sinh đã nộp (B4).
+// Lời phê là tuỳ chọn: để trống nghĩa là xoá lời phê, ghi NULL chứ không ghi
+// chuỗi rỗng — để chỗ khác chỉ cần hỏi "comment có null không" là biết.
+//
+// Kiểm quyền hai lớp trước khi ghi: (1) có GV nào đang đăng nhập không,
+// (2) lượt làm bài này có thuộc đúng lớp của GV đó không — tránh GV sửa
+// attemptId trên URL để phê vào bài của lớp người khác.
+export async function saveAttemptComment(attemptId: string, classId: string, comment: string) {
+  const teacherId = await getCurrentUserId();
+  if (!teacherId) {
+    redirect("/teacher-login");
+  }
+
+  const trimmed = comment.trim();
+  if (trimmed.length > 2000) {
+    return { error: "Lời phê quá dài (tối đa 2000 ký tự)." };
+  }
+
+  const supabase = createServerClient();
+
+  const { data: attempt } = await supabase
+    .from("attempts")
+    .select("submitted_at, assignment_id")
+    .eq("id", attemptId)
+    .maybeSingle();
+
+  if (!attempt || !attempt.submitted_at) {
+    return { error: "Không tìm thấy bài đã nộp này." };
+  }
+
+  const { data: assignment } = await supabase
+    .from("assignments")
+    .select("class_id, classes(teacher_id)")
+    .eq("id", attempt.assignment_id)
+    .eq("class_id", classId)
+    .maybeSingle();
+
+  const owner = assignment?.classes as unknown as { teacher_id: string } | null;
+  if (!assignment || owner?.teacher_id !== teacherId) {
+    return { error: "Bài này không thuộc lớp của bạn." };
+  }
+
+  const { error } = await supabase
+    .from("attempts")
+    .update({ comment: trimmed === "" ? null : trimmed })
+    .eq("id", attemptId);
+
+  if (error) {
+    return { error: `Không lưu được lời phê: ${error.message}` };
+  }
+
+  // Bảng điểm của bài giao có nhãn "Đã có lời phê" — bảo Next.js vẽ lại trang
+  // đó, nếu không GV quay lại vẫn thấy dữ liệu cũ đã lưu sẵn trong cache.
+  revalidatePath(`/classes/${classId}/assignments/${attempt.assignment_id}`);
+
+  return { error: null };
 }

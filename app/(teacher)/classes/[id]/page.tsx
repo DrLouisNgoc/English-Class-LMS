@@ -52,7 +52,9 @@ export default async function ClassDetailPage({
 
       <div className="mt-2 mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display mb-1 text-xl font-semibold text-ink md:text-2xl">{klass.name}</h1>
+          <h1 className="font-display mb-1 text-xl font-semibold text-ink md:text-2xl">
+            {klass.name}
+          </h1>
           <p className="text-sm text-text/60">
             Khối {klass.grade} · Mã lớp:{" "}
             <span className="font-mono font-semibold text-ink">{klass.join_code}</span>
@@ -68,11 +70,15 @@ export default async function ClassDetailPage({
 
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-xl border border-surface-border bg-surface p-4">
-          <p className="font-display text-2xl font-semibold text-ink md:text-4xl">{stats.studentCount}</p>
+          <p className="font-display text-2xl font-semibold text-ink md:text-4xl">
+            {stats.studentCount}
+          </p>
           <p className="text-sm text-text/60 md:text-base">Học sinh</p>
         </div>
         <div className="rounded-xl border border-surface-border bg-surface p-4">
-          <p className="font-display text-2xl font-semibold text-ink md:text-4xl">{stats.assignmentCount}</p>
+          <p className="font-display text-2xl font-semibold text-ink md:text-4xl">
+            {stats.assignmentCount}
+          </p>
           <p className="text-sm text-text/60 md:text-base">Bài đã giao</p>
         </div>
         <div className="rounded-xl border border-surface-border bg-surface p-4">
@@ -208,16 +214,21 @@ export default async function ClassDetailPage({
             <li key={assignment.id}>
               <Link
                 href={`/classes/${id}/assignments/${assignment.id}`}
-                className="block rounded-xl border border-surface-border bg-surface p-4 hover:border-ink/30"
+                className="flex flex-col gap-2 rounded-xl border border-surface-border bg-surface p-4 hover:border-ink/30 hover:bg-ink/5 sm:flex-row sm:items-center sm:justify-between"
               >
-                <p className="text-text">{assignment.title}</p>
-                <p className="mt-1 text-sm text-text/60">
-                  Hạn nộp:{" "}
-                  {new Date(assignment.due_at).toLocaleString("vi-VN", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                  })}
-                </p>
+                <div>
+                  <p className="text-text">{assignment.title}</p>
+                  <p className="mt-1 text-sm text-text/60">
+                    Hạn nộp:{" "}
+                    {new Date(assignment.due_at).toLocaleString("vi-VN", {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    })}
+                  </p>
+                </div>
+                {/* Cả ô vốn đã bấm được, nhưng không có dấu hiệu gì nên nhìn
+                    như ô thông tin tĩnh — thêm dòng này để thấy ngay là bấm được. */}
+                <span className="shrink-0 text-sm font-medium text-ink">Xem bảng điểm →</span>
               </Link>
             </li>
           ))}

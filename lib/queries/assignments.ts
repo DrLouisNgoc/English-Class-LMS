@@ -170,6 +170,11 @@ export type AssignmentReportRow = {
   full_name: string;
   submitted: boolean;
   score: number | null;
+  // Hai trường dưới phục vụ lời phê của cô (B4): attempt_id để dựng link sang
+  // trang xem bài, has_comment để hiện nhãn "Đã có lời phê" mà không phải đọc
+  // cả nội dung lời phê ra chỉ để kiểm tra có hay không.
+  attempt_id: string | null;
+  has_comment: boolean;
 };
 
 // Bảng điểm 1 bài giao: mỗi học sinh đang học trong lớp đã nộp chưa, điểm bao
@@ -192,7 +197,7 @@ export async function getAssignmentReport(
 
   const { data: attempts, error: attemptError } = await supabase
     .from("attempts")
-    .select("student_id, submitted_at, score")
+    .select("id, student_id, submitted_at, score, comment")
     .eq("assignment_id", assignmentId);
 
   if (attemptError) {
@@ -210,6 +215,9 @@ export async function getAssignmentReport(
         full_name: student.full_name,
         submitted: Boolean(attempt?.submitted_at),
         score: attempt?.submitted_at ? attempt.score : null,
+        // Chỉ cho xem bài khi đã nộp — bài đang làm dở thì chưa có gì để phê.
+        attempt_id: attempt?.submitted_at ? attempt.id : null,
+        has_comment: Boolean(attempt?.comment),
       };
     });
 }
