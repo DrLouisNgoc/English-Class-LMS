@@ -7,6 +7,7 @@ import { signOutStudent } from "@/lib/actions/studentAuth";
 import { getAssignmentsForStudent } from "@/lib/queries/assignments";
 import { getStudentDashboardStats } from "@/lib/queries/dashboard";
 import { getStudentProgress } from "@/lib/queries/gamification";
+import { getStudentAttemptHistory } from "@/lib/queries/students";
 import NotebookPage from "@/components/NotebookPage";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo học sinh đang đăng nhập.
@@ -35,12 +36,28 @@ export default async function StudentHomePage() {
   const stats = await getStudentDashboardStats(studentId);
   const progress = await getStudentProgress(studentId);
 
+  // Đếm xem có bài nào thầy đã phê chưa, để gắn dấu nhắc lên nút "Xem lịch sử
+  // làm bài" — không có dấu này thì em không biết mà vào đọc. Dùng lại hàm
+  // lịch sử sẵn có thay vì viết một truy vấn đếm riêng.
+  const history = await getStudentAttemptHistory(studentId);
+  const commentCount = history.filter((attempt) => attempt.has_comment).length;
+
   return (
     <NotebookPage>
-      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-        <h1 className="font-display text-2xl font-semibold text-ink md:text-3xl">
-          Xin chào, {student.full_name}!
-        </h1>
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-start">
+        <div>
+          <h1 className="font-display text-2xl font-semibold text-ink md:text-3xl">
+            Xin chào, {student.full_name}!
+          </h1>
+          {/* Đăng xuất nằm dưới lời chào, cố ý để kiểu chữ gạch chân nhạt —
+              KHÔNG giống 3 nút điều hướng bên phải, vì bấm nhầm là em mất
+              phiên. Vẫn phải dễ tìm: máy dùng chung ở nhà cần lối thoát. */}
+          <form action={signOutStudent} className="mt-2">
+            <button type="submit" className="text-sm text-text/50 underline hover:text-red-pen">
+              Đăng xuất
+            </button>
+          </form>
+        </div>
         <div className="flex flex-wrap gap-2">
           <Link
             href="/student/leaderboard"
@@ -56,18 +73,19 @@ export default async function StudentHomePage() {
           </Link>
           <Link
             href="/student/history"
-            className="rounded-full border border-ink/30 bg-white px-4 py-2 text-sm font-medium text-ink hover:border-ink/40 md:text-base"
+            className={`flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-sm font-medium hover:border-ink/40 md:text-base ${
+              commentCount > 0
+                ? "border-red-pen/40 text-red-pen"
+                : "border-ink/30 text-ink hover:border-ink/40"
+            }`}
           >
             Xem lịch sử làm bài
+            {commentCount > 0 && (
+              <span className="rounded-full bg-red-pen px-2 py-0.5 text-xs font-semibold text-white">
+                {commentCount} lời phê
+              </span>
+            )}
           </Link>
-          <form action={signOutStudent}>
-            <button
-              type="submit"
-              className="rounded-full border border-ink/30 bg-white px-4 py-2 text-sm font-medium text-ink hover:border-ink/40 md:text-base"
-            >
-              Đăng xuất
-            </button>
-          </form>
         </div>
       </div>
 

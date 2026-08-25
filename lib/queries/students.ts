@@ -41,9 +41,13 @@ export async function isStudentInClass(studentId: string, classId: string): Prom
 
 export type StudentAttemptRow = {
   id: string;
+  assignment_id: string;
   assignment_title: string;
   submitted_at: string;
   score: number | null;
+  // Có lời phê của thầy hay không (B4) — để trang lịch sử của học sinh gắn
+  // nhãn nhắc em vào đọc. Chỉ cần biết có/không nên không lấy cả nội dung.
+  has_comment: boolean;
 };
 
 // Lịch sử các bài đã nộp của 1 học sinh, mới nhất trước — dùng cho trang chi
@@ -53,7 +57,7 @@ export async function getStudentAttemptHistory(studentId: string): Promise<Stude
 
   const { data, error } = await supabase
     .from("attempts")
-    .select("id, submitted_at, score, assignments(title)")
+    .select("id, assignment_id, submitted_at, score, comment, assignments(title)")
     .eq("student_id", studentId)
     .not("submitted_at", "is", null)
     .order("submitted_at", { ascending: false });
@@ -64,9 +68,11 @@ export async function getStudentAttemptHistory(studentId: string): Promise<Stude
 
   return data.map((row) => ({
     id: row.id,
+    assignment_id: row.assignment_id,
     assignment_title: (row.assignments as unknown as { title: string }).title,
     submitted_at: row.submitted_at as string,
     score: row.score,
+    has_comment: Boolean(row.comment),
   }));
 }
 

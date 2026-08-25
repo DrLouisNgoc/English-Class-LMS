@@ -36,21 +36,30 @@ export default async function StudentHistoryPage() {
       ) : (
         <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4">
           {history.map((attempt) => (
-            <li
-              key={attempt.id}
-              className="flex items-center justify-between gap-3 rounded-xl border border-surface-border bg-white p-4 md:p-6"
-            >
-              <div>
-                <p className="text-text md:text-lg md:font-medium">{attempt.assignment_title}</p>
-                <p className="mt-1 text-sm text-text/60 md:text-base">
-                  Nộp lúc{" "}
-                  {new Date(attempt.submitted_at).toLocaleString("vi-VN", {
-                    dateStyle: "short",
-                    timeStyle: "short",
-                  })}
-                </p>
-              </div>
-              <p className="font-medium text-correct md:text-lg">{attempt.score} điểm</p>
+            <li key={attempt.id}>
+              {/* Cả ô là link sang trang kết quả — trước đây em nhìn thấy điểm
+                  nhưng không bấm vào đâu được để xem lại bài. */}
+              <Link
+                href={`/student/assignments/${attempt.assignment_id}/result`}
+                className="flex items-center justify-between gap-3 rounded-xl border border-surface-border bg-white p-4 hover:border-ink/30 md:p-6"
+              >
+                <div>
+                  <p className="text-text md:text-lg md:font-medium">{attempt.assignment_title}</p>
+                  <p className="mt-1 text-sm text-text/60 md:text-base">
+                    Nộp lúc{" "}
+                    {new Date(attempt.submitted_at).toLocaleString("vi-VN", {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    })}
+                  </p>
+                  {attempt.has_comment && (
+                    <p className="mt-1 text-sm font-medium text-red-pen md:text-base">
+                      ✉ Thầy có lời phê
+                    </p>
+                  )}
+                </div>
+                <p className="font-medium text-correct md:text-lg">{attempt.score} điểm</p>
+              </Link>
             </li>
           ))}
         </ul>
