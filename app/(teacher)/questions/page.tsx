@@ -1,7 +1,8 @@
 import NotebookPage from "@/components/NotebookPage";
 import Link from "next/link";
-import { getQuestions } from "@/lib/queries/questions";
+import { getQuestions, getSkillTags } from "@/lib/queries/questions";
 import { signOutTeacher } from "@/lib/actions/auth";
+import QuestionsBulkTagList from "@/components/QuestionsBulkTagList";
 
 // Không prerender tĩnh lúc build — trang này cần đọc Supabase lúc có người
 // thật vào xem, không phải lúc build (biến môi trường "Sensitive" không đọc
@@ -17,11 +18,12 @@ export default async function QuestionsPage({
     deleted?: string;
     hidden?: string;
     imported?: string;
+    tagged?: string;
     error?: string;
   }>;
 }) {
-  const { saved, updated, deleted, hidden, imported, error } = await searchParams;
-  const questions = await getQuestions();
+  const { saved, updated, deleted, hidden, imported, tagged, error } = await searchParams;
+  const [questions, skillTags] = await Promise.all([getQuestions(), getSkillTags()]);
 
   // Gộp các thông báo thành công vào một chỗ cho gọn.
   const notice = saved
@@ -34,7 +36,9 @@ export default async function QuestionsPage({
           ? "Đã xoá câu hỏi."
           : hidden
             ? "Câu hỏi đã được giao trong bài tập nên được chuyển sang ẩn thay vì xoá. Bài cũ của học sinh vẫn giữ nguyên."
-            : null;
+            : tagged
+              ? `Đã gán kỹ năng cho ${tagged} câu hỏi.`
+              : null;
 
   return (
     <NotebookPage>
@@ -89,33 +93,7 @@ export default async function QuestionsPage({
       {questions.length === 0 ? (
         <p className="text-text/60">Chưa có câu hỏi nào.</p>
       ) : (
-        <ul className="flex flex-col gap-3">
-          {questions.map((question) => (
-            <li
-              key={question.id}
-              className="rounded-xl border border-surface-border bg-surface p-4"
-            >
-              <div className="flex flex-wrap items-start justify-between gap-2">
-                <p className="text-sm text-text/60">
-                  Khối {question.grade} · {question.difficulty} · {question.kind}
-                  {question.status === "an" && (
-                    <span className="ml-2 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-xs text-gold-dark">
-                      Đã ẩn
-                    </span>
-                  )}
-                </p>
-                <Link
-                  href={`/questions/${question.id}`}
-                  className="rounded-full border border-ink/30 bg-white px-3 py-1 text-sm font-medium text-ink hover:border-ink/40"
-                >
-                  Sửa
-                </Link>
-              </div>
-              <p className="mt-1 text-text">{question.content}</p>
-              <p className="mt-1 text-sm text-correct">Đáp án: {question.correct_answer}</p>
-            </li>
-          ))}
-        </ul>
+        <QuestionsBulkTagList questions={questions} skillTags={skillTags} />
       )}
     </NotebookPage>
   );

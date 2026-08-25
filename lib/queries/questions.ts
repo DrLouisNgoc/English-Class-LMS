@@ -10,8 +10,14 @@ export type Question = {
   status: string;
 };
 
-// Đọc toàn bộ câu hỏi trong ngân hàng — dùng cho trang quản lý câu hỏi của GV.
-export async function getQuestions(): Promise<Question[]> {
+export type QuestionWithSkillTag = Question & {
+  skill_tag_id: string | null;
+  skill_tag_name: string | null;
+};
+
+// Đọc toàn bộ câu hỏi trong ngân hàng, kèm tên kỹ năng đang gắn (nếu có) — dùng
+// cho trang quản lý câu hỏi của GV, để thấy ngay câu nào còn "Chưa gắn".
+export async function getQuestions(): Promise<QuestionWithSkillTag[]> {
   const supabase = createServerClient();
 
   const { data, error } = await supabase
@@ -23,7 +29,29 @@ export async function getQuestions(): Promise<Question[]> {
     throw new Error(`Không đọc được danh sách câu hỏi: ${error.message}`);
   }
 
-  return data;
+  const { data: tagRows, error: tagError } = await supabase
+    .from("question_tags")
+    .select("question_id, skill_tags(id, name_vi)")
+    .eq("is_primary", true);
+
+  if (tagError) {
+    throw new Error(`Không đọc được kỹ năng của câu hỏi: ${tagError.message}`);
+  }
+
+  const skillByQuestionId = new Map<string, { id: string; name_vi: string }>();
+  for (const row of tagRows) {
+    const skillTag = row.skill_tags as unknown as { id: string; name_vi: string };
+    skillByQuestionId.set(row.question_id, skillTag);
+  }
+
+  return data.map((question) => {
+    const skillTag = skillByQuestionId.get(question.id);
+    return {
+      ...question,
+      skill_tag_id: skillTag?.id ?? null,
+      skill_tag_name: skillTag?.name_vi ?? null,
+    };
+  });
 }
 
 export type QuestionDetail = {

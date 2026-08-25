@@ -210,6 +210,54 @@ export async function updateQuestion(questionId: string, formData: FormData) {
   redirect("/questions?updated=1");
 }
 
+// Server action GV gán 1 kỹ năng cho nhiều câu hỏi cùng lúc — dùng ở trang
+// danh sách câu hỏi khi GV tích chọn một nhóm câu rồi chọn kỹ năng áp dụng
+// chung. Logic giống saveSkillTag (xoá dòng cũ, ghi dòng mới) nhưng chạy hàng
+// loạt trong 2 câu lệnh thay vì lặp từng câu.
+export async function assignSkillToQuestions(
+  questionIds: string[],
+  skillTagId: string,
+): Promise<{ error: string } | void> {
+  const teacherId = await getCurrentUserId();
+  if (!teacherId) {
+    redirect("/teacher-login");
+  }
+
+  if (!Array.isArray(questionIds) || questionIds.length === 0) {
+    return { error: "Chưa chọn câu hỏi nào." };
+  }
+
+  if (typeof skillTagId !== "string" || !skillTagId) {
+    return { error: "Chưa chọn kỹ năng để gán." };
+  }
+
+  const supabase = createServerClient();
+
+  const { error: deleteError } = await supabase
+    .from("question_tags")
+    .delete()
+    .in("question_id", questionIds)
+    .eq("is_primary", true);
+
+  if (deleteError) {
+    return { error: `Không gán được kỹ năng: ${deleteError.message}` };
+  }
+
+  const { error: insertError } = await supabase.from("question_tags").insert(
+    questionIds.map((questionId) => ({
+      question_id: questionId,
+      skill_tag_id: skillTagId,
+      is_primary: true,
+    })),
+  );
+
+  if (insertError) {
+    return { error: `Không gán được kỹ năng: ${insertError.message}` };
+  }
+
+  redirect(`/questions?tagged=${questionIds.length}`);
+}
+
 // Một câu hỏi gửi lên từ màn hình xem trước của trang dán hàng loạt.
 export type BulkQuestionInput = {
   content: string;

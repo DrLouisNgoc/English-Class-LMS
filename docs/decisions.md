@@ -202,3 +202,71 @@ lớp, tự động giao bài theo lỗ hổng.
 **Rút kinh nghiệm cho các form sau:** trường nào mà tính năng tương lai phụ thuộc
 vào thì nên bắt buộc chọn, hoặc ít nhất cảnh báo rõ trước khi lưu — đừng để mặc
 định trống rồi hy vọng người dùng tự điền.
+
+## 2026-08-24 — RLS policy: viết được thật cho giáo viên, KHÔNG viết được thật cho học sinh
+
+`0002_enable_rls.sql` mới bật RLS (khóa mặc định chặn hết) — chưa có policy
+(luật ai mở được khóa nào). `0004_rls_policies.sql` viết luật thật cho các bảng
+GV sở hữu (`teachers`, `classes`, `questions`, `question_tags`, `assignments`,
+`assignment_questions`, và đọc chung `skill_tags`), dựa trên `auth.uid()` — vì
+GV đăng nhập qua Supabase Auth nên Postgres nhận diện được.
+
+**Không viết policy cho bảng liên quan học sinh** (`students`, `enrollments`,
+`attempts`, `answers`). Lý do: học sinh đăng nhập bằng cookie tự ký riêng
+(`lib/supabase/studentSession.ts`), không phải Supabase Auth — Postgres không
+có `auth.uid()` nào cho học sinh cả. Viết policy kiểu "học sinh chỉ đọc dữ liệu
+của mình" dựa trên `auth.uid()` cho các bảng này sẽ là policy giả — không chặn
+được gì thật, chỉ tạo cảm giác an toàn sai. Các bảng này giữ nguyên "bật RLS,
+không policy" = mặc định chặn hết với anon key (an toàn), việc lọc theo từng
+học sinh tiếp tục do code server action đảm nhiệm.
+
+**Vì sao vẫn an toàn dù chưa xong 100%:** mọi truy vấn server đều dùng
+`SUPABASE_SERVICE_ROLE_KEY` (bỏ qua RLS hoàn toàn — xem `lib/supabase/server.ts`),
+và không có Client Component nào gọi bảng bằng anon key. Nên các policy trong
+`0004` hiện tại không đổi hành vi app, chỉ là lớp phòng thủ thêm cho tương lai.
+Cái vẫn còn thiếu là: nếu code server action có bug (quên lọc theo học sinh),
+không có gì ở tầng database chặn lại — rủi ro thật, nhưng phải sửa bằng đổi
+kiến trúc đăng nhập học sinh (việc lớn, tách riêng), không sửa được bằng SQL.
+
+## 2026-08-24 — Thiết kế B4: lời phê của cô trên bài nộp
+
+Brainstorm xong qua skill `superpowers:brainstorming` + Plan Mode, đã duyệt.
+Ghi lại ở đây để phiên sau thi công không phải bàn lại.
+
+**Phát hiện quan trọng lúc brainstorm:** giáo viên hiện KHÔNG xem được học sinh
+trả lời gì cho từng câu — trang báo cáo `/classes/[id]/assignments/[assignmentId]`
+chỉ có điểm số. Nên B4 không chỉ là "thêm một ô nhập lời phê", mà phải làm thêm
+một trang xem chi tiết bài làm cho GV. Không có trang đó thì GV viết lời phê
+trong lúc mù thông tin — vô nghĩa.
+
+**Bốn quyết định đã chốt:**
+
+1. **Lời phê là optional.** GV không viết thì thôi, không chặn, không nhắc. Bắt
+   buộc viết lời phê cho từng em là việc không ai duy trì nổi với lớp 40 học sinh.
+2. **GV phải xem được chi tiết từng câu** (nội dung câu, HS chọn gì, đáp án đúng,
+   đúng/sai) ngay tại chỗ viết lời phê.
+3. **Hiển thị bằng trang riêng**, bấm "Xem bài →" để sang — không dùng kiểu mở
+   rộng tại chỗ (accordion). Lý do: nhất quán với cách toàn app đang làm
+   (`/questions/[id]`, `/classes/[id]/students/[studentId]`), và một trang riêng
+   thì có URL để lưu/gửi lại.
+4. **Không đụng logic chấm điểm.** Lời phê là văn bản thêm sau khi đã có điểm,
+   tách biệt hoàn toàn khỏi khâu chấm ở server.
+
+**Kiểm quyền:** hàm đọc chi tiết bài làm cho GV kiểm theo chuỗi
+`attempts.assignment_id → assignments.class_id → classes.teacher_id`, tức "GV có
+sở hữu lớp này không" — khác với hàm của học sinh vốn kiểm "bài này có phải của
+em không". Hai đường vào cùng một dữ liệu nên phải có hai luật quyền riêng, không
+dùng chung hàm.
+
+**Thi công 7 file, chia 3 đợt (theo giới hạn 4 file/nhiệm vụ của `CLAUDE.md`):**
+
+- **Đợt 1 — dữ liệu & logic:** migration `0007_add_attempt_comment.sql` (thêm cột
+  `comment text` cho phép NULL vào `attempts`) + `lib/queries/attempts.ts`
+  (thêm `getAttemptDetailForTeacher`, sửa `getAttemptResult` trả thêm `comment`)
+  + `lib/actions/attempts.ts` (thêm `saveAttemptComment`) +
+  `lib/queries/assignments.ts` (sửa `getAssignmentReport` trả thêm `attempt_id`
+  và `has_comment`).
+- **Đợt 2 — giao diện GV:** trang báo cáo (thêm nút "Xem bài →" + nhãn "Đã có
+  lời phê") + trang mới `.../attempts/[attemptId]/page.tsx`.
+- **Đợt 3 — giao diện HS:** trang kết quả hiện khối "Lời phê của cô" nếu có.
+
