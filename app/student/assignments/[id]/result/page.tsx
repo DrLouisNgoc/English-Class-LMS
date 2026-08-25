@@ -54,6 +54,18 @@ export default async function AssignmentResultPage({
         </div>
       </div>
 
+      {/* Lời phê là tuỳ chọn — thầy không viết thì khối này không hiện.
+          Đặt ngay dưới điểm, trước danh sách câu, theo đúng thứ tự em muốn
+          đọc: điểm → nhận xét → sai ở đâu. */}
+      {result.comment && (
+        <div className="mb-8 rounded-xl border border-red-pen/30 bg-red-pen/5 p-4 md:mb-12 md:p-6">
+          <p className="text-sm font-medium text-red-pen md:text-base">Lời phê của thầy</p>
+          <p className="mt-2 whitespace-pre-wrap text-text md:text-lg md:leading-relaxed">
+            {result.comment}
+          </p>
+        </div>
+      )}
+
       <ul className="flex flex-col gap-3 md:gap-4">
         {result.questions.map((q, index) => (
           <li
