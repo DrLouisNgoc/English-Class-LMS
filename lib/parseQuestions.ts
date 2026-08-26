@@ -52,6 +52,36 @@ function finishQuestion(draft: {
   };
 }
 
+// Độ dài tối thiểu để coi phần đầu là đoạn văn đọc hiểu. Một dòng hướng dẫn
+// kiểu "Chọn đáp án đúng nhất" chỉ khoảng 30–80 ký tự; đoạn đọc hiểu ngắn
+// nhất trong đề THCS cũng trên 200. Đặt ngưỡng ở đây để tránh nhận nhầm dòng
+// hướng dẫn thành đoạn văn.
+const MIN_PASSAGE_LENGTH = 200;
+
+// Tìm đoạn văn đọc hiểu trong đề vừa dán (C2). Chỉ xét phần TRƯỚC câu số 1 —
+// đó là chỗ đoạn văn luôn nằm trong đề thi thật. Trả null nếu phần đó quá
+// ngắn (chỉ là tiêu đề hoặc dòng hướng dẫn).
+//
+// Cố ý không cố đoán giỏi hơn thế: máy đoán sai thì rối hơn là không đoán.
+// Đoạn tìm được sẽ hiện ra ở màn xem trước để thầy sửa hoặc bỏ đi.
+export function detectPassage(text: string): string | null {
+  const lines = text.replace(/\r\n?/g, "\n").split("\n");
+  const before: string[] = [];
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (line.match(QUESTION_START)) {
+      break;
+    }
+    if (line) {
+      before.push(line);
+    }
+  }
+
+  const passage = before.join("\n").trim();
+  return passage.length >= MIN_PASSAGE_LENGTH ? passage : null;
+}
+
 export function parseQuestions(text: string): ParsedQuestion[] {
   const results: ParsedQuestion[] = [];
 

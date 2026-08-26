@@ -270,6 +270,14 @@ export type BulkQuestionInput = {
   options: string[];
   correctIndex: number;
   explanation: string | null;
+  // Câu này có dùng chung đoạn văn đọc hiểu vừa nhận ra không (C2).
+  inPassage?: boolean;
+};
+
+// Đoạn văn đọc hiểu kèm theo lô câu hỏi, null nếu đề dán vào không có.
+export type BulkPassageInput = {
+  title: string;
+  content: string;
 };
 
 // Server action lưu một lô câu hỏi vừa dán và xem trước xong.
@@ -282,6 +290,7 @@ export async function createQuestionsBulk(
   grade: number,
   difficulty: string,
   skillTagId: string | null,
+  passage: BulkPassageInput | null = null,
 ): Promise<{ error: string } | void> {
   const teacherId = await getCurrentUserId();
   if (!teacherId) {
@@ -290,6 +299,20 @@ export async function createQuestionsBulk(
 
   if (!Array.isArray(questions) || questions.length === 0) {
     return { error: "Không có câu hỏi nào để lưu." };
+  }
+
+  if (passage) {
+    if (typeof passage.title !== "string" || !passage.title.trim()) {
+      return { error: "Vui lòng đặt tên cho bài đọc." };
+    }
+    if (typeof passage.content !== "string" || !passage.content.trim()) {
+      return { error: "Đoạn văn của bài đọc đang trống." };
+    }
+    if (!questions.some((question) => question.inPassage)) {
+      return {
+        error: "Chưa tích câu hỏi nào thuộc bài đọc. Bỏ tích 'Dùng đoạn văn này' nếu không cần.",
+      };
+    }
   }
 
   if (!Number.isInteger(grade) || grade < 6 || grade > 9) {
@@ -347,9 +370,41 @@ export async function createQuestionsBulk(
 
   const supabase = createServerClient();
 
-  const { data: inserted, error } = await supabase.from("questions").insert(rows).select("id");
+  // Lưu đoạn văn TRƯỚC để lấy id, rồi mới gắn id đó cho các câu được tích.
+  let passageId: string | null = null;
+  if (passage) {
+    const { data: insertedPassage, error: passageError } = await supabase
+      .from("passages")
+      .insert({
+        teacher_id: teacherId,
+        title: passage.title.trim(),
+        content: passage.content.trim(),
+      })
+      .select("id")
+      .single();
+
+    if (passageError) {
+      return { error: `Không lưu được bài đọc: ${passageError.message}` };
+    }
+    passageId = insertedPassage.id;
+  }
+
+  const rowsToInsert = rows.map((row, index) => ({
+    ...row,
+    passage_id: passageId && questions[index].inPassage ? passageId : null,
+  }));
+
+  const { data: inserted, error } = await supabase
+    .from("questions")
+    .insert(rowsToInsert)
+    .select("id");
 
   if (error) {
+    // Đoạn văn đã lưu xong mà câu hỏi lỗi thì phải xoá nó đi, không để lại
+    // một bài đọc trống trong danh sách mà thầy không hiểu ở đâu ra.
+    if (passageId) {
+      await supabase.from("passages").delete().eq("id", passageId);
+    }
     return { error: `Không lưu được: ${error.message}` };
   }
 

@@ -4,7 +4,7 @@
 // bộ tách đề ngay trong trình duyệt, nên phải là component chạy phía trình duyệt.
 
 import { useState, useTransition } from "react";
-import { parseQuestions, type ParsedQuestion } from "@/lib/parseQuestions";
+import { parseQuestions, detectPassage, type ParsedQuestion } from "@/lib/parseQuestions";
 import { createQuestionsBulk } from "@/lib/actions/questions";
 import type { SkillTag } from "@/lib/queries/questions";
 
@@ -30,8 +30,9 @@ const PLACEHOLDER = [
   "Câu 2: ...",
 ].join("\n");
 
-// Mỗi câu sau khi tách còn kèm thêm: có chọn lưu câu này không.
-type Row = ParsedQuestion & { include: boolean };
+// Mỗi câu sau khi tách còn kèm thêm: có chọn lưu câu này không, và có thuộc
+// bài đọc hiểu vừa nhận ra không (C2).
+type Row = ParsedQuestion & { include: boolean; inPassage: boolean };
 
 type Props = {
   skillTags: SkillTag[];
@@ -44,6 +45,11 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
   const [grade, setGrade] = useState("9");
   const [difficulty, setDifficulty] = useState("TB");
   const [skillTagId, setSkillTagId] = useState("");
+  // Bài đọc hiểu máy nhận ra được từ phần đầu đề (C2). usePassage = false
+  // nghĩa là thầy bỏ qua, lưu các câu như câu độc lập bình thường.
+  const [usePassage, setUsePassage] = useState(false);
+  const [passageTitle, setPassageTitle] = useState("");
+  const [passageContent, setPassageContent] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSaving, startSaving] = useTransition();
 
@@ -58,7 +64,24 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
     }
 
     setError(null);
-    setRows(parsed.map((question) => ({ ...question, include: true })));
+
+    // Nhận ra đoạn văn thì bật sẵn và tích sẵn tất cả các câu — đề thi thật
+    // thì các câu sau đoạn văn đều thuộc bài đọc đó. Thầy bỏ tích câu nào
+    // không thuộc, hoặc bỏ tích cả ô "Dùng đoạn văn này" nếu máy đoán sai.
+    const passage = detectPassage(text);
+    setUsePassage(passage !== null);
+    setPassageContent(passage ?? "");
+    setPassageTitle("");
+
+    setRows(
+      parsed.map((question) => ({ ...question, include: true, inPassage: passage !== null })),
+    );
+  }
+
+  function toggleInPassage(rowIndex: number) {
+    setRows((current) =>
+      current!.map((row, i) => (i === rowIndex ? { ...row, inPassage: !row.inPassage } : row)),
+    );
   }
 
   function setCorrectIndex(rowIndex: number, correctIndex: number) {
@@ -101,6 +124,18 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
       return;
     }
 
+    if (usePassage && !passageTitle.trim()) {
+      setError("Đặt tên cho bài đọc để sau này tìm lại (chỉ thầy nhìn thấy tên này).");
+      return;
+    }
+
+    if (usePassage && !selected.some((row) => row.inPassage)) {
+      setError(
+        "Chưa tích câu nào thuộc bài đọc. Bỏ tích 'Dùng đoạn văn này' nếu đề không có bài đọc.",
+      );
+      return;
+    }
+
     setError(null);
     startSaving(async () => {
       const result = await createQuestionsBulk(
@@ -109,10 +144,12 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
           options: row.options,
           correctIndex: row.correctIndex!,
           explanation: row.explanation,
+          inPassage: row.inPassage,
         })),
         Number(grade),
         difficulty,
         skillTagId || null,
+        usePassage ? { title: passageTitle.trim(), content: passageContent } : null,
       );
 
       // Lưu được thì server tự chuyển sang trang danh sách; chỉ khi lỗi mới trả về gì đó.
@@ -236,6 +273,75 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
             </div>
           </div>
 
+          {/* Bài đọc hiểu (C2): máy chỉ đoán phần TRƯỚC câu số 1 và chỉ khi
+              phần đó đủ dài. Đoán xong vẫn để thầy sửa, đổi tên, hoặc bỏ hẳn —
+              máy đoán sai mà cứ lưu thì rối hơn là không đoán. */}
+          {passageContent && (
+            <div className="rounded-2xl border border-ink/25 bg-ink/5 p-4">
+              <label className="flex items-center gap-2 text-sm font-medium text-text">
+                <input
+                  type="checkbox"
+                  checked={usePassage}
+                  onChange={() => setUsePassage(!usePassage)}
+                  className="size-4 accent-ink"
+                />
+                Dùng đoạn văn này làm bài đọc hiểu
+              </label>
+              <p className="mt-1 text-xs text-text/60">
+                Máy thấy một đoạn văn dài ở đầu đề. Bỏ tích nếu đó chỉ là phần hướng dẫn, không phải
+                bài đọc.
+              </p>
+
+              {usePassage && (
+                <div className="mt-3 flex flex-col gap-3">
+                  <div>
+                    <label
+                      htmlFor="passage_title"
+                      className="mb-1 block text-sm font-medium text-text"
+                    >
+                      Tên bài đọc
+                    </label>
+                    <input
+                      id="passage_title"
+                      type="text"
+                      value={passageTitle}
+                      onChange={(event) => setPassageTitle(event.target.value)}
+                      placeholder="Đoạn văn về ô nhiễm không khí (đề vào 10 Hà Nội 2024)"
+                      className={inputClass}
+                    />
+                    <p className="mt-1 text-xs text-text/50">
+                      Chỉ thầy nhìn thấy tên này, để tìm lại bài đọc sau. Học sinh không thấy.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="passage_content"
+                      className="mb-1 block text-sm font-medium text-text"
+                    >
+                      Nội dung đoạn văn
+                    </label>
+                    <textarea
+                      id="passage_content"
+                      rows={8}
+                      value={passageContent}
+                      onChange={(event) => setPassageContent(event.target.value)}
+                      className={`${inputClass} leading-relaxed`}
+                    />
+                    <p className="mt-1 text-xs text-text/50">
+                      Xoá bớt dòng hướng dẫn nếu máy lấy nhầm vào đây. Phần còn lại chính là thứ học
+                      sinh sẽ đọc.
+                    </p>
+                  </div>
+
+                  <p className="text-xs text-text/60">
+                    Bên dưới, bỏ tích &quot;Thuộc bài đọc&quot; ở những câu không dùng đoạn văn này.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
           <ul className="flex flex-col gap-3">
             {rows.map((row, rowIndex) => {
               const problem = rowProblem(row);
@@ -250,15 +356,31 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
                       : "border-surface-border bg-surface"
                   } ${row.include ? "" : "opacity-50"}`}
                 >
-                  <label className="mb-2 flex items-center gap-2 text-sm font-medium text-text">
-                    <input
-                      type="checkbox"
-                      checked={row.include}
-                      onChange={() => toggleInclude(rowIndex)}
-                      className="size-4 accent-ink"
-                    />
-                    Câu {rowIndex + 1}
-                  </label>
+                  <div className="mb-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <label className="flex items-center gap-2 text-sm font-medium text-text">
+                      <input
+                        type="checkbox"
+                        checked={row.include}
+                        onChange={() => toggleInclude(rowIndex)}
+                        className="size-4 accent-ink"
+                      />
+                      Câu {rowIndex + 1}
+                    </label>
+
+                    {/* Chỉ hiện khi thầy đã bật dùng đoạn văn — không thì ô này
+                        chỉ làm màn xem trước rối thêm. */}
+                    {usePassage && (
+                      <label className="flex items-center gap-2 text-sm text-text/70">
+                        <input
+                          type="checkbox"
+                          checked={row.inPassage}
+                          onChange={() => toggleInPassage(rowIndex)}
+                          className="size-4 accent-ink"
+                        />
+                        Thuộc bài đọc
+                      </label>
+                    )}
+                  </div>
 
                   <p className="mb-3 whitespace-pre-line text-text">{row.content}</p>
 
