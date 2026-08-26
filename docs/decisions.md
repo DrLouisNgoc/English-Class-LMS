@@ -12,6 +12,7 @@ phiên làm việc. Next.js App Router hỗ trợ tốt, không cần viết th�
 **2026-08-15 — Đăng nhập học sinh bằng mã lớp + username + PIN, không dùng email**
 Lý do: học sinh cấp 2 không có email riêng, dễ quên mật khẩu. Giáo viên tạo tài
 khoản sẵn và reset PIN được.
+
 > ⚠️ Đổi lại một phần ngày 2026-08-21, xem quyết định bên dưới.
 
 **2026-08-19 — Chuyển Vercel sang region Tokyo (hnd1)**
@@ -34,6 +35,7 @@ tự chọn (GV gõ tay hoặc HS tự đăng ký)**
 Lý do: PIN 6 số ngẫu nhiên + việc phải in phiếu phát tay không hợp với cách GV
 muốn vận hành lớp — muốn tự kiểm soát tài khoản hoặc để HS tự đăng ký như ứng
 dụng thông thường. Đổi cụ thể:
+
 - GV thêm học sinh: tự gõ username + mật khẩu (form `/classes/[id]`), không
   còn sinh ngẫu nhiên (bỏ `usernameBase`/`randomPin` khỏi luồng thêm mới —
   `resetStudentPin` vẫn còn sinh ngẫu nhiên cho tính năng reset).
@@ -136,6 +138,10 @@ chỗ một kiểu. Câu tách ra không đủ 4 phương án bị tô đỏ và
 **Hệ quả cần biết:** nếu trong database có sẵn câu 3 phương án (từ seed hoặc
 nhập tay qua SQL), khi bấm Sửa sẽ phải điền thêm ô thứ 4 mới lưu được.
 
+> ⚠️ **Quyết định này đã bị thay ngày 2026-08-26** — xem mục "Ba dạng câu hỏi
+> phủ hết đề thi" bên dưới. Giờ trắc nghiệm chỉ cần từ 2 phương án, và có thêm
+> dạng điền chữ. Hệ quả nói trên không còn đúng nữa.
+
 ## 2026-08-23 — Bảng xếp hạng chỉ hiện Top 5 và thứ hạng của chính mình
 
 SPEC ghi "học sinh không xem được bài của nhau". Bảng xếp hạng là vùng xám, nên
@@ -167,6 +173,7 @@ vẫn chạy đủ mọi lớp kiểm tra trước khi lưu. Không thêm thư v
 API, không thêm chi phí.
 
 **Cố ý KHÔNG cho Claude ghi thẳng SQL vào database.** Lý do:
+
 1. Bỏ qua toàn bộ lớp kiểm tra trong `readQuestionForm` (đủ 4 phương án, không
    có phương án trùng nhau, `correct_answer` khớp từng ký tự với một trong 4
    phương án). Sai một ký tự là cả lớp chọn đúng vẫn bị chấm sai, và GV không
@@ -263,10 +270,138 @@ dùng chung hàm.
 - **Đợt 1 — dữ liệu & logic:** migration `0007_add_attempt_comment.sql` (thêm cột
   `comment text` cho phép NULL vào `attempts`) + `lib/queries/attempts.ts`
   (thêm `getAttemptDetailForTeacher`, sửa `getAttemptResult` trả thêm `comment`)
-  + `lib/actions/attempts.ts` (thêm `saveAttemptComment`) +
-  `lib/queries/assignments.ts` (sửa `getAssignmentReport` trả thêm `attempt_id`
-  và `has_comment`).
+  - `lib/actions/attempts.ts` (thêm `saveAttemptComment`) +
+    `lib/queries/assignments.ts` (sửa `getAssignmentReport` trả thêm `attempt_id`
+    và `has_comment`).
 - **Đợt 2 — giao diện GV:** trang báo cáo (thêm nút "Xem bài →" + nhãn "Đã có
   lời phê") + trang mới `.../attempts/[attemptId]/page.tsx`.
 - **Đợt 3 — giao diện HS:** trang kết quả hiện khối "Lời phê của thầy" nếu có.
 
+## 2026-08-26 — Đoạn văn đọc hiểu tách ra bảng riêng, xoá thì chặn chứ không xoá lan
+
+Trước đây một bài đọc hiểu 5 câu phải **chép lại cả đoạn văn vào từng câu** —
+thô, dễ lệch nội dung giữa các câu, và sửa đoạn văn phải sửa 5 chỗ. Hạn chế này
+lộ ra khi nhập đề thi thật ngày 24/8.
+
+Cách làm: bảng `passages` riêng, `questions.passage_id` trỏ vào (cho phép NULL
+vì phần lớn câu vẫn độc lập).
+
+**Cố ý KHÔNG dùng `on delete cascade`.** Xoá đoạn văn mà còn câu hỏi dùng nó thì
+Postgres chặn lại, app báo "còn N câu hỏi đang dùng, gỡ ra trước đã". Lý do: mất
+câu hỏi là mất dữ liệu thật (kèm theo cả bài làm của học sinh trỏ vào đó), còn
+một đoạn văn thừa nằm lại thì chỉ chiếm chỗ. Khi phải chọn giữa hai cái sai,
+chọn cái sửa được.
+
+**Tên bài đọc chỉ thầy thấy, học sinh không.** `getAssignmentQuestions` cố ý chỉ
+lấy `passages(content)`, không lấy `title` — tên kiểu "Đoạn văn về ô nhiễm (đề
+vào 10 Hà Nội 2024)" là để thầy tìm lại bài, học sinh đọc chỉ tổ lộ nguồn đề.
+
+## 2026-08-26 — Đoạn văn lặp lại lúc làm bài, chỉ hiện một lần lúc xem lại
+
+Hai màn hình, hai cách hiển thị khác nhau cho cùng một dữ liệu — đây là cố ý,
+không phải quên đồng bộ.
+
+**Lúc làm bài:** đoạn văn hiện lại ở **mọi câu** thuộc bài đọc đó. Đã cân nhắc 2
+phương án khác và loại: (a) cho đọc đoạn văn ở một màn riêng rồi bấm Tiếp — đang
+trả lời mà muốn xem lại thì phải bấm ngược, trên điện thoại rất dễ mất kiên nhẫn;
+(b) đoạn văn + tất cả câu trên cùng một màn — phá vỡ quy tắc "1 câu/màn hình"
+đang dùng và phải viết lại khá nhiều trong `AssignmentRunner`. Lặp lại tốn dữ
+liệu một chút nhưng em không phải nhớ, không phải bấm đi bấm lại.
+
+**Lúc xem lại bài đã nộp:** chỉ hiện **một lần** ở câu đầu của nhóm. Xem lại là
+cuộn một mạch từ trên xuống — lặp cùng một đoạn văn 5 lần sẽ đẩy phần đáp án và
+giải thích đi mất.
+
+## 2026-08-26 — Máy chỉ đoán đoạn văn ở phần trước câu số 1, đoán xong vẫn để thầy duyệt
+
+`detectPassage()` chỉ xét phần văn bản **trước câu số 1** và chỉ nhận nếu dài từ
+200 ký tự (một dòng hướng dẫn kiểu "Chọn đáp án đúng nhất" chỉ 30–80 ký tự).
+
+**Cố ý không cố đoán giỏi hơn thế.** Máy đoán sai thì rối hơn là không đoán — đề
+có 2 bài đọc trong một lần dán thì chỉ nhận ra bài đầu, bài sau thầy tự gắn tay.
+Đoạn tìm được luôn hiện ra ở màn xem trước để sửa, đổi tên, hoặc bỏ hẳn.
+
+Đây là cùng một triết lý với việc tích đáp án đúng ở trang dán đề: **máy đoán,
+người duyệt.** App không bao giờ tự lưu thứ nó đoán ra.
+
+## 2026-08-26 — Ba dạng câu hỏi phủ hết đề thi, thay vì làm 6–7 dạng rời rạc
+
+Thay cho quyết định 23/8 ("chỉ hỗ trợ trắc nghiệm đúng 4 phương án").
+
+Đề thi thật có 6 kiểu: điền vào thông báo, sắp xếp câu, điền vào đoạn văn, viết
+lại câu, viết câu từ gợi ý, đọc hiểu. Dịch thẳng thành 6 dạng trong code là 6
+màn hình, 6 bộ kiểm tra, 6 nhánh chấm điểm. Quy về **3 dạng**:
+
+| Dạng                      | Phủ được                                                 | Máy chấm |
+| ------------------------- | -------------------------------------------------------- | -------- |
+| Trắc nghiệm 2–4 phương án | Trắc nghiệm thường, Đúng/Sai, đọc hiểu, chọn thứ tự đúng | Có       |
+| Điền chữ                  | Điền từ, điền vào đoạn văn, **sắp xếp từ thành câu**     | Có       |
+| Thầy chấm tay             | Viết lại câu, viết từ gợi ý                              | Không    |
+
+**Gộp "sắp xếp từ thành câu" vào dạng điền chữ** là chỗ tiết kiệm lớn nhất: đáp
+án vốn là một câu đúng, học sinh gõ lại câu đó là xong. Không cần kéo thả — mà
+kéo thả trên điện thoại thì học sinh hụt tay liên tục.
+
+**Dạng thầy chấm tay chưa làm**, và cố ý không giả vờ là máy chấm được. Một câu
+viết lại có hàng chục cách đúng; để máy so chuỗi là chấm oan hàng loạt. Đây là
+tính năng riêng ngang cỡ B4 (điểm phải tính được khi còn câu chưa chấm, thầy cần
+màn chấm từng câu, học sinh phải thấy "đang chờ thầy chấm"). Tin tốt:
+`answers.is_correct` vốn cho phép NULL nên "chưa chấm" đã có chỗ chứa sẵn.
+
+## 2026-08-26 — Chấm câu điền chữ phải khoan dung, vì đang kiểm tra tiếng Anh chứ không phải gõ phím
+
+Bộ chấm cũ so chuỗi khớp từng ký tự. Với trắc nghiệm thì đúng — học sinh bấm
+chọn, không có chuyện gõ sai. Với câu điền chữ thì đó là cái bẫy: em gõ `Goes`
+theo thói quen viết hoa đầu câu là mất điểm oan.
+
+`normalizeText()` bỏ 3 thứ không liên quan tới kiến thức: chữ hoa/thường, khoảng
+trắng thừa hoặc gõ đúp, và dấu chấm/chấm than/chấm hỏi ở cuối. Thêm nữa, thầy
+nhập được nhiều đáp án chấp nhận, phân cách bằng dấu `|` — ví dụ
+`doesn't|does not`.
+
+**Trắc nghiệm vẫn so nguyên văn như cũ**, không nới lỏng. Hai dạng, hai luật.
+
+## 2026-08-26 — Hằng số dùng ở component client phải để ngoài file có mã server
+
+`lib/queries/questions.ts` gọi `createServerClient`. `QuestionsBulkTagList` là
+component `"use client"`. Nó vốn đã import `type SkillTag` từ đó — nhưng import
+**kiểu** thì an toàn, TypeScript xoá đi lúc build, không còn gì trong bundle.
+
+Import một **hằng số hoặc hàm thật** từ file đó thì khác hẳn: cả module bị kéo
+vào bundle trình duyệt, kèm theo mã server. Vì vậy bảng tra nhãn tiếng Việt
+("MCQ" → "Trắc nghiệm") phải nằm ở file riêng `lib/questionLabels.ts` — file
+thuần, không import gì từ Supabase.
+
+**Quy tắc rút ra:** file nào có `"use client"` chỉ được import **kiểu** từ các
+file trong `lib/queries/` và `lib/supabase/`. Cần dùng chung giá trị thật thì
+tách ra file thuần riêng.
+
+## 2026-08-26 — Không thêm GSAP, Three.js hay Framer Motion
+
+Đã cân nhắc và loại cả ba.
+
+- **Three.js** để dựng đồ hoạ 3D — app không có gì 3D. Nặng ~600KB, mà điểm đau
+  lớn nhất đang là độ trễ mạng (học sinh dùng điện thoại Android rẻ, mạng nhà).
+- **GSAP** mạnh ở dàn dựng chuỗi hoạt ảnh theo timeline — app không có cảnh nào
+  như vậy. Hiệu ứng hiện có (nút đổi màu, lề đỏ tô dần) đều là CSS thuần.
+- **Framer Motion** hợp lý nhất trong ba, nhưng chưa có nhu cầu thật.
+
+Ba lý do, theo thứ tự quan trọng: (1) không thứ nào giải quyết vấn đề đang có —
+app thiếu câu hỏi và thiếu một buổi chạy thật với học sinh, không thiếu hoạt
+ảnh; (2) ngược với quyết định 23/8 về giao diện tĩnh sạch như trang giấy thật;
+(3) mỗi thư viện là một thứ phải học và bảo trì, mà người viết đang học lập
+trình.
+
+**Muốn mượt hơn thì làm bằng CSS thuần** — con dấu điểm nhún nhẹ, chuyển câu
+trượt ngang, huy hiệu mới có ánh sáng quét qua. Khoảng 20 dòng, không thêm gì.
+
+## 2026-08-26 — Không chạy `npm run build` khi server dev đang bật
+
+Chạy `npm run build` nhiều lần trong lúc `npm run dev` đang chạy làm thư mục
+`.next` chứa lẫn cả output production lẫn dev → **app trả 404 cho mọi trang**,
+kể cả trang chắc chắn vẫn tồn tại. Mất thời gian truy vì trông như lỗi code.
+
+Sửa: dừng dev (Ctrl+C) → `Remove-Item -Recurse -Force .next` → `npm run dev`.
+
+**Quy tắc từ nay:** kiểm tra code bằng `npx tsc --noEmit` — nó bắt hết lỗi kiểu
+mà không đụng vào `.next`. Chỉ chạy `npm run build` khi đã tắt dev server.
