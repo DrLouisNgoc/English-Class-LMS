@@ -67,6 +67,9 @@ export type AttemptResultQuestion = {
   explanation: string | null;
   given_answer: string | null;
   is_correct: boolean | null;
+  // Đoạn văn của bài đọc hiểu, null nếu là câu độc lập (C2). Không có nó thì
+  // lúc xem lại bài, câu đọc hiểu hiện trơ trọi — không hiểu vì sao mình sai.
+  passage_content: string | null;
 };
 
 export type AttemptResult = {
@@ -99,7 +102,9 @@ export async function getAttemptResult(
 
   const { data: assignmentQuestions, error: aqError } = await supabase
     .from("assignment_questions")
-    .select("position, question_id, questions(content, correct_answer, explanation)")
+    .select(
+      "position, question_id, questions(content, correct_answer, explanation, passages(content))",
+    )
     .eq("assignment_id", attempt.assignment_id)
     .order("position", { ascending: true });
 
@@ -123,6 +128,7 @@ export async function getAttemptResult(
       content: string;
       correct_answer: string;
       explanation: string | null;
+      passages: { content: string } | null;
     };
     const answer = answerByQuestionId.get(row.question_id);
     return {
@@ -132,6 +138,7 @@ export async function getAttemptResult(
       explanation: q.explanation,
       given_answer: answer?.given_answer ?? null,
       is_correct: answer?.is_correct ?? false,
+      passage_content: q.passages?.content ?? null,
     };
   });
 
@@ -199,7 +206,9 @@ export async function getAttemptDetailForTeacher(
 
   const { data: assignmentQuestions, error: aqError } = await supabase
     .from("assignment_questions")
-    .select("position, question_id, questions(content, correct_answer, explanation)")
+    .select(
+      "position, question_id, questions(content, correct_answer, explanation, passages(content))",
+    )
     .eq("assignment_id", attempt.assignment_id)
     .order("position", { ascending: true });
 
@@ -223,6 +232,7 @@ export async function getAttemptDetailForTeacher(
       content: string;
       correct_answer: string;
       explanation: string | null;
+      passages: { content: string } | null;
     };
     const answer = answerByQuestionId.get(row.question_id);
     return {
@@ -232,6 +242,7 @@ export async function getAttemptDetailForTeacher(
       explanation: q.explanation,
       given_answer: answer?.given_answer ?? null,
       is_correct: answer?.is_correct ?? false,
+      passage_content: q.passages?.content ?? null,
     };
   });
 

@@ -67,34 +67,56 @@ export default async function AssignmentResultPage({
       )}
 
       <ul className="flex flex-col gap-3 md:gap-4">
-        {result.questions.map((q, index) => (
-          <li
-            key={q.question_id}
-            className={`rounded-xl border bg-white p-4 md:p-6 ${
-              q.is_correct ? "border-correct/30" : "border-red-pen/30"
-            }`}
-          >
-            <p className="flex items-center gap-2 text-sm font-medium md:text-base">
-              <span className={q.is_correct ? "text-correct" : "text-red-pen"}>
-                {q.is_correct ? "✓" : "✗"}
-              </span>
-              <span className="text-text/60">Câu {index + 1}</span>
-            </p>
-            <p className="mt-1 text-text md:text-lg md:leading-relaxed">{q.content}</p>
-            <p className="mt-2 text-sm text-text/70 md:text-base">
-              Bạn trả lời:{" "}
-              <span className="font-medium text-ink">{q.given_answer ?? "(bỏ trống)"}</span>
-            </p>
-            {!q.is_correct && (
-              <p className="mt-1 text-sm text-text/70 md:text-base">
-                Đáp án đúng: <span className="font-medium text-correct">{q.correct_answer}</span>
-              </p>
-            )}
-            {q.explanation && (
-              <p className="mt-2 text-sm text-text/60 italic md:text-base">{q.explanation}</p>
-            )}
-          </li>
-        ))}
+        {result.questions.map((q, index) => {
+          // Khác lúc làm bài: ở đây chỉ hiện đoạn văn một lần, tại câu đầu
+          // của nhóm dùng chung. Xem lại là cuộn một mạch, lặp cùng một đoạn
+          // văn 5 lần sẽ đẩy phần đáp án đi mất.
+          const showPassage =
+            q.passage_content !== null &&
+            q.passage_content !== result.questions[index - 1]?.passage_content;
+
+          return (
+            <li key={q.question_id} className="flex flex-col gap-3">
+              {showPassage && (
+                <div className="rounded-xl border border-ink/20 bg-ink/5 p-4 md:p-6">
+                  <p className="mb-2 text-xs font-medium tracking-wide text-ink/60 uppercase">
+                    Đoạn văn của các câu dưới đây
+                  </p>
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap text-text md:text-base">
+                    {q.passage_content}
+                  </p>
+                </div>
+              )}
+
+              <div
+                className={`rounded-xl border bg-white p-4 md:p-6 ${
+                  q.is_correct ? "border-correct/30" : "border-red-pen/30"
+                }`}
+              >
+                <p className="flex items-center gap-2 text-sm font-medium md:text-base">
+                  <span className={q.is_correct ? "text-correct" : "text-red-pen"}>
+                    {q.is_correct ? "✓" : "✗"}
+                  </span>
+                  <span className="text-text/60">Câu {index + 1}</span>
+                </p>
+                <p className="mt-1 text-text md:text-lg md:leading-relaxed">{q.content}</p>
+                <p className="mt-2 text-sm text-text/70 md:text-base">
+                  Bạn trả lời:{" "}
+                  <span className="font-medium text-ink">{q.given_answer ?? "(bỏ trống)"}</span>
+                </p>
+                {!q.is_correct && (
+                  <p className="mt-1 text-sm text-text/70 md:text-base">
+                    Đáp án đúng:{" "}
+                    <span className="font-medium text-correct">{q.correct_answer}</span>
+                  </p>
+                )}
+                {q.explanation && (
+                  <p className="mt-2 text-sm text-text/60 italic md:text-base">{q.explanation}</p>
+                )}
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </NotebookPage>
   );

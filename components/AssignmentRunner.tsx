@@ -4,6 +4,7 @@
 // click) — khác với các trang khác trong app chỉ chạy trên server.
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import type { AssignmentQuestion } from "@/lib/queries/assignments";
 import { saveAnswer, submitAttempt } from "@/lib/actions/attempts";
 
@@ -75,7 +76,18 @@ export default function AssignmentRunner({
         </div>
 
         <div className="flex-1 px-5 py-6 md:px-10 md:py-9">
-          <h1 className="font-display text-xl font-semibold text-ink md:text-2xl">
+          {/* Lối thoát khỏi màn làm bài. Trước đây màn này không có link nào —
+              em mở nhầm bài là kẹt, chỉ ra được bằng nút Back của trình duyệt.
+              Đáp án đã tự lưu ngay khi chọn nên thoát ra giữa chừng là an
+              toàn; nói rõ điều đó để em không sợ mất bài. */}
+          <Link
+            href="/student/home"
+            className="text-sm text-ink/70 underline hover:text-ink md:text-base"
+          >
+            ← Để làm sau
+          </Link>
+
+          <h1 className="font-display mt-2 text-xl font-semibold text-ink md:text-2xl">
             {assignmentTitle}
           </h1>
 

@@ -58,34 +58,57 @@ export default async function TeacherAttemptDetailPage({
       </p>
 
       <ul className="flex flex-col gap-3">
-        {detail.questions.map((q, index) => (
-          <li
-            key={q.question_id}
-            className={`rounded-xl border bg-white p-4 ${
-              q.is_correct ? "border-correct/30" : "border-red-pen/30"
-            }`}
-          >
-            <p className="flex items-center gap-2 text-sm font-medium">
-              <span className={q.is_correct ? "text-correct" : "text-red-pen"}>
-                {q.is_correct ? "✓" : "✗"}
-              </span>
-              <span className="text-text/60">Câu {index + 1}</span>
-            </p>
-            <p className="mt-1 text-text">{q.content}</p>
-            <p className="mt-2 text-sm text-text/70">
-              Em trả lời:{" "}
-              <span className={`font-medium ${q.is_correct ? "text-correct" : "text-red-pen"}`}>
-                {q.given_answer ?? "(bỏ trống)"}
-              </span>
-            </p>
-            {!q.is_correct && (
-              <p className="mt-1 text-sm text-text/70">
-                Đáp án đúng: <span className="font-medium text-correct">{q.correct_answer}</span>
-              </p>
-            )}
-            {q.explanation && <p className="mt-2 text-sm text-text/60 italic">{q.explanation}</p>}
-          </li>
-        ))}
+        {detail.questions.map((q, index) => {
+          // Chỉ hiện đoạn văn một lần, tại câu đầu của nhóm dùng chung —
+          // giống trang kết quả của học sinh.
+          const showPassage =
+            q.passage_content !== null &&
+            q.passage_content !== detail.questions[index - 1]?.passage_content;
+
+          return (
+            <li key={q.question_id} className="flex flex-col gap-3">
+              {showPassage && (
+                <div className="rounded-xl border border-ink/20 bg-ink/5 p-4">
+                  <p className="mb-2 text-xs font-medium tracking-wide text-ink/60 uppercase">
+                    Đoạn văn của các câu dưới đây
+                  </p>
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap text-text">
+                    {q.passage_content}
+                  </p>
+                </div>
+              )}
+
+              <div
+                className={`rounded-xl border bg-white p-4 ${
+                  q.is_correct ? "border-correct/30" : "border-red-pen/30"
+                }`}
+              >
+                <p className="flex items-center gap-2 text-sm font-medium">
+                  <span className={q.is_correct ? "text-correct" : "text-red-pen"}>
+                    {q.is_correct ? "✓" : "✗"}
+                  </span>
+                  <span className="text-text/60">Câu {index + 1}</span>
+                </p>
+                <p className="mt-1 text-text">{q.content}</p>
+                <p className="mt-2 text-sm text-text/70">
+                  Em trả lời:{" "}
+                  <span className={`font-medium ${q.is_correct ? "text-correct" : "text-red-pen"}`}>
+                    {q.given_answer ?? "(bỏ trống)"}
+                  </span>
+                </p>
+                {!q.is_correct && (
+                  <p className="mt-1 text-sm text-text/70">
+                    Đáp án đúng:{" "}
+                    <span className="font-medium text-correct">{q.correct_answer}</span>
+                  </p>
+                )}
+                {q.explanation && (
+                  <p className="mt-2 text-sm text-text/60 italic">{q.explanation}</p>
+                )}
+              </div>
+            </li>
+          );
+        })}
       </ul>
 
       <AttemptCommentForm attemptId={attemptId} classId={id} initialComment={detail.comment} />
