@@ -7,6 +7,7 @@ import { useState, useTransition } from "react";
 import { parseQuestions, detectPassage, type ParsedQuestion } from "@/lib/parseQuestions";
 import { createQuestionsBulk } from "@/lib/actions/questions";
 import type { SkillTag } from "@/lib/queries/questions";
+import { kindLabel } from "@/lib/questionLabels";
 
 const GRADES = [6, 7, 8, 9];
 const DIFFICULTIES = [
@@ -96,10 +97,22 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
     );
   }
 
-  // Một câu chỉ lưu được khi có đúng 4 phương án khác nhau và đã chọn đáp án đúng.
+  function setCorrectAnswer(rowIndex: number, correctAnswer: string) {
+    setRows((current) =>
+      current!.map((row, i) => (i === rowIndex ? { ...row, correctAnswer } : row)),
+    );
+  }
+
+  // Điều kiện lưu khác nhau theo dạng câu.
   function rowProblem(row: Row): string | null {
-    if (row.options.length !== 4) {
-      return `Câu này tách ra ${row.options.length} phương án, cần đúng 4. Bỏ tích để không lưu, hoặc quay lại sửa đoạn đã dán.`;
+    if (row.kind === "DIEN") {
+      return row.correctAnswer?.trim()
+        ? null
+        : "Chưa có đáp án đúng — gõ vào ô bên dưới, hoặc bỏ tích để không lưu câu này.";
+    }
+
+    if (row.options.length < 2) {
+      return `Câu này chỉ tách ra ${row.options.length} phương án, cần ít nhất 2. Bỏ tích để không lưu, hoặc quay lại sửa đoạn đã dán.`;
     }
     if (new Set(row.options).size !== row.options.length) {
       return "Có hai phương án trùng nội dung — học sinh chọn đúng vẫn sẽ bị chấm sai.";
@@ -140,9 +153,12 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
     startSaving(async () => {
       const result = await createQuestionsBulk(
         selected.map((row) => ({
+          kind: row.kind,
           content: row.content,
           options: row.options,
-          correctIndex: row.correctIndex!,
+          // Câu điền chữ không có phương án nào để chọn — server bỏ qua số này.
+          correctIndex: row.correctIndex ?? -1,
+          correctAnswer: row.correctAnswer,
           explanation: row.explanation,
           inPassage: row.inPassage,
         })),
@@ -184,9 +200,10 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
             className={`${inputClass} font-mono text-sm`}
           />
           <p className="mt-2 text-xs text-text/50">
-            Mỗi câu cần có số thứ tự (1. hoặc Câu 1:) và các phương án ghi A. B. C. D. Nếu trong đề
-            có sẵn dòng &quot;Đáp án: B&quot; thì sẽ được điền tự động; không có thì thầy tự tích ở
-            bước sau.
+            Mỗi câu cần có số thứ tự (1. hoặc Câu 1:). Câu nào có A. B. C. D. thì thành câu trắc
+            nghiệm; câu nào không có phương án thì thành câu điền chữ, thầy gõ đáp án ở bước sau.
+            Dòng &quot;Đáp án: B&quot; hay &quot;Đáp án: goes&quot; có sẵn trong đề sẽ được điền tự
+            động.
           </p>
           <button
             type="button"
@@ -365,6 +382,7 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
                         className="size-4 accent-ink"
                       />
                       Câu {rowIndex + 1}
+                      <span className="font-normal text-text/50">({kindLabel(row.kind)})</span>
                     </label>
 
                     {/* Chỉ hiện khi thầy đã bật dùng đoạn văn — không thì ô này
@@ -384,24 +402,50 @@ export default function ImportQuestionsForm({ skillTags }: Props) {
 
                   <p className="mb-3 whitespace-pre-line text-text">{row.content}</p>
 
-                  <div className="flex flex-col gap-1.5">
-                    {row.options.map((option, optionIndex) => (
-                      <label key={optionIndex} className="flex items-center gap-3 text-sm">
-                        <input
-                          type="radio"
-                          name={`correct-${rowIndex}`}
-                          checked={row.correctIndex === optionIndex}
-                          onChange={() => setCorrectIndex(rowIndex, optionIndex)}
-                          disabled={!row.include}
-                          className="size-4 shrink-0 accent-correct"
-                        />
-                        <span className="w-4 shrink-0 font-display font-semibold text-ink">
-                          {OPTION_LABELS[optionIndex] ?? optionIndex + 1}
-                        </span>
-                        <span className="text-text">{option}</span>
+                  {/* Câu điền chữ: không có phương án nào để tích, thay bằng ô
+                      gõ đáp án. Đề có sẵn dòng "Đáp án: …" thì đã điền trước. */}
+                  {row.kind === "DIEN" ? (
+                    <div>
+                      <label
+                        htmlFor={`answer-${rowIndex}`}
+                        className="mb-1 block text-sm font-medium text-text"
+                      >
+                        Đáp án đúng <span className="font-normal text-text/50">(câu điền chữ)</span>
                       </label>
-                    ))}
-                  </div>
+                      <input
+                        id={`answer-${rowIndex}`}
+                        type="text"
+                        value={row.correctAnswer ?? ""}
+                        onChange={(event) => setCorrectAnswer(rowIndex, event.target.value)}
+                        disabled={!row.include}
+                        placeholder="goes"
+                        className={inputClass}
+                      />
+                      <p className="mt-1 text-xs text-text/50">
+                        Nhiều cách trả lời đúng thì phân cách bằng dấu gạch đứng:{" "}
+                        <span className="font-mono text-ink">doesn&apos;t|does not</span>
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-1.5">
+                      {row.options.map((option, optionIndex) => (
+                        <label key={optionIndex} className="flex items-center gap-3 text-sm">
+                          <input
+                            type="radio"
+                            name={`correct-${rowIndex}`}
+                            checked={row.correctIndex === optionIndex}
+                            onChange={() => setCorrectIndex(rowIndex, optionIndex)}
+                            disabled={!row.include}
+                            className="size-4 shrink-0 accent-correct"
+                          />
+                          <span className="w-4 shrink-0 font-display font-semibold text-ink">
+                            {OPTION_LABELS[optionIndex] ?? optionIndex + 1}
+                          </span>
+                          <span className="text-text">{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
 
                   {row.explanation && (
                     <p className="mt-2 text-sm text-text/60">Giải thích: {row.explanation}</p>

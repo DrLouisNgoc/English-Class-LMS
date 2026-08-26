@@ -329,9 +329,15 @@ export async function assignSkillToQuestions(
 
 // Một câu hỏi gửi lên từ màn hình xem trước của trang dán hàng loạt.
 export type BulkQuestionInput = {
+  // "MCQ" = trắc nghiệm, "DIEN" = điền chữ.
+  kind: string;
   content: string;
+  // Rỗng với câu điền chữ.
   options: string[];
+  // -1 với câu điền chữ (không có phương án nào để chọn).
   correctIndex: number;
+  // Chỉ dùng cho câu điền chữ. Nhiều đáp án đúng phân cách bằng dấu |.
+  correctAnswer: string | null;
   explanation: string | null;
   // Câu này có dùng chung đoạn văn đọc hiểu vừa nhận ra không (C2).
   inPassage?: boolean;
@@ -395,12 +401,47 @@ export async function createQuestionsBulk(
       return { error: `Câu ${soThuTu} thiếu nội dung đề bài.` };
     }
 
+    if (!KINDS.includes(question.kind)) {
+      return { error: `Câu ${soThuTu} có dạng câu hỏi không hợp lệ.` };
+    }
+
+    // Câu điền chữ: không có phương án, chỉ cần đáp án dạng chữ.
+    if (question.kind === "DIEN") {
+      const accepted =
+        typeof question.correctAnswer === "string"
+          ? question.correctAnswer
+              .split("|")
+              .map((item) => item.trim())
+              .filter(Boolean)
+          : [];
+
+      if (accepted.length === 0) {
+        return { error: `Câu ${soThuTu} chưa có đáp án đúng.` };
+      }
+
+      rows.push({
+        teacher_id: teacherId,
+        kind: "DIEN",
+        grade,
+        difficulty,
+        content: question.content.trim(),
+        options: null,
+        correct_answer: accepted.join("|"),
+        explanation:
+          typeof question.explanation === "string" && question.explanation.trim()
+            ? question.explanation.trim()
+            : null,
+        status: "da_duyet",
+      });
+      continue;
+    }
+
     const options = Array.isArray(question.options)
       ? question.options.map((option) => String(option).trim())
       : [];
 
-    if (options.length !== 4 || options.some((option) => !option)) {
-      return { error: `Câu ${soThuTu} phải có đủ 4 phương án.` };
+    if (options.length < 2 || options.some((option) => !option)) {
+      return { error: `Câu ${soThuTu} cần ít nhất 2 phương án.` };
     }
 
     if (new Set(options).size !== options.length) {
@@ -410,7 +451,7 @@ export async function createQuestionsBulk(
     if (
       !Number.isInteger(question.correctIndex) ||
       question.correctIndex < 0 ||
-      question.correctIndex > 3
+      question.correctIndex >= options.length
     ) {
       return { error: `Câu ${soThuTu} chưa chọn đáp án đúng.` };
     }

@@ -5,6 +5,7 @@ import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClassById } from "@/lib/queries/classes";
 import { getFilteredQuestions, getSkillTags } from "@/lib/queries/questions";
 import { createAssignment } from "@/lib/actions/assignments";
+import { kindLabel, difficultyLabel } from "@/lib/questionLabels";
 import SubmitButton from "@/components/SubmitButton";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
@@ -170,7 +171,8 @@ export default async function AssignPage({
                   />
                   <span>
                     <span className="block text-sm text-text/60">
-                      Khối {question.grade} · {question.difficulty} · {question.kind}
+                      Khối {question.grade} · {difficultyLabel(question.difficulty)} ·{" "}
+                      {kindLabel(question.kind)}
                     </span>
                     <span className="block text-text">{question.content}</span>
                   </span>

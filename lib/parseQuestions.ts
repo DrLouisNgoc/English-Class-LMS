@@ -7,10 +7,15 @@
 // với một đoạn text mẫu.
 
 export type ParsedQuestion = {
+  // "MCQ" = có phương án A/B/C/D. "DIEN" = không có phương án, học sinh tự gõ.
+  kind: "MCQ" | "DIEN";
   content: string;
+  // Rỗng với câu điền chữ.
   options: string[];
   // null = trong đề dán vào không ghi đáp án đúng, GV sẽ tự chọn ở màn xem trước.
   correctIndex: number | null;
+  // Đáp án dạng chữ cho câu điền chữ; null nếu đề không ghi sẵn.
+  correctAnswer: string | null;
   explanation: string | null;
 };
 
@@ -20,8 +25,10 @@ const QUESTION_START = /^(?:c[âa]u|question|q)?\s*(\d{1,3})\s*[.):]\s*(.*)$/i;
 // "A." / "B)" / "c:" — dấu một phương án. Chỉ nhận A-D.
 const OPTION_LINE = /^([A-Da-d])\s*[.):]\s*(.+)$/;
 
-// "Đáp án: B" / "ĐA: B" / "Answer: B" / "Key - B"
-const ANSWER_LINE = /^(?:đ[áa]p\s*[áa]n|đ\.?a|answer|key)\s*[:\-.]?\s*([A-Da-d])\b/i;
+// "Đáp án: B" / "ĐA: B" / "Answer: B" / "Key - B" / "Đáp án: goes"
+// Lấy nguyên phần sau dấu hai chấm, chưa vội hiểu là chữ cái hay là chữ —
+// tới lúc chốt câu mới biết câu đó có phương án hay không.
+const ANSWER_LINE = /^(?:đ[áa]p\s*[áa]n|đ\.?a|answer|key)\s*[:\-.]?\s*(.+)$/i;
 
 // "Giải thích: ..." / "Explanation: ..."
 const EXPLANATION_LINE = /^(?:gi[ảa]i\s*th[íi]ch|explanation)\s*[:\-.]?\s*(.*)$/i;
@@ -31,23 +38,40 @@ const EXPLANATION_LINE = /^(?:gi[ảa]i\s*th[íi]ch|explanation)\s*[:\-.]?\s*(.*
 function finishQuestion(draft: {
   contentLines: string[];
   options: string[];
-  correctIndex: number | null;
+  answerRaw: string | null;
   explanation: string | null;
 }): ParsedQuestion | null {
   const content = draft.contentLines.join("\n").trim();
 
-  if (!content || draft.options.length < 2) {
+  if (!content) {
     return null;
   }
 
+  // Không tách ra được phương án nào => câu điền chữ, học sinh tự gõ.
+  // TRƯỚC ĐÂY những câu này bị bỏ đi âm thầm: dán đề thật có câu điền từ thì
+  // chúng biến mất mà không báo gì. Giờ giữ lại để thầy duyệt ở màn xem trước.
+  if (draft.options.length < 2) {
+    return {
+      kind: "DIEN",
+      content,
+      options: [],
+      correctIndex: null,
+      correctAnswer: draft.answerRaw,
+      explanation: draft.explanation,
+    };
+  }
+
+  // Có phương án => đáp án phải là một chữ cái A-D đứng đầu dòng "Đáp án:".
+  const letterMatch = draft.answerRaw?.match(/^([A-Da-d])\b/);
+  const index = letterMatch ? letterMatch[1].toUpperCase().charCodeAt(0) - 65 : null;
+
   return {
+    kind: "MCQ",
     content,
     options: draft.options,
     // Đề ghi đáp án là chữ D nhưng câu đó chỉ có 3 phương án => bỏ qua, để GV tự chọn.
-    correctIndex:
-      draft.correctIndex !== null && draft.correctIndex < draft.options.length
-        ? draft.correctIndex
-        : null,
+    correctIndex: index !== null && index < draft.options.length ? index : null,
+    correctAnswer: null,
     explanation: draft.explanation,
   };
 }
@@ -88,7 +112,7 @@ export function parseQuestions(text: string): ParsedQuestion[] {
   let draft = {
     contentLines: [] as string[],
     options: [] as string[],
-    correctIndex: null as number | null,
+    answerRaw: null as string | null,
     explanation: null as string | null,
   };
   // Đã bắt đầu đọc một câu hỏi hay chưa — dùng để bỏ qua phần đầu đề (tiêu đề,
@@ -100,7 +124,7 @@ export function parseQuestions(text: string): ParsedQuestion[] {
     if (question) {
       results.push(question);
     }
-    draft = { contentLines: [], options: [], correctIndex: null, explanation: null };
+    draft = { contentLines: [], options: [], answerRaw: null, explanation: null };
   };
 
   // \r\n của Word và \n của web đều quy về \n cho dễ xử lý.
@@ -128,10 +152,11 @@ export function parseQuestions(text: string): ParsedQuestion[] {
       continue;
     }
 
-    // 2) Dòng ghi đáp án đúng: đổi chữ cái thành số thứ tự (A=0, B=1, C=2, D=3).
+    // 2) Dòng ghi đáp án đúng — giữ nguyên văn, tới lúc chốt câu mới hiểu là
+    // chữ cái A/B/C/D hay là chữ cần điền.
     const answerMatch = line.match(ANSWER_LINE);
     if (answerMatch) {
-      draft.correctIndex = answerMatch[1].toUpperCase().charCodeAt(0) - 65;
+      draft.answerRaw = answerMatch[1].trim() || null;
       continue;
     }
 

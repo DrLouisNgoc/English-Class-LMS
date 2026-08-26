@@ -7,6 +7,7 @@ import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { assignSkillToQuestions } from "@/lib/actions/questions";
 import type { QuestionWithSkillTag, SkillTag } from "@/lib/queries/questions";
+import { kindLabel, difficultyLabel } from "@/lib/questionLabels";
 
 const inputClass =
   "w-full rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink sm:w-64";
@@ -122,7 +123,8 @@ export default function QuestionsBulkTagList({ questions, skillTags }: Props) {
                     className="mt-0.5 size-4 shrink-0 accent-ink"
                   />
                   <span>
-                    Khối {question.grade} · {question.difficulty} · {question.kind}
+                    Khối {question.grade} · {difficultyLabel(question.difficulty)} ·{" "}
+                    {kindLabel(question.kind)}
                     {question.status === "an" && (
                       <span className="ml-2 rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-xs text-gold-dark">
                         Đã ẩn
