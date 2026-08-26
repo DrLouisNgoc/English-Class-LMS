@@ -28,13 +28,13 @@
 
 ### students
 
-| cột        | kiểu        | ghi chú                        |
-| ---------- | ----------- | ------------------------------ |
-| id         | uuid        |                                |
-| full_name  | text        |                                |
-| username   | text        | duy nhất trong phạm vi một lớp (kiểm tra ở app, không có ràng buộc unique trong DB), luôn lưu chữ thường |
+| cột        | kiểu        | ghi chú                                                                                                                                                                             |
+| ---------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id         | uuid        |                                                                                                                                                                                     |
+| full_name  | text        |                                                                                                                                                                                     |
+| username   | text        | duy nhất trong phạm vi một lớp (kiểm tra ở app, không có ràng buộc unique trong DB), luôn lưu chữ thường                                                                            |
 | pin_hash   | text        | **băm bằng scrypt, không lưu chữ thường.** Tên cột giữ nguyên từ lúc còn là PIN ngẫu nhiên, nhưng từ 2026-08-21 chứa mật khẩu do GV hoặc chính học sinh tự đặt — xem `decisions.md` |
-| created_at | timestamptz |                                |
+| created_at | timestamptz |                                                                                                                                                                                     |
 
 ### enrollments
 
@@ -57,13 +57,30 @@ Bảng nối. **Không nhét `class_id` thẳng vào `students`** — vì học 
 | name_vi    | text | "Thì hiện tại hoàn thành"   |
 | group_name | text | "NGỮ PHÁP"                  |
 
+### passages
+
+Đoạn văn của bài đọc hiểu, để nhiều câu hỏi dùng chung thay vì chép lại vào
+từng câu. Thêm ngày 2026-08-26 qua `0008_add_passages.sql`.
+
+| cột        | kiểu        | ghi chú                                                         |
+| ---------- | ----------- | --------------------------------------------------------------- |
+| id         | uuid        |                                                                 |
+| teacher_id | uuid        | ai sở hữu bài đọc này                                           |
+| title      | text        | **chỉ giáo viên thấy**, để tìm lại bài — không gửi cho học sinh |
+| content    | text        | đoạn văn học sinh đọc                                           |
+| created_at | timestamptz | mặc định `now()`                                                |
+
+⚠️ `questions.passage_id` trỏ tới bảng này **không có `on delete cascade`** —
+xoá đoạn văn mà còn câu hỏi dùng nó thì Postgres chặn lại. Cố ý như vậy: mất
+câu hỏi là mất cả bài làm của học sinh trỏ vào đó. Xem `decisions.md` 2026-08-26.
+
 ### questions
 
 | cột            | kiểu  | ghi chú                                                                      |
 | -------------- | ----- | ---------------------------------------------------------------------------- |
 | id             | uuid  |                                                                              |
 | teacher_id     | uuid  | ai sở hữu câu hỏi này                                                        |
-| kind           | text  | MCQ / DIEN_TU / VIET_LAI / ...                                               |
+| kind           | text  | **MCQ** (trắc nghiệm 2–4 phương án) / **DIEN** (điền chữ). Xem ghi chú dưới  |
 | grade          | int   |                                                                              |
 | difficulty     | text  | DE / TB / KHO                                                                |
 | content        | text  | đề bài                                                                       |
@@ -71,8 +88,21 @@ Bảng nối. **Không nhét `class_id` thẳng vào `students`** — vì học 
 | correct_answer | text  | **cột này không bao giờ được gửi xuống trình duyệt trước khi nộp bài**       |
 | explanation    | text  | giải thích tiếng Việt                                                        |
 | source         | text  |                                                                              |
-| media_url      | text  |                                                                              |
-| status         | text  | nhap / da_duyet                                                              |
+| media_url      | text  | có sẵn từ đầu nhưng **chưa dùng ở đâu** — app chưa hiển thị được ảnh         |
+| status         | text  | nhap / da_duyet / an                                                         |
+| passage_id     | uuid  | bài đọc hiểu câu này dùng chung, null nếu là câu độc lập (thêm `0008`)       |
+
+**Giá trị `kind` đang dùng thật — chỉ có đúng 2:**
+
+- `MCQ` — trắc nghiệm. `options` chứa **từ 2 đến 4** phương án (2 phương án =
+  câu Đúng/Sai). `correct_answer` lưu **nguyên văn** phương án đúng.
+- `DIEN` — điền chữ, học sinh tự gõ. `options` là **null**. `correct_answer` lưu
+  các cách trả lời đúng, phân cách bằng dấu `|` — ví dụ `doesn't|does not`. Bộ
+  chấm bỏ qua hoa/thường, khoảng trắng thừa và dấu chấm cuối câu.
+
+⚠️ Bản đầu tiên của tài liệu này ghi `DIEN_TU` và `VIET_LAI` — **cả hai đều
+không đúng với code**. Tên thật là `DIEN`, còn dạng viết lại câu (thầy chấm tay)
+**chưa làm**. Đừng ghi tay hai giá trị đó vào database: máy sẽ không chấm được.
 
 ### question_tags
 
@@ -110,14 +140,15 @@ Bảng nối questions ↔ skill_tags (một câu có thể mang nhiều tag).
 
 Một lần học sinh làm một bài.
 
-| cột           | kiểu        | ghi chú               |
-| ------------- | ----------- | --------------------- |
-| id            | uuid        |                       |
-| assignment_id | uuid        |                       |
-| student_id    | uuid        |                       |
-| started_at    | timestamptz |                       |
-| submitted_at  | timestamptz | null nếu đang làm dở  |
-| score         | numeric     | tính ở server lúc nộp |
+| cột           | kiểu        | ghi chú                                            |
+| ------------- | ----------- | -------------------------------------------------- |
+| id            | uuid        |                                                    |
+| assignment_id | uuid        |                                                    |
+| student_id    | uuid        |                                                    |
+| started_at    | timestamptz |                                                    |
+| submitted_at  | timestamptz | null nếu đang làm dở                               |
+| score         | numeric     | tính ở server lúc nộp                              |
+| comment       | text        | lời phê của thầy, null nếu chưa viết (thêm `0007`) |
 
 ### answers
 
