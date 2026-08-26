@@ -6,11 +6,16 @@ import { getCurrentUserId } from "@/lib/supabase/session";
 
 const DIFFICULTIES = ["DE", "TB", "KHO"];
 
+// Hai dạng câu hỏi app chấm tự động được: trắc nghiệm và điền chữ.
+const KINDS = ["MCQ", "DIEN"];
+
 // Các thông tin của một câu hỏi sau khi đã đọc và kiểm tra xong từ form.
 type QuestionFields = {
+  kind: string;
   grade: number;
   difficulty: string;
   content: string;
+  // Rỗng với câu điền chữ — dạng đó không có phương án nào.
   options: string[];
   correctAnswer: string;
   explanation: string | null;
@@ -45,46 +50,102 @@ function readQuestionForm(
     return { ok: false, message: "Độ khó phải là Dễ, Trung bình hoặc Khó." };
   }
 
-  // Gom 4 ô nhập phương án lại thành một mảng, bỏ khoảng trắng thừa hai đầu.
-  const options: string[] = [];
+  const kind = formData.get("kind");
+  if (typeof kind !== "string" || !KINDS.includes(kind)) {
+    return { ok: false, message: "Dạng câu hỏi phải là Trắc nghiệm hoặc Điền chữ." };
+  }
+
+  // Câu điền chữ: không có phương án, thầy gõ thẳng đáp án đúng. Nhiều cách
+  // trả lời đúng thì phân cách bằng dấu | — bộ chấm sẽ thử lần lượt.
+  if (kind === "DIEN") {
+    const correctAnswerRaw = formData.get("correct_answer");
+    if (typeof correctAnswerRaw !== "string" || !correctAnswerRaw.trim()) {
+      return { ok: false, message: "Vui lòng nhập đáp án đúng." };
+    }
+
+    const accepted = correctAnswerRaw
+      .split("|")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    if (accepted.length === 0) {
+      return { ok: false, message: "Vui lòng nhập đáp án đúng." };
+    }
+
+    return {
+      ok: true,
+      fields: {
+        kind,
+        grade,
+        difficulty,
+        content: content.trim(),
+        options: [],
+        correctAnswer: accepted.join("|"),
+        ...readOptionalFields(formData),
+      },
+    };
+  }
+
+  // Gom các ô nhập phương án lại, bỏ ô để trống. Chỉ cần từ 2 phương án trở
+  // lên — để trống 2 ô cuối là thành câu Đúng/Sai.
+  const rawOptions: string[] = [];
   for (let i = 0; i < 4; i++) {
     const option = formData.get(`option_${i}`);
-    if (typeof option !== "string" || !option.trim()) {
-      return { ok: false, message: `Vui lòng nhập đủ 4 phương án (còn thiếu phương án ${i + 1}).` };
-    }
-    options.push(option.trim());
+    rawOptions.push(typeof option === "string" ? option.trim() : "");
+  }
+
+  const options = rawOptions.filter(Boolean);
+
+  if (options.length < 2) {
+    return { ok: false, message: "Câu trắc nghiệm cần ít nhất 2 phương án." };
+  }
+
+  // Bỏ trống ô giữa (ví dụ điền A, bỏ B, điền C) sẽ làm lệch ô tích đáp án
+  // đúng so với danh sách thật. Bắt điền liên tiếp từ trên xuống cho chắc.
+  if (rawOptions.slice(0, options.length).some((option) => !option)) {
+    return {
+      ok: false,
+      message: "Điền các phương án liên tiếp từ trên xuống, không bỏ cách ở giữa.",
+    };
   }
 
   // Hai phương án giống hệt nhau sẽ làm học sinh chọn đúng mà vẫn bị chấm sai,
   // vì bộ chấm chỉ so sánh chuỗi chứ không biết học sinh bấm vào ô nào.
   if (new Set(options).size !== options.length) {
-    return { ok: false, message: "Bốn phương án phải khác nhau, không được trùng nội dung." };
+    return { ok: false, message: "Các phương án phải khác nhau, không được trùng nội dung." };
   }
 
   const correctIndex = Number(formData.get("correct_index"));
-  if (!Number.isInteger(correctIndex) || correctIndex < 0 || correctIndex > 3) {
-    return { ok: false, message: "Vui lòng chọn phương án đúng." };
+  if (!Number.isInteger(correctIndex) || correctIndex < 0 || correctIndex >= options.length) {
+    return { ok: false, message: "Vui lòng chọn phương án đúng (trong số các phương án đã nhập)." };
   }
 
+  return {
+    ok: true,
+    fields: {
+      kind,
+      grade,
+      difficulty,
+      content: content.trim(),
+      options,
+      correctAnswer: options[correctIndex],
+      ...readOptionalFields(formData),
+    },
+  };
+}
+
+// Bốn ô không bắt buộc, giống nhau ở cả hai dạng câu hỏi nên tách ra dùng chung.
+function readOptionalFields(formData: FormData) {
   const explanation = formData.get("explanation");
   const source = formData.get("source");
   const skillTagId = formData.get("skill_tag_id");
   const passageId = formData.get("passage_id");
 
   return {
-    ok: true,
-    fields: {
-      grade,
-      difficulty,
-      content: content.trim(),
-      options,
-      correctAnswer: options[correctIndex],
-      explanation:
-        typeof explanation === "string" && explanation.trim() ? explanation.trim() : null,
-      source: typeof source === "string" && source.trim() ? source.trim() : null,
-      skillTagId: typeof skillTagId === "string" && skillTagId ? skillTagId : null,
-      passageId: typeof passageId === "string" && passageId ? passageId : null,
-    },
+    explanation: typeof explanation === "string" && explanation.trim() ? explanation.trim() : null,
+    source: typeof source === "string" && source.trim() ? source.trim() : null,
+    skillTagId: typeof skillTagId === "string" && skillTagId ? skillTagId : null,
+    passageId: typeof passageId === "string" && passageId ? passageId : null,
   };
 }
 
@@ -135,11 +196,12 @@ export async function createQuestion(formData: FormData) {
     .from("questions")
     .insert({
       teacher_id: teacherId,
-      kind: "MCQ",
+      kind: fields.kind,
       grade: fields.grade,
       difficulty: fields.difficulty,
       content: fields.content,
-      options: fields.options,
+      // Câu điền chữ không có phương án — lưu NULL thay vì mảng rỗng cho rõ nghĩa.
+      options: fields.options.length > 0 ? fields.options : null,
       correct_answer: fields.correctAnswer,
       explanation: fields.explanation,
       source: fields.source,
@@ -187,10 +249,11 @@ export async function updateQuestion(questionId: string, formData: FormData) {
   const { error } = await supabase
     .from("questions")
     .update({
+      kind: fields.kind,
       grade: fields.grade,
       difficulty: fields.difficulty,
       content: fields.content,
-      options: fields.options,
+      options: fields.options.length > 0 ? fields.options : null,
       correct_answer: fields.correctAnswer,
       explanation: fields.explanation,
       source: fields.source,

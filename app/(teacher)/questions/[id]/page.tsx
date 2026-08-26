@@ -60,7 +60,9 @@ export default async function EditQuestionPage({
         </p>
       )}
 
-      {correctIndex === -1 && (
+      {/* Chỉ cảnh báo với câu trắc nghiệm — câu điền chữ vốn không có phương
+          án nào, nên correctIndex luôn là -1 và không có gì sai cả. */}
+      {question.kind === "MCQ" && correctIndex === -1 && (
         <p className="mb-4 rounded-lg border border-red-pen/40 bg-red-pen/5 px-3 py-2 text-sm text-red-pen">
           Đáp án đúng đang lưu trong máy không khớp với phương án nào bên dưới. Hãy tích lại phương
           án đúng rồi lưu, nếu không học sinh sẽ bị chấm sai.
@@ -80,6 +82,8 @@ export default async function EditQuestionPage({
         submitLabel="Lưu thay đổi"
         pendingLabel="Đang lưu…"
         values={{
+          kind: question.kind,
+          correctAnswer: question.correct_answer,
           content: question.content,
           options: question.options,
           correctIndex: correctIndex === -1 ? null : correctIndex,

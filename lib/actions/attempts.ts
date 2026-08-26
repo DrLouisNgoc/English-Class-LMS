@@ -46,6 +46,51 @@ export async function saveAnswer(attemptId: string, questionId: string, givenAns
   return { error: null };
 }
 
+// Bỏ những khác biệt không liên quan tới kiến thức khi chấm câu điền chữ:
+// chữ hoa/thường (em gõ hoa đầu câu theo thói quen), khoảng trắng thừa hoặc
+// gõ đúp, và dấu chấm/chấm than/chấm hỏi ở cuối. Mục tiêu là kiểm tra tiếng
+// Anh, không phải kiểm tra gõ phím.
+function normalizeText(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[.!?]+$/, "")
+    .trim();
+}
+
+// So câu trả lời của học sinh với đáp án đúng đọc từ database.
+//
+// Câu trắc nghiệm: so nguyên văn như từ trước — học sinh bấm chọn nên chuỗi
+// phải khớp đúng phương án, không có chuyện gõ sai chính tả.
+//
+// Câu điền chữ: đáp án lưu dạng "doesn't|does not" (thầy nhập, phân cách bằng
+// dấu |). Thử lần lượt từng cách, cách nào khớp sau khi bỏ hoa/thường và dấu
+// câu thì tính đúng.
+function isAnswerCorrect(
+  question: { kind: string; correct_answer: string } | null,
+  givenAnswer: string,
+): boolean {
+  if (!question) {
+    return false;
+  }
+
+  if (question.kind !== "DIEN") {
+    return givenAnswer.trim() === question.correct_answer.trim();
+  }
+
+  const given = normalizeText(givenAnswer);
+  if (!given) {
+    return false;
+  }
+
+  return question.correct_answer
+    .split("|")
+    .map(normalizeText)
+    .filter(Boolean)
+    .some((accepted) => accepted === given);
+}
+
 // Server action HS bấm "Nộp bài" (T4.6). Chấm điểm hoàn toàn ở server: đọc
 // đáp án đúng từ bảng questions (chưa từng gửi xuống trình duyệt), so với
 // given_answer đã lưu, ghi is_correct cho từng câu rồi tính điểm trên tổng số câu.
@@ -74,7 +119,7 @@ export async function submitAttempt(assignmentId: string, attemptId: string) {
 
   const { data: assignmentQuestions, error: aqError } = await supabase
     .from("assignment_questions")
-    .select("question_id, questions(correct_answer)")
+    .select("question_id, questions(kind, correct_answer)")
     .eq("assignment_id", assignmentId);
 
   if (aqError) {
@@ -94,10 +139,9 @@ export async function submitAttempt(assignmentId: string, attemptId: string) {
 
   let correctCount = 0;
   for (const row of assignmentQuestions) {
-    const correctAnswer = (row.questions as unknown as { correct_answer: string } | null)
-      ?.correct_answer;
+    const question = row.questions as unknown as { kind: string; correct_answer: string } | null;
     const answer = answerByQuestionId.get(row.question_id);
-    const isCorrect = answer ? answer.given_answer.trim() === correctAnswer?.trim() : false;
+    const isCorrect = answer ? isAnswerCorrect(question, answer.given_answer) : false;
 
     if (isCorrect) correctCount++;
 
