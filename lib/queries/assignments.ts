@@ -20,6 +20,8 @@ export type ClassAssignmentInfo = AssignmentInfo & {
   // Số lượt học sinh đã bắt đầu làm bài này. Bằng 0 nghĩa là chưa em nào
   // động vào, xoá đi không mất dữ liệu của ai.
   attempt_count: number;
+  // null = đang hiện với học sinh. Có giờ = thầy đã ẩn bài này.
+  hidden_at: string | null;
 };
 
 // Đọc 1 bài giao, chỉ trả về nếu học sinh này đang học đúng lớp được giao bài
@@ -34,6 +36,9 @@ export async function getAssignmentForStudent(
     .from("assignments")
     .select("id, title, due_at, class_id")
     .eq("id", assignmentId)
+    // Ẩn rồi thì mở bằng link cũ cũng không vào được — nếu không chặn ở đây
+    // thì giấu khỏi danh sách chỉ là giấu ngoài mặt.
+    .is("hidden_at", null)
     .maybeSingle();
 
   if (assignmentError) {
@@ -109,7 +114,7 @@ export async function getAssignmentsForClass(classId: string): Promise<ClassAssi
   // đếm riêng cho từng bài. Kết quả trả về dạng [{ count: 3 }].
   const { data, error } = await supabase
     .from("assignments")
-    .select("id, title, due_at, attempts(count)")
+    .select("id, title, due_at, hidden_at, attempts(count)")
     .eq("class_id", classId)
     .order("due_at", { ascending: false });
 
@@ -121,6 +126,7 @@ export async function getAssignmentsForClass(classId: string): Promise<ClassAssi
     id: row.id,
     title: row.title,
     due_at: row.due_at,
+    hidden_at: row.hidden_at,
     attempt_count: (row.attempts as unknown as { count: number }[])[0]?.count ?? 0,
   }));
 }
@@ -278,6 +284,9 @@ export async function getAssignmentsForStudent(studentId: string): Promise<Stude
     .from("assignments")
     .select("id, title, due_at, classes(name)")
     .in("class_id", classIds)
+    // Bài thầy đã ẩn thì không hiện trong danh sách việc cần làm của em nữa.
+    // Điểm và lịch sử vẫn còn nguyên, chỉ dòng này biến mất.
+    .is("hidden_at", null)
     .order("due_at", { ascending: true });
 
   if (error) {

@@ -6,6 +6,7 @@ import { getClassById } from "@/lib/queries/classes";
 import { getStudentsInClass } from "@/lib/queries/students";
 import { addStudent, resetStudentPin } from "@/lib/actions/students";
 import { getAssignmentsForClass } from "@/lib/queries/assignments";
+import { setAssignmentHidden } from "@/lib/actions/assignments";
 import {
   getClassDashboardStats,
   getClassSkillMissStats,
@@ -211,20 +212,22 @@ export default async function ClassDetailPage({
         <p className="text-text/60">Chưa giao bài nào.</p>
       ) : (
         <ul className="flex flex-col gap-2">
-          {/* Nút xoá nằm CẠNH link chứ không lồng trong link: nút bên trong
-              thẻ <a> là HTML sai, và bấm nút sẽ mở luôn trang bảng điểm. Nên
-              <li> làm khung, link và nút là hai phần riêng bên trong. */}
-          {assignments.map((assignment) => (
-            <li
-              key={assignment.id}
-              className="flex flex-col gap-3 rounded-xl border border-surface-border bg-surface p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between"
-            >
-              <Link
-                href={`/classes/${id}/assignments/${assignment.id}`}
-                className="flex flex-1 flex-col gap-2 rounded-lg hover:text-ink sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+          {assignments.map((assignment) => {
+            const isHidden = assignment.hidden_at !== null;
+            return (
+              <li
+                key={assignment.id}
+                className="flex flex-col gap-3 rounded-xl border border-surface-border bg-surface p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between"
               >
-                <div>
-                  <p className="text-text">{assignment.title}</p>
+                <div className="flex-1">
+                  <p className="text-text">
+                    {assignment.title}
+                    {isHidden && (
+                      <span className="ml-2 rounded-full bg-ink/10 px-2 py-0.5 text-xs text-text/60">
+                        Đã ẩn
+                      </span>
+                    )}
+                  </p>
                   <p className="mt-1 text-sm text-text/60">
                     Hạn nộp:{" "}
                     {new Date(assignment.due_at).toLocaleString("vi-VN", {
@@ -233,18 +236,36 @@ export default async function ClassDetailPage({
                     })}
                   </p>
                 </div>
-                {/* Cả ô vốn đã bấm được, nhưng không có dấu hiệu gì nên nhìn
-                    như ô thông tin tĩnh — thêm dòng này để thấy ngay là bấm được. */}
-                <span className="shrink-0 text-sm font-medium text-ink">Xem bảng điểm →</span>
-              </Link>
-              <DeleteAssignmentButton
-                classId={id}
-                assignmentId={assignment.id}
-                title={assignment.title}
-                attemptCount={assignment.attempt_count}
-              />
-            </li>
-          ))}
+                <div className="flex shrink-0 flex-wrap items-center gap-2">
+                  {/* Link nhưng trông như nút, để đứng cùng hàng với hai nút
+                      bên cạnh. Cả dòng không còn bấm được nữa — đã có nút rõ
+                      ràng thì để cả dòng bấm được chỉ tổ bấm nhầm. */}
+                  <Link
+                    href={`/classes/${id}/assignments/${assignment.id}`}
+                    className="rounded-full bg-ink px-3 py-1.5 text-sm font-medium text-white hover:bg-ink-dark"
+                  >
+                    Xem bảng điểm
+                  </Link>
+                  {/* Ẩn/bỏ ẩn không phá gì nên dùng <form> thường + SubmitButton
+                    sẵn có, không cần component riêng có hộp xác nhận. */}
+                  <form action={setAssignmentHidden.bind(null, id, assignment.id, !isHidden)}>
+                    <SubmitButton
+                      pendingText={isHidden ? "Đang bỏ ẩn…" : "Đang ẩn…"}
+                      className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-text hover:border-ink disabled:opacity-40"
+                    >
+                      {isHidden ? "Bỏ ẩn" : "Ẩn bài"}
+                    </SubmitButton>
+                  </form>
+                  <DeleteAssignmentButton
+                    classId={id}
+                    assignmentId={assignment.id}
+                    title={assignment.title}
+                    attemptCount={assignment.attempt_count}
+                  />
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
 

@@ -172,3 +172,41 @@ export async function deleteAssignment(classId: string, assignmentId: string, fo
 
   redirect(`/classes/${classId}`);
 }
+
+// Server action GV ẩn / bỏ ẩn một bài đã giao.
+//
+// Khác hẳn deleteAssignment: KHÔNG xoá dòng nào. Chỉ ghi (hoặc xoá) một dấu
+// thời gian ở cột hidden_at. Bài biến khỏi danh sách việc cần làm của học
+// sinh, nhưng điểm, lịch sử và trang "Kỹ năng của em" giữ nguyên.
+//
+// Vì không phá gì nên không cần hỏi xác nhận — bấm nhầm thì bấm lại là xong.
+export async function setAssignmentHidden(classId: string, assignmentId: string, hidden: boolean) {
+  const teacherId = await getCurrentUserId();
+  if (!teacherId) {
+    redirect("/teacher-login");
+  }
+
+  const klass = await getClassById(classId, teacherId);
+  if (!klass) {
+    redirect("/classes");
+  }
+
+  const supabase = createServerClient();
+
+  // Lọc thêm theo class_id: bài phải thuộc đúng lớp của thầy. Không kiểm thì
+  // người khác sửa assignmentId trong request có thể ẩn bài của lớp khác.
+  const { error } = await supabase
+    .from("assignments")
+    .update({ hidden_at: hidden ? new Date().toISOString() : null })
+    .eq("id", assignmentId)
+    .eq("class_id", classId);
+
+  if (error) {
+    const action = hidden ? "ẩn" : "bỏ ẩn";
+    redirect(
+      `/classes/${classId}?error=${encodeURIComponent(`Không ${action} được bài giao: ${error.message}`)}`,
+    );
+  }
+
+  redirect(`/classes/${classId}`);
+}
