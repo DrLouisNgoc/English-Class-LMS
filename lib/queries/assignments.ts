@@ -13,6 +13,15 @@ export type AssignmentInfo = {
   due_at: string;
 };
 
+// Bài giao nhìn từ phía GV, ở trang chi tiết lớp. Để riêng chứ không thêm
+// trường vào AssignmentInfo, vì phía học sinh cũng dùng kiểu đó mà "số lượt
+// làm của cả lớp" thì không có ý nghĩa gì với một em học sinh.
+export type ClassAssignmentInfo = AssignmentInfo & {
+  // Số lượt học sinh đã bắt đầu làm bài này. Bằng 0 nghĩa là chưa em nào
+  // động vào, xoá đi không mất dữ liệu của ai.
+  attempt_count: number;
+};
+
 // Đọc 1 bài giao, chỉ trả về nếu học sinh này đang học đúng lớp được giao bài
 // đó — tránh HS sửa URL để mở bài của lớp khác.
 export async function getAssignmentForStudent(
@@ -92,12 +101,15 @@ export async function getAssignmentQuestions(assignmentId: string): Promise<Assi
 }
 
 // Đọc danh sách bài đã giao của 1 lớp — dùng cho trang chi tiết lớp của GV.
-export async function getAssignmentsForClass(classId: string): Promise<AssignmentInfo[]> {
+export async function getAssignmentsForClass(classId: string): Promise<ClassAssignmentInfo[]> {
   const supabase = createServerClient();
 
+  // "attempts(count)" nhờ Supabase đếm luôn số lượt làm bài nối với mỗi bài
+  // giao, ngay trong cùng một truy vấn — thay vì phải gọi thêm một truy vấn
+  // đếm riêng cho từng bài. Kết quả trả về dạng [{ count: 3 }].
   const { data, error } = await supabase
     .from("assignments")
-    .select("id, title, due_at")
+    .select("id, title, due_at, attempts(count)")
     .eq("class_id", classId)
     .order("due_at", { ascending: false });
 
@@ -105,7 +117,12 @@ export async function getAssignmentsForClass(classId: string): Promise<Assignmen
     throw new Error(`Không đọc được danh sách bài giao: ${error.message}`);
   }
 
-  return data;
+  return data.map((row) => ({
+    id: row.id,
+    title: row.title,
+    due_at: row.due_at,
+    attempt_count: (row.attempts as unknown as { count: number }[])[0]?.count ?? 0,
+  }));
 }
 
 export type QuestionMissRow = {

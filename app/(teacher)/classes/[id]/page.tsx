@@ -13,6 +13,7 @@ import {
 } from "@/lib/queries/dashboard";
 import SubmitButton from "@/components/SubmitButton";
 import RemoveStudentButton from "@/components/RemoveStudentButton";
+import DeleteAssignmentButton from "@/components/DeleteAssignmentButton";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -210,11 +211,17 @@ export default async function ClassDetailPage({
         <p className="text-text/60">Chưa giao bài nào.</p>
       ) : (
         <ul className="flex flex-col gap-2">
+          {/* Nút xoá nằm CẠNH link chứ không lồng trong link: nút bên trong
+              thẻ <a> là HTML sai, và bấm nút sẽ mở luôn trang bảng điểm. Nên
+              <li> làm khung, link và nút là hai phần riêng bên trong. */}
           {assignments.map((assignment) => (
-            <li key={assignment.id}>
+            <li
+              key={assignment.id}
+              className="flex flex-col gap-3 rounded-xl border border-surface-border bg-surface p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between"
+            >
               <Link
                 href={`/classes/${id}/assignments/${assignment.id}`}
-                className="flex flex-col gap-2 rounded-xl border border-surface-border bg-surface p-4 hover:border-ink/30 hover:bg-ink/5 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-1 flex-col gap-2 rounded-lg hover:text-ink sm:flex-row sm:items-center sm:justify-between sm:gap-4"
               >
                 <div>
                   <p className="text-text">{assignment.title}</p>
@@ -230,6 +237,12 @@ export default async function ClassDetailPage({
                     như ô thông tin tĩnh — thêm dòng này để thấy ngay là bấm được. */}
                 <span className="shrink-0 text-sm font-medium text-ink">Xem bảng điểm →</span>
               </Link>
+              <DeleteAssignmentButton
+                classId={id}
+                assignmentId={assignment.id}
+                title={assignment.title}
+                attemptCount={assignment.attempt_count}
+              />
             </li>
           ))}
         </ul>
