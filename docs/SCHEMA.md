@@ -104,6 +104,21 @@ câu hỏi là mất cả bài làm của học sinh trỏ vào đó. Xem `decis
 không đúng với code**. Tên thật là `DIEN`, còn dạng viết lại câu (thầy chấm tay)
 **chưa làm**. Đừng ghi tay hai giá trị đó vào database: máy sẽ không chấm được.
 
+**Ngoặc vuông trong `content` và `options` = phần gạch chân.**
+
+Đề thi phần ngữ âm bắt buộc gạch chân phần âm được hỏi, dạng tìm lỗi sai cũng
+gạch chân bốn phần trong câu. Hai cột này là text thuần, không lưu được định
+dạng chữ, nên dùng quy ước: `br[ea]d` hiện ra thành `bread` với `ea` gạch chân.
+
+- Hàm dịch là `renderUnderline()` trong `lib/renderUnderline.tsx`. Nó cắt chuỗi
+  rồi ghép thẻ `<u>` bằng React, **không** dùng `dangerouslySetInnerHTML`.
+- Ngoặc mở mà thiếu ngoặc đóng thì in nguyên văn, không cố đoán.
+- Dấu `______` của chỗ trống **không** bị ảnh hưởng — hai ký hiệu không đụng nhau.
+- **Bộ chấm không biết gì về quy ước này**, và không cần biết: câu trắc nghiệm
+  so nguyên văn, mà `given_answer` lẫn `correct_answer` đều còn nguyên dấu ngoặc
+  nên vẫn khớp. Nghĩa là `correct_answer` của câu phát âm phải lưu **cả ngoặc**
+  (`br[ea]d`), đúng y như chuỗi trong `options`.
+
 ### question_tags
 
 Bảng nối questions ↔ skill_tags (một câu có thể mang nhiều tag).
@@ -116,13 +131,24 @@ Bảng nối questions ↔ skill_tags (một câu có thể mang nhiều tag).
 
 ### assignments
 
-| cột        | kiểu        | ghi chú                 |
-| ---------- | ----------- | ----------------------- |
-| id         | uuid        |                         |
-| class_id   | uuid        |                         |
-| title      | text        | "BTVN tuần 3 - Bị động" |
-| due_at     | timestamptz |                         |
-| created_at | timestamptz |                         |
+| cột        | kiểu        | ghi chú                       |
+| ---------- | ----------- | ----------------------------- |
+| id         | uuid        |                               |
+| class_id   | uuid        |                               |
+| title      | text        | "BTVN tuần 3 - Bị động"       |
+| due_at     | timestamptz |                               |
+| created_at | timestamptz |                               |
+| hidden_at  | timestamptz | null = đang hiện với học sinh |
+
+`hidden_at` là cách dọn danh sách bài mà **không** mất dữ liệu: có giờ thì bài
+biến khỏi `/student/home` và không mở được bằng link cũ, nhưng `attempts` và
+`answers` giữ nguyên nên điểm, lịch sử và trang "Kỹ năng của em" không đổi.
+Bỏ ẩn chỉ cần đặt lại về null.
+
+Cần phân biệt với **xoá hẳn** (`deleteAssignment`): xoá thì mất luôn bài làm
+của học sinh, và vì schema không đặt `on delete cascade` ở khoá ngoại nào nên
+phải xoá con trước cha theo thứ tự `answers` → `attempts` →
+`assignment_questions` → `assignments`.
 
 ### assignment_questions
 
