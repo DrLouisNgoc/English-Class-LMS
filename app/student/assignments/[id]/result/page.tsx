@@ -4,6 +4,7 @@ import Link from "next/link";
 import { STUDENT_SESSION_COOKIE, verifyStudentSessionValue } from "@/lib/supabase/studentSession";
 import NotebookPage from "@/components/NotebookPage";
 import { getOrCreateAttempt, getAttemptResult } from "@/lib/queries/attempts";
+import { renderUnderline } from "@/lib/renderUnderline";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo học sinh đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -99,15 +100,21 @@ export default async function AssignmentResultPage({
                   </span>
                   <span className="text-text/60">Câu {index + 1}</span>
                 </p>
-                <p className="mt-1 text-text md:text-lg md:leading-relaxed">{q.content}</p>
+                <p className="mt-1 text-text md:text-lg md:leading-relaxed">
+                  {renderUnderline(q.content)}
+                </p>
                 <p className="mt-2 text-sm text-text/70 md:text-base">
                   Bạn trả lời:{" "}
-                  <span className="font-medium text-ink">{q.given_answer ?? "(bỏ trống)"}</span>
+                  <span className="font-medium text-ink">
+                    {q.given_answer === null ? "(bỏ trống)" : renderUnderline(q.given_answer)}
+                  </span>
                 </p>
                 {!q.is_correct && (
                   <p className="mt-1 text-sm text-text/70 md:text-base">
                     Đáp án đúng:{" "}
-                    <span className="font-medium text-correct">{q.correct_answer}</span>
+                    <span className="font-medium text-correct">
+                      {renderUnderline(q.correct_answer)}
+                    </span>
                   </p>
                 )}
                 {q.explanation && (

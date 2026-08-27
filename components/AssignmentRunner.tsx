@@ -7,6 +7,7 @@ import { useState, useTransition } from "react";
 import Link from "next/link";
 import type { AssignmentQuestion } from "@/lib/queries/assignments";
 import { saveAnswer, submitAttempt } from "@/lib/actions/attempts";
+import { renderUnderline } from "@/lib/renderUnderline";
 
 type Props = {
   assignmentId: string;
@@ -114,7 +115,7 @@ export default function AssignmentRunner({
           )}
 
           <p className="mb-5 text-base leading-relaxed text-text md:mb-8 md:text-xl md:leading-relaxed">
-            {question.content}
+            {renderUnderline(question.content)}
           </p>
 
           {question.kind === "MCQ" && question.options ? (
@@ -137,7 +138,10 @@ export default function AssignmentRunner({
                       onChange={() => handleAnswer(option)}
                       className="accent-red-pen md:h-5 md:w-5"
                     />
-                    {option}
+                    {/* Chỉ đổi phần HIỂN THỊ. `key`, `checked` và `handleAnswer`
+                        ở trên vẫn dùng chuỗi gốc còn nguyên dấu ngoặc — đó là
+                        thứ được lưu xuống database và đem đi chấm điểm. */}
+                    {renderUnderline(option)}
                   </label>
                 );
               })}
