@@ -6,7 +6,11 @@
 ## 1. Bối cảnh
 
 - Người làm: 1 giáo viên, mới học lập trình, code cùng AI
-- Quy mô: `[?]` học sinh, `[?]` lớp, khối `[?]`
+- Quy mô: `[?]` học sinh, `[?]` lớp, khối **6, 7, 8, 9** (xác nhận 2026-08-28)
+  - Khối 9 có thêm mục tiêu ôn thi vào 10 (Hà Nội). Khối 6–8 bám chương trình
+    theo Unit của bộ Global Success.
+  - Ô này bỏ trống suốt 12 ngày đầu khiến AI tự suy phạm vi từ câu chuyện
+    đang bàn và dựng nhầm cả kế hoạch ngân hàng câu hỏi quanh riêng đề vào 10.
 - Thiết bị học sinh: điện thoại Android tầm trung, mạng 4G, đôi khi chập chờn
 - Mục tiêu thật sự **không phải** tiết kiệm giờ chấm bài, mà là: học sinh tự luyện được ở nhà, và giáo viên nhìn thấy lỗ hổng kiến thức ngay trong tuần thay vì đợi đến kỳ thi
 

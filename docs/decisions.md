@@ -405,3 +405,37 @@ Sửa: dừng dev (Ctrl+C) → `Remove-Item -Recurse -Force .next` → `npm run 
 
 **Quy tắc từ nay:** kiểm tra code bằng `npx tsc --noEmit` — nó bắt hết lỗi kiểu
 mà không đụng vào `.next`. Chỉ chạy `npm run build` khi đã tắt dev server.
+
+## 2026-08-28 — Ngân hàng câu hỏi phải phủ cả 4 khối, không riêng khối 9
+
+**Bối cảnh phát hiện.** Ngày 26–27/8 bàn chuyện xây ngân hàng câu hỏi, câu
+chuyện xoay quanh đề thi vào 10 Hà Nội nên AI mặc định app chỉ phục vụ khối 9,
+rồi dựng cả bản đồ "150 câu" theo đúng cấu trúc một đề vào 10. Sai. App phục vụ
+**cả khối 6, 7, 8, 9**.
+
+**Gốc của lỗi:** ô `khối [?]` trong `SPEC.md` chưa bao giờ được điền, dù chính
+file đó đã cảnh báo "đừng để AI đoán hộ". Không có chỗ nào ghi phạm vi thì AI
+suy từ ngữ cảnh đang bàn — và ngữ cảnh lúc đó chỉ toàn chuyện thi vào 10. Đã
+điền ô này vào `SPEC.md`.
+
+**Số liệu lộ ra khi kiểm lại (28/8, ngân hàng 75 câu):**
+
+| Khối | Số câu |
+| ---- | ------ |
+| 6    | 1      |
+| 7    | 0      |
+| 8    | 0      |
+| 9    | 74     |
+
+Tức là app đang chỉ dùng được cho một khối. Lỗ hổng này **nghiêm trọng hơn**
+chuyện thiếu nhóm kỹ năng mà trước đó vẫn coi là ưu tiên số một.
+
+**Quyết định.** Bản đồ ngân hàng dựng lại theo trục **khối** trước, trục **kỹ
+năng** sau. Cụ thể ra sao thì chưa chốt — cần thầy cho biết mỗi khối cần bao
+nhiêu câu, ưu tiên khối nào trước, và có bám Unit của Global Success không.
+Chưa trả lời được ba câu đó thì chưa soạn tiếp, vì soạn nhầm trục lần nữa là
+phí công lần nữa.
+
+**Ghi chú cho các phiên sau:** khi một tài liệu còn ô `[?]`, hỏi thẳng thay vì
+suy từ ngữ cảnh. Ngữ cảnh của một buổi trò chuyện hẹp hơn phạm vi thật của dự
+án rất nhiều.
