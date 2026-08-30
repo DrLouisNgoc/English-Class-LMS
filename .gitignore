@@ -46,3 +46,10 @@ next-env.d.ts
 
 # cấu hình riêng của máy, không dùng chung
 /.claude
+
+# sách và đề tham khảo để soạn câu hỏi — 360MB, có bản quyền,
+# chỉ nằm trên máy để tra cứu, KHÔNG đẩy lên GitHub
+/document_books
+
+# thư mục của công cụ oh-my-claudecode
+/.omc
