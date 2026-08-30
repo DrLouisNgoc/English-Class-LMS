@@ -15,24 +15,57 @@ export type QuestionWithSkillTag = Question & {
   skill_tag_name: string | null;
 };
 
-// Đọc toàn bộ câu hỏi trong ngân hàng, kèm tên kỹ năng đang gắn (nếu có) — dùng
-// cho trang quản lý câu hỏi của GV, để thấy ngay câu nào còn "Chưa gắn".
-export async function getQuestions(): Promise<QuestionWithSkillTag[]> {
+// Số câu hiển thị mỗi trang ở /questions.
+export const QUESTIONS_PER_PAGE = 50;
+
+export type QuestionsPage = {
+  questions: QuestionWithSkillTag[];
+  total: number;
+  page: number;
+  totalPages: number;
+};
+
+// Đọc MỘT TRANG câu hỏi, không phải toàn bộ ngân hàng.
+//
+// Trước đây hàm này lấy tất cả câu hỏi về một lượt. Chạy được khi ngân hàng
+// còn nhỏ, nhưng Supabase mặc định chỉ trả tối đa 1000 dòng mỗi truy vấn —
+// vượt mốc đó thì trang lặng lẽ hiện thiếu câu mà KHÔNG báo lỗi gì, thầy sẽ
+// tưởng câu hỏi bị mất. Nên phải phân trang trước khi ngân hàng lớn lên.
+export async function getQuestions(page = 1): Promise<QuestionsPage> {
   const supabase = createServerClient();
 
-  const { data, error } = await supabase
-    .from("questions")
-    .select("id, kind, grade, difficulty, content, correct_answer, status")
-    .order("grade", { ascending: true });
+  const currentPage = Math.max(1, Math.floor(page));
+  const from = (currentPage - 1) * QUESTIONS_PER_PAGE;
+  const to = from + QUESTIONS_PER_PAGE - 1;
 
-  if (error) {
-    throw new Error(`Không đọc được danh sách câu hỏi: ${error.message}`);
+  // count: "exact" bảo Supabase đếm tổng số câu trong bảng, tách rời với số
+  // câu thật sự trả về — nhờ đó biết có tất cả bao nhiêu trang.
+  const {
+    data: rows,
+    error: rowsError,
+    count,
+  } = await supabase
+    .from("questions")
+    .select("id, kind, grade, difficulty, content, correct_answer, status", { count: "exact" })
+    .order("grade", { ascending: true })
+    // Sắp thêm theo id: hai câu cùng khối mà không có thứ tự cố định thì mỗi
+    // lần truy vấn database có thể trả khác thứ tự, làm một câu hiện ở cả hai
+    // trang còn câu khác biến mất.
+    .order("id", { ascending: true })
+    .range(from, to);
+
+  if (rowsError) {
+    throw new Error(`Không đọc được danh sách câu hỏi: ${rowsError.message}`);
   }
 
+  // Chỉ lấy kỹ năng của những câu ĐANG hiện trên trang này, không lấy của cả
+  // ngân hàng — nếu không thì vẫn dính đúng giới hạn 1000 dòng vừa nói.
+  const pageIds = rows.map((row) => row.id);
   const { data: tagRows, error: tagError } = await supabase
     .from("question_tags")
     .select("question_id, skill_tags(id, name_vi)")
-    .eq("is_primary", true);
+    .eq("is_primary", true)
+    .in("question_id", pageIds.length > 0 ? pageIds : ["00000000-0000-0000-0000-000000000000"]);
 
   if (tagError) {
     throw new Error(`Không đọc được kỹ năng của câu hỏi: ${tagError.message}`);
@@ -44,14 +77,21 @@ export async function getQuestions(): Promise<QuestionWithSkillTag[]> {
     skillByQuestionId.set(row.question_id, skillTag);
   }
 
-  return data.map((question) => {
-    const skillTag = skillByQuestionId.get(question.id);
-    return {
-      ...question,
-      skill_tag_id: skillTag?.id ?? null,
-      skill_tag_name: skillTag?.name_vi ?? null,
-    };
-  });
+  const total = count ?? 0;
+
+  return {
+    questions: rows.map((question) => {
+      const skillTag = skillByQuestionId.get(question.id);
+      return {
+        ...question,
+        skill_tag_id: skillTag?.id ?? null,
+        skill_tag_name: skillTag?.name_vi ?? null,
+      };
+    }),
+    total,
+    page: currentPage,
+    totalPages: Math.max(1, Math.ceil(total / QUESTIONS_PER_PAGE)),
+  };
 }
 
 export type QuestionDetail = {
@@ -138,9 +178,23 @@ export type QuestionFilter = {
   skillTagId?: string;
 };
 
+// Số câu tối đa trang giao bài hiện ra một lần.
+//
+// CỐ Ý không phân trang ở đây như /questions: thầy tick chọn câu để giao bài,
+// mà chuyển trang là mất hết tick đã chọn. Thay vào đó giới hạn lại và nói rõ
+// còn bao nhiêu câu chưa hiện, để thầy lọc hẹp hơn — chọn 15-25 câu thì không
+// ai cần nhìn hết 300 câu cùng lúc.
+export const ASSIGN_QUESTION_LIMIT = 100;
+
+export type FilteredQuestions = {
+  questions: Question[];
+  // Tổng số câu THOẢ BỘ LỌC, có thể lớn hơn số câu trả về ở trên.
+  total: number;
+};
+
 // Đọc câu hỏi theo bộ lọc (khối/độ khó/kỹ năng) — dùng cho trang GV chọn câu
 // hỏi để giao bài. Chỉ lấy câu đã duyệt (status = "da_duyet").
-export async function getFilteredQuestions(filter: QuestionFilter): Promise<Question[]> {
+export async function getFilteredQuestions(filter: QuestionFilter): Promise<FilteredQuestions> {
   const supabase = createServerClient();
 
   // Lọc theo kỹ năng phải đi qua bảng nối question_tags trước, lấy ra danh
@@ -158,15 +212,17 @@ export async function getFilteredQuestions(filter: QuestionFilter): Promise<Ques
 
     questionIds = tagRows.map((row) => row.question_id);
     if (questionIds.length === 0) {
-      return [];
+      return { questions: [], total: 0 };
     }
   }
 
   let query = supabase
     .from("questions")
-    .select("id, kind, grade, difficulty, content, correct_answer, status")
+    .select("id, kind, grade, difficulty, content, correct_answer, status", { count: "exact" })
     .eq("status", "da_duyet")
-    .order("grade", { ascending: true });
+    .order("grade", { ascending: true })
+    .order("id", { ascending: true })
+    .range(0, ASSIGN_QUESTION_LIMIT - 1);
 
   if (filter.grade) {
     query = query.eq("grade", filter.grade);
@@ -178,11 +234,11 @@ export async function getFilteredQuestions(filter: QuestionFilter): Promise<Ques
     query = query.in("id", questionIds);
   }
 
-  const { data, error } = await query;
+  const { data, error, count } = await query;
 
   if (error) {
     throw new Error(`Không đọc được danh sách câu hỏi: ${error.message}`);
   }
 
-  return data;
+  return { questions: data, total: count ?? data.length };
 }

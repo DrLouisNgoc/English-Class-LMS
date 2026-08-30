@@ -35,7 +35,7 @@ export default async function AssignPage({
   }
 
   const skillTags = await getSkillTags();
-  const questions = await getFilteredQuestions({
+  const { questions, total: totalMatching } = await getFilteredQuestions({
     grade: grade ? Number(grade) : undefined,
     difficulty: difficulty || undefined,
     skillTagId: skill || undefined,
@@ -152,6 +152,15 @@ export default async function AssignPage({
         </div>
 
         {error && <p className="mt-3 text-sm text-red-pen">{error}</p>}
+
+        {/* Danh sách bị cắt bớt thì phải NÓI RA. Im lặng cắt là kiểu lỗi tệ
+            nhất: thầy tưởng ngân hàng chỉ có bấy nhiêu câu. */}
+        {totalMatching > questions.length && (
+          <p className="mt-4 rounded-lg border border-gold/40 bg-gold/10 px-3 py-2 text-sm text-gold-dark">
+            Đang hiện {questions.length} câu đầu trong tổng số {totalMatching} câu khớp bộ lọc. Lọc
+            hẹp lại theo khối, độ khó hoặc kỹ năng để thấy những câu còn lại.
+          </p>
+        )}
 
         {questions.length === 0 ? (
           <p className="mt-4 text-text/60">Không có câu hỏi nào khớp bộ lọc.</p>

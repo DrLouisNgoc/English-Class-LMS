@@ -20,10 +20,12 @@ export default async function QuestionsPage({
     imported?: string;
     tagged?: string;
     error?: string;
+    trang?: string;
   }>;
 }) {
-  const { saved, updated, deleted, hidden, imported, tagged, error } = await searchParams;
-  const [questions, skillTags] = await Promise.all([getQuestions(), getSkillTags()]);
+  const { saved, updated, deleted, hidden, imported, tagged, error, trang } = await searchParams;
+  const [page, skillTags] = await Promise.all([getQuestions(Number(trang) || 1), getSkillTags()]);
+  const { questions, total, totalPages, page: currentPage } = page;
 
   // Gộp các thông báo thành công vào một chỗ cho gọn.
   const notice = saved
@@ -99,7 +101,37 @@ export default async function QuestionsPage({
       {questions.length === 0 ? (
         <p className="text-text/60">Chưa có câu hỏi nào.</p>
       ) : (
-        <QuestionsBulkTagList questions={questions} skillTags={skillTags} />
+        <>
+          <p className="mb-3 text-sm text-text/60">
+            Trang {currentPage}/{totalPages} · tổng {total} câu
+          </p>
+
+          <QuestionsBulkTagList questions={questions} skillTags={skillTags} />
+
+          {/* Thanh chuyển trang. Dùng Link (đổi query string) chứ không dùng
+              nút bấm bằng JavaScript — trang này chạy trên server, đổi địa chỉ
+              là nó tự tải lại đúng trang cần. */}
+          {totalPages > 1 && (
+            <nav className="mt-6 flex flex-wrap items-center gap-2">
+              {currentPage > 1 && (
+                <Link
+                  href={`/questions?trang=${currentPage - 1}`}
+                  className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+                >
+                  ← Trang trước
+                </Link>
+              )}
+              {currentPage < totalPages && (
+                <Link
+                  href={`/questions?trang=${currentPage + 1}`}
+                  className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+                >
+                  Trang sau →
+                </Link>
+              )}
+            </nav>
+          )}
+        </>
       )}
     </NotebookPage>
   );
