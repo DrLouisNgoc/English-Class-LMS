@@ -8,6 +8,7 @@
 
 import { useState } from "react";
 import SubmitButton from "@/components/SubmitButton";
+import DeleteQuestionButton from "@/components/DeleteQuestionButton";
 import type { SkillTag } from "@/lib/queries/questions";
 
 // Hai dạng câu hỏi app hiện chấm tự động được. Dạng thầy chấm tay (viết lại
@@ -61,8 +62,15 @@ type Props = {
   pendingLabel: string;
   // Bỏ trống khi thêm câu mới; truyền vào khi sửa câu đã có.
   values?: QuestionFormValues;
-  // Nút phụ đặt cạnh nút lưu, ví dụ nút xoá ở trang sửa.
-  extraAction?: React.ReactNode;
+  // Id câu hỏi đang sửa. Có id thì hiện nút "Xoá câu hỏi" cạnh nút lưu; trang
+  // thêm mới không truyền vào nên không có nút xoá.
+  //
+  // CỐ Ý nhận id (một chuỗi) chứ không nhận sẵn cái nút dựng từ trang cha:
+  // trang sửa chạy trên server còn form này chạy trong trình duyệt, nên truyền
+  // JSX qua ranh giới đó buộc React phải đóng gói phần tử để gửi qua mạng — và
+  // lúc đóng gói nó xếp vào một mảng nội bộ rồi cảnh báo thiếu "key", dù ở đây
+  // chẳng có danh sách nào. Truyền chuỗi thì không có gì phải gửi qua mạng.
+  deleteQuestionId?: string;
   // Danh sách bài đọc hiểu của giáo viên, để chọn câu này thuộc bài nào (C2).
   // Mặc định rỗng: trang nào chưa truyền vào thì ô chọn không hiện ra.
   passages?: { id: string; title: string }[];
@@ -74,7 +82,7 @@ export default function QuestionForm({
   submitLabel,
   pendingLabel,
   values,
-  extraAction,
+  deleteQuestionId,
   passages = [],
 }: Props) {
   const [kind, setKind] = useState(values?.kind ?? "MCQ");
@@ -299,7 +307,7 @@ export default function QuestionForm({
         >
           {submitLabel}
         </SubmitButton>
-        {extraAction}
+        {deleteQuestionId && <DeleteQuestionButton questionId={deleteQuestionId} />}
       </div>
     </form>
   );

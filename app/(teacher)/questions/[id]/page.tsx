@@ -6,7 +6,6 @@ import { getQuestionById, getSkillTags } from "@/lib/queries/questions";
 import { getPassages } from "@/lib/queries/passages";
 import { updateQuestion } from "@/lib/actions/questions";
 import QuestionForm from "@/components/QuestionForm";
-import DeleteQuestionButton from "@/components/DeleteQuestionButton";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -94,7 +93,7 @@ export default async function EditQuestionPage({
           skillTagId: question.skill_tag_id,
           passageId: question.passage_id,
         }}
-        extraAction={<DeleteQuestionButton questionId={id} />}
+        deleteQuestionId={id}
       />
     </NotebookPage>
   );
