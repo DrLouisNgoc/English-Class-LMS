@@ -104,6 +104,33 @@ câu hỏi là mất cả bài làm của học sinh trỏ vào đó. Xem `decis
 không đúng với code**. Tên thật là `DIEN`, còn dạng viết lại câu (thầy chấm tay)
 **chưa làm**. Đừng ghi tay hai giá trị đó vào database: máy sẽ không chấm được.
 
+### Luật của bảng `questions` được khoá trong database (migration `0010`)
+
+Trước đây các luật này chỉ nằm trong code màn nhập câu hỏi, nên ai ghi thẳng vào
+database (chạy SQL tay, hoặc nhờ AI ghi hộ) đều đi vòng qua hết mà không có gì
+báo. Từ `0010` chúng là ràng buộc `CHECK`, mọi đường ghi đều bị chặn như nhau.
+
+| Ràng buộc                            | Luật                                                                                  |
+| ------------------------------------ | ------------------------------------------------------------------------------------- |
+| `questions_grade_valid`              | `grade` trong 6–9                                                                     |
+| `questions_difficulty_valid`         | `difficulty` là `DE` / `TB` / `KHO`                                                   |
+| `questions_kind_valid`               | `kind` là `MCQ` / `DIEN`                                                              |
+| `questions_status_valid`             | `status` là `nhap` / `da_duyet` / `an`                                                |
+| `questions_content_not_blank`        | `content` không được rỗng                                                             |
+| `questions_correct_answer_not_blank` | `correct_answer` không được rỗng                                                      |
+| `questions_mcq_shape`                | câu MCQ: `options` là mảng 2–4 phần tử **và** `correct_answer` phải nằm trong mảng đó |
+| `questions_dien_no_options`          | câu DIEN: `options` phải là `NULL`                                                    |
+
+`questions_mcq_shape` là cái quan trọng nhất. Câu trắc nghiệm chấm bằng cách so
+nguyên văn chuỗi, nên `correct_answer` lạc khỏi danh sách phương án sẽ khiến
+**mọi học sinh chọn đúng vẫn bị chấm sai**, mà giao diện không có dấu hiệu gì.
+Trang sửa câu hỏi chỉ cảnh báo chuyện này chứ vẫn cho lưu; ràng buộc thì từ chối
+thẳng.
+
+Hai thứ **cố ý không khoá**: trùng nội dung đề bài (các câu ngữ âm dùng chung một
+dòng đề bài một cách hợp lệ), và hai phương án trùng chữ trong cùng một câu
+(`CHECK` không dùng được truy vấn con, phải viết trigger — màn nhập vẫn đang kiểm).
+
 **Ngoặc vuông trong `content` và `options` = phần gạch chân.**
 
 Đề thi phần ngữ âm bắt buộc gạch chân phần âm được hỏi, dạng tìm lỗi sai cũng
