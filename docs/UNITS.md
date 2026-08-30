@@ -93,13 +93,45 @@ Thư mục này **không đẩy lên GitHub** (360 MB, sách có bản quyền) 
 
 ## Cách rút chữ ra khỏi PDF
 
-Máy này **không có** `pdftoppm` nên công cụ đọc PDF dựng ảnh không chạy. Nhưng có
-`pdftotext`, đủ dùng:
+**Một nửa số sách là bản SCAN.** Kiểm trước khi đọc:
 
 ```
-pdftotext -l 8 "ten-file.pdf" -        # lấy chữ 8 trang đầu, in ra màn hình
-pdftotext "ten-file.pdf" - | grep -i "^Unit"
+pdftotext -l 5 "ten-file.pdf" - | wc -c
 ```
 
-Dấu tiếng Việt trong mấy file Mindmap bị vỡ font khi rút ra, nhưng **từ vựng
-tiếng Anh thì nguyên vẹn** — phần cần dùng để soạn câu hỏi không bị ảnh hưởng.
+Ra vài nghìn ký tự = bản chữ, dùng `pdftotext` là xong. Ra gần 0 = bản scan
+(trong file chỉ có ảnh, không có chữ), phải OCR.
+
+| Bản chữ, dùng `pdftotext`             | Bản scan, phải OCR                     |
+| ------------------------------------- | -------------------------------------- |
+| Oxford 3000 / 5000                    | SGK Tiếng Anh **6, 7, 9**              |
+| Essential Grammar in Use              | Đề thi vào 10 Hà Nội 2026              |
+| English Grammar in Use (Intermediate) | English Vocabulary in Use (cả 3 quyển) |
+| Mai Lan Hương                         | Destination B1, B2                     |
+| Mindmap Global Success 6-9            |                                        |
+| SGK Tiếng Anh **8**                   |                                        |
+
+### Công cụ đã cài (31/8)
+
+| Công cụ                       | Vị trí                                | Việc                      |
+| ----------------------------- | ------------------------------------- | ------------------------- |
+| `pdftotext`, `pdftoppm`       | thư mục poppler trong WinGet\Packages | rút chữ / dựng ảnh từ PDF |
+| `tesseract` 5.4               | `C:\Program Files\Tesseract-OCR\`     | nhận dạng chữ trên ảnh    |
+| bộ ngôn ngữ `eng` `vie` `osd` | `C:\Users\louis\tessdata`             | —                         |
+
+Cài bằng `winget install UB-Mannheim.TesseractOCR` và
+`winget install oschwartz10612.Poppler`. Bộ tiếng Việt phải tải riêng vào thư mục
+người dùng vì **không có quyền ghi vào `Program Files`** — nên script luôn đặt
+`TESSDATA_PREFIX` trỏ về `C:\Users\louis\tessdata`.
+
+### Dùng OCR
+
+```
+./scripts/ocr-pdf.ps1 -Pdf "document_books/Tiếng Anh 7 Global Success.pdf" -First 8 -Last 9
+```
+
+⚠️ **Khoảng 20 giây một trang.** Cả quyển sách 200 trang mất hơn một tiếng. Tra
+mục lục lấy đúng khoảng trang của Unit cần rồi OCR bấy nhiêu thôi, đừng quét cả sách.
+
+Dấu tiếng Việt trong file Mindmap bị vỡ font khi rút bằng `pdftotext`, nhưng **từ
+vựng tiếng Anh thì nguyên vẹn** — phần cần dùng để soạn câu hỏi không bị ảnh hưởng.
