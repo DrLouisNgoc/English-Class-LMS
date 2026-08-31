@@ -130,6 +130,44 @@ Database còn có **8 ràng buộc CHECK** tự chặn lỗi cấu trúc (xem `S
 nhưng chúng **không bắt được câu sai kiến thức hay tối nghĩa** — việc đó chỉ giáo
 viên làm được. Nên vẫn phải xem lại bằng mắt.
 
+## Thứ tự thi công đã chốt (31/8)
+
+Làm tuần tự, không nhảy cóc. Lý do xếp thứ tự này: việc trên vừa lấp lỗ hổng lớn
+nhất vừa mở khoá nhiều câu nhất cho mỗi đơn vị công sức bỏ ra.
+
+### 1. Đọc hiểu + điền từ vào đoạn văn — 600 câu
+
+Mở khoá hai dạng đang bằng 0, chiếm 20% mục tiêu. Tính năng đoạn văn dùng chung
+(C2) đã làm xong 26/8 nhưng chưa dùng lần nào, nên đây là công đã bỏ ra rồi mà
+đang nằm không.
+
+Cách làm: mỗi đoạn văn ~150-200 từ theo chủ đề một Unit, kèm 5 câu hỏi. Ghi vào
+bảng `passages` trước để lấy `id`, rồi gắn `passage_id` cho từng câu. Cần khoảng
+**120 đoạn văn** cho đủ 600 câu.
+
+### 2. Giao tiếp + Tìm lỗi sai + Đồng nghĩa/trái nghĩa — 500 câu
+
+Ba dạng trống hoàn toàn. Soạn nhanh vì không cần đoạn văn.
+
+Riêng **Tìm lỗi sai** cần gạch chân bốn phần A/B/C/D trong câu — dùng quy ước
+ngoặc vuông `He [have] been living here [since] 2010` (xem `SCHEMA.md`).
+
+### 3. Ngữ âm cho khối 6, 7, 8 — ~230 câu
+
+Hiện 21 câu ngữ âm đều gắn khối 9. Đề kiểm tra khối nào cũng mở đầu bằng phần này.
+
+Bắt buộc tra trọng âm trong từ điển Cambridge trước khi ra câu — đề trọng âm trôi
+nổi trên mạng sai rất nhiều.
+
+### 4. Bù câu Khó — lên 600
+
+Mới 30/600. Không đủ câu Khó thì đề trộn ra bị phẳng, không phân loại được học
+sinh. Từ bước này trở đi mỗi lô soạn phải giữ tỉ lệ 30% Dễ / 50% TB / 20% Khó.
+
+### 5. Soạn dày thêm theo Unit cho tới 3.000
+
+Lúc đó mới thi công tính năng **trộn đề tự động**.
+
 ## Chặn kỹ thuật cần xử lý trước khi ngân hàng lớn
 
 - ✅ **Phân trang** — đã làm 30/8. Supabase mặc định trả tối đa 1000 dòng; trước
