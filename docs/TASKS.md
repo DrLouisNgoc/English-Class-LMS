@@ -94,7 +94,10 @@
 - [x] Gắn kỹ năng hàng loạt cho câu hỏi có sẵn — xong 2026-08-24: công cụ ở
       `/questions` (`QuestionsBulkTagList`) + đã gán 53/53 câu, không còn câu
       "Chưa gắn". Đây là điều kiện tiên quyết cho mục trộn đề bên dưới
-- [ ] Trộn đề theo mẫu đề chuẩn từ ngân hàng câu hỏi — đã brainstorm và chốt hướng 2026-08-24, chờ ngân hàng đủ dày (~150 câu) rồi thi công
+- [ ] Trộn đề theo mẫu đề chuẩn từ ngân hàng câu hỏi — đã brainstorm và chốt
+      hướng 2026-08-24. Mục tiêu ngân hàng nâng lên **3.000 câu** ngày
+      2026-08-31, xem `docs/QUESTION-BANK.md` để biết bản đồ phủ và tiến độ.
+      Hiện 271/3.000 câu
 
 ---
 
