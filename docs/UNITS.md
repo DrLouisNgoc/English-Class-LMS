@@ -77,19 +77,44 @@ nếu cần, phần đầu đã đủ để nhận ra Unit.
 | 11   | Electronics and…            |
 | 12   | Career path                 |
 
-## Tài liệu tra cứu đang có trong `document_books/`
+## Tra tài liệu nào cho việc gì
 
-Thư mục này **không đẩy lên GitHub** (360 MB, sách có bản quyền) — đã ghi vào
-`.gitignore`. Chỉ nằm trên máy để tra cứu khi soạn câu hỏi.
+Thư mục `document_books/` **không đẩy lên GitHub** (360 MB, sách có bản quyền) —
+đã ghi vào `.gitignore`. Chỉ nằm trên máy để tra cứu khi soạn câu hỏi.
 
-| Nhóm                 | File                                                                                   |
-| -------------------- | -------------------------------------------------------------------------------------- |
-| SGK                  | Tiếng Anh 6 (tập 1, 2), 7, 8, 9 — Global Success                                       |
-| Sơ đồ tư duy từ vựng | `Mindmap-Global-Success-Lop-6/7/8/9.pdf`                                               |
-| Ngữ pháp             | English Grammar in Use (Intermediate), Essential Grammar in Use, Mai Lan Hương         |
-| Từ vựng              | English Vocabulary in Use (Elementary / Pre-Int & Int / Upper-Int), Destination B1, B2 |
-| Kiểm soát độ khó     | Oxford 3000, Oxford 5000                                                               |
-| Đề thật              | Đề thi tiếng Anh vào 10 Hà Nội 2026                                                    |
+| Cần gì                                  | Mở file nào                                                                              | Cách lấy                                             |
+| --------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Từ vựng của một Unit**                | `Mindmap-Global-Success-Lop-{6,7,8,9}.pdf`                                               | `pdftotext` — bản chữ, nhanh                         |
+| **Điểm ngữ pháp của một Unit**          | Book Map trong SGK, **trang 6–9**                                                        | OCR                                                  |
+| **Tên và số trang các Unit**            | Mục lục SGK, **trang 4–5**                                                               | OCR                                                  |
+| **Ngữ liệu gốc của Unit**               | SGK, tra số trang ở mục lục rồi OCR đúng khoảng đó                                       | OCR                                                  |
+| **Kiểm soát độ khó từ vựng**            | `The_Oxford_3000.pdf`                                                                    | `pdftotext` — từ ngoài danh sách là quá khó cho THCS |
+| **Bài tập ngữ pháp để lấy ý**           | `Essential Grammar in Use.pdf` (A1–A2), `English_Grammar_in_Use_Intermediate...pdf` (B1) | `pdftotext`                                          |
+| **Giải thích ngữ pháp bằng tiếng Việt** | `GIẢI THÍCH NGỮ PHÁP TIẾNG ANH (MAI LAN HƯƠNG).pdf`                                      | `pdftotext`                                          |
+| **Đoạn văn đọc hiểu đúng mức A2–B1**    | `English Vocabulary In Use - Elementary.pdf`, `Destination B1...pdf`                     | OCR                                                  |
+| **Cấu trúc đề thi thật, dạng bài mới**  | `de-thi-tieng-anh-vao-10-ha-noi-2026.pdf`                                                | OCR                                                  |
+
+⚠️ **Bản quyền.** Sách quốc tế và SGK đều có bản quyền. Lấy **điểm ngữ pháp, chủ
+đề, danh sách từ vựng** rồi **tự viết câu mới** — không chép nguyên câu, không
+chép nguyên đoạn văn. Đề thi của Sở là văn bản công, dùng lại thoải mái.
+
+### Lệnh hay dùng
+
+```bash
+# từ vựng một khối, lọc bỏ watermark quảng cáo
+pdftotext "document_books/Mindmap-Global-Success-Lop-7.pdf" - \
+  | grep -vi "D.ng th MI N PH\|NH N V.O" \
+  | grep -E "^[a-zA-Z][a-zA-Z ,'/()-]{2,45}$"
+
+# danh sách Unit
+pdftotext "document_books/Mindmap-Global-Success-Lop-8.pdf" - | grep -iE "^Unit"
+```
+
+```powershell
+# điểm ngữ pháp từ Book Map (trang 6-9 của SGK)
+./scripts/ocr-pdf.ps1 -Pdf "document_books/Tiếng Anh 9 Global Success.pdf" -First 6 -Last 9 -Lang eng |
+  Select-String -Pattern "verb|tense|clause|sentence|passive|report|comparat|adverb|question|condition|modal|article|gerund|infinitiv|present|past|future|pronoun|phrasal|relative"
+```
 
 ## Cách rút chữ ra khỏi PDF
 

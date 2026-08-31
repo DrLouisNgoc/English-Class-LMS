@@ -98,14 +98,19 @@ câu ngữ âm nào.
 
 ## Quy trình soạn
 
+**Mọi câu hỏi phải soạn từ tài liệu thật, không soạn từ trí nhớ.** Bảng "Tra tài
+liệu nào cho việc gì" trong `docs/UNITS.md` chỉ rõ mở file nào, trang nào, lệnh gì.
+
 1. **Tra Unit** trong `docs/UNITS.md` — 48 Unit lấy từ SGK thật, không đoán
-2. **Lấy từ vựng** từ `Mindmap-Global-Success-Lop-*.pdf` (bản chữ, dùng
-   `pdftotext`)
-3. **Lấy điểm ngữ pháp** từ Book Map trong SGK (bản scan, dùng
-   `./scripts/ocr-pdf.ps1`)
+2. **Lấy từ vựng của Unit đó** từ `Mindmap-Global-Success-Lop-*.pdf`
+3. **Lấy điểm ngữ pháp của Unit đó** từ Book Map trong SGK (trang 6–9, phải OCR)
 4. **Kiểm độ khó** bằng Oxford 3000 — từ ngoài danh sách là quá khó cho THCS
 5. **Soạn**, đưa giáo viên xem, rồi ghi thẳng vào database
 6. **Chạy bộ kiểm** ở dưới
+
+Vì sao bước 2 và 3 bắt buộc: trước ngày 31/8 câu hỏi soạn theo trí nhớ về SGK.
+Khối 6 và 7 tình cờ đúng chủ đề, nhưng khối 8 Unit 2 thì SGK ghi rõ là so sánh
+của **TRẠNG TỪ** chứ không phải tính từ — đoán là trật hẳn trọng tâm bài.
 
 Ghi thẳng vào database nhanh hơn dán tay nhiều lần, và đặt được khối / độ khó /
 kỹ năng riêng cho **từng câu** — màn `/questions/import` chỉ đặt được cho cả lô.
