@@ -101,6 +101,21 @@ câu ngữ âm nào.
 **Mọi câu hỏi phải soạn từ tài liệu thật, không soạn từ trí nhớ.** Bảng "Tra tài
 liệu nào cho việc gì" trong `docs/UNITS.md` chỉ rõ mở file nào, trang nào, lệnh gì.
 
+**Được chép từ sách** (quyết định 31/8, xem `decisions.md`). Cách dùng theo từng
+loại:
+
+| Loại                  | Cách làm                                       | Vì sao                                         |
+| --------------------- | ---------------------------------------------- | ---------------------------------------------- |
+| Đoạn văn đọc hiểu     | Chép từ sách, chỉnh cho hợp lứa tuổi           | Viết từ đầu là phần nặng nhất của cả 3.000 câu |
+| Câu ngữ pháp          | Chép khung câu, đổi ngữ cảnh sang từ vựng Unit | Gần như cùng công sức mà khớp SGK              |
+| Câu Khó               | Chép thẳng từ Mai Lan Hương                    | Quy tắc chi li khó tự nghĩ đủ                  |
+| Giải thích tiếng Việt | **Luôn tự viết**                               | Sách không có sẵn                              |
+
+⚠️ **Đáp án Destination B1 và English Grammar in Use tra Google ra trong vài
+giây.** Học sinh tra được một câu là tra được cả loạt vì chúng cùng một cuốn. Với
+5 em thì rủi ro thấp, nhưng đây là lý do nên đổi ngữ cảnh ở câu ngữ pháp thay vì
+chép nguyên — đổi ngữ cảnh gần như không tốn thêm công.
+
 1. **Tra Unit** trong `docs/UNITS.md` — 48 Unit lấy từ SGK thật, không đoán
 2. **Lấy từ vựng của Unit đó** từ `Mindmap-Global-Success-Lop-*.pdf`
 3. **Lấy điểm ngữ pháp của Unit đó** từ Book Map trong SGK (trang 6–9, phải OCR)

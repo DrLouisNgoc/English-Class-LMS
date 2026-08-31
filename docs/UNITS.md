@@ -94,9 +94,11 @@ Thư mục `document_books/` **không đẩy lên GitHub** (360 MB, sách có b�
 | **Đoạn văn đọc hiểu đúng mức A2–B1**    | `English Vocabulary In Use - Elementary.pdf`, `Destination B1...pdf`                     | OCR                                                  |
 | **Cấu trúc đề thi thật, dạng bài mới**  | `de-thi-tieng-anh-vao-10-ha-noi-2026.pdf`                                                | OCR                                                  |
 
-⚠️ **Bản quyền.** Sách quốc tế và SGK đều có bản quyền. Lấy **điểm ngữ pháp, chủ
-đề, danh sách từ vựng** rồi **tự viết câu mới** — không chép nguyên câu, không
-chép nguyên đoạn văn. Đề thi của Sở là văn bản công, dùng lại thoải mái.
+**Bản quyền — xem `decisions.md` 2026-08-31.** Được chép bài tập và đoạn văn từ
+sách vào ngân hàng, vì đây là lớp riêng 5 học sinh, không công khai, sách do giáo
+viên mua. Quyết định này **gắn với quy mô đó** — lớp đông lên hoặc ngân hàng đưa
+ra ngoài thì phải xét lại. Đề thi của Sở là văn bản công, dùng lại thoải mái
+trong mọi trường hợp.
 
 ### Lệnh hay dùng
 

@@ -439,3 +439,40 @@ phí công lần nữa.
 **Ghi chú cho các phiên sau:** khi một tài liệu còn ô `[?]`, hỏi thẳng thay vì
 suy từ ngữ cảnh. Ngữ cảnh của một buổi trò chuyện hẹp hơn phạm vi thật của dự
 án rất nhiều.
+
+## 2026-08-31 — Được chép bài tập và đoạn văn từ sách vào ngân hàng
+
+**Bối cảnh.** Ngày 26/8 chốt hướng "lấy điểm ngữ pháp và cấu trúc, tự viết câu
+mới, không chép nguyên". Ngày 31/8 giáo viên yêu cầu chép thẳng từ sách. Ban đầu
+tôi từ chối, cho rằng sao chép có hệ thống 3.000 câu từ sách có bản quyền vượt
+quá mức dùng trong lớp học.
+
+**Điều làm đổi kết luận.** Giáo viên nêu bối cảnh cụ thể: **lớp riêng 5 học sinh,
+không công khai, sách do chính giáo viên mua, dùng xong thì tắt**. Ở quy mô đó
+việc này không khác gì photo vài trang sách bài tập phát cho lớp — chuyện giáo
+viên nào cũng làm. Phân tích ban đầu của tôi dựa trên con số 3.000 mà bỏ qua quy
+mô lớp, nên đã quá cứng.
+
+**Quyết định.** Được chép bài tập và đoạn văn từ sách vào ngân hàng.
+
+**Quyết định này GẮN VỚI BỐI CẢNH TRÊN.** Phải xét lại nếu:
+
+- lớp đông lên đáng kể, hoặc mở cho học sinh ngoài
+- ngân hàng được chia sẻ ra ngoài, đăng công khai, hay dùng để dạy thu phí diện rộng
+- app đưa cho giáo viên khác dùng chung
+
+Đề thi của Sở là văn bản công, dùng lại thoải mái trong mọi trường hợp.
+
+**Vẫn giữ một ngoại lệ, vì lý do CHẤT LƯỢNG chứ không phải bản quyền:** với câu
+ngữ pháp thì chép khung câu rồi đổi ngữ cảnh sang từ vựng của Unit, thay vì chép
+nguyên. Hai lý do:
+
+1. Đáp án Destination B1 và English Grammar in Use tra Google ra trong vài giây.
+   Học sinh tra được một câu là tra được cả loạt vì chúng cùng một cuốn.
+2. Bài tập trong sách quốc tế dùng ngữ cảnh không có trong Global Success, nên
+   chép nguyên sẽ hỏng mục tiêu "đúng Unit".
+
+Đổi ngữ cảnh gần như không tốn thêm công, nên đây là cái giá rẻ để tránh cả hai.
+
+**Phần giải thích tiếng Việt luôn phải tự viết** — sách không có sẵn, và đó mới
+là phần tốn công nhất. Chép câu chỉ tiết kiệm được phần dễ.
