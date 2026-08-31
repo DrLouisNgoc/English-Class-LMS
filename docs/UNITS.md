@@ -104,12 +104,22 @@ Ra vài nghìn ký tự = bản chữ, dùng `pdftotext` là xong. Ra gần 0 = 
 
 | Bản chữ, dùng `pdftotext`             | Bản scan, phải OCR                     |
 | ------------------------------------- | -------------------------------------- |
-| Oxford 3000 / 5000                    | SGK Tiếng Anh **6, 7, 9**              |
+| Oxford 3000 / 5000                    | SGK Tiếng Anh **6, 7, 8, 9** (cả bốn)  |
 | Essential Grammar in Use              | Đề thi vào 10 Hà Nội 2026              |
 | English Grammar in Use (Intermediate) | English Vocabulary in Use (cả 3 quyển) |
 | Mai Lan Hương                         | Destination B1, B2                     |
 | Mindmap Global Success 6-9            |                                        |
-| SGK Tiếng Anh **8**                   |                                        |
+
+⚠️ **Đếm ký tự thôi chưa đủ để kết luận.** SGK lớp 8 lúc đầu bị xếp nhầm vào cột
+"bản chữ" vì `pdftotext` rút ra được ~2800 ký tự. Nhưng mở ra xem thì toàn bộ số
+đó là **watermark quảng cáo** của trang chia sẻ file (`blogtailieu.com` lặp đi
+lặp lại), không có một chữ nào của sách. Cả bốn quyển SGK đều là bản scan.
+
+Nên sau khi đếm, phải **nhìn thử vài dòng** rút được:
+
+```
+pdftotext -l 5 "ten-file.pdf" - | head -20
+```
 
 ### Công cụ đã cài (31/8)
 
