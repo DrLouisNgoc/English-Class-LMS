@@ -178,24 +178,33 @@ export type QuestionFilter = {
   skillTagId?: string;
 };
 
-// Số câu tối đa trang giao bài hiện ra một lần.
+// Số câu mỗi trang ở màn giao bài.
 //
-// CỐ Ý không phân trang ở đây như /questions: thầy tick chọn câu để giao bài,
-// mà chuyển trang là mất hết tick đã chọn. Thay vào đó giới hạn lại và nói rõ
-// còn bao nhiêu câu chưa hiện, để thầy lọc hẹp hơn — chọn 15-25 câu thì không
-// ai cần nhìn hết 300 câu cùng lúc.
+// Trước đây trang này KHÔNG phân trang vì sợ chuyển trang làm mất tick đã
+// chọn. Giờ QuestionPicker (components/QuestionPicker.tsx) tự lưu tick vào
+// localStorage nên chuyển trang không còn mất gì — có thể phân trang bình
+// thường như /questions.
 export const ASSIGN_QUESTION_LIMIT = 100;
 
 export type FilteredQuestions = {
   questions: Question[];
   // Tổng số câu THOẢ BỘ LỌC, có thể lớn hơn số câu trả về ở trên.
   total: number;
+  page: number;
+  totalPages: number;
 };
 
 // Đọc câu hỏi theo bộ lọc (khối/độ khó/kỹ năng) — dùng cho trang GV chọn câu
 // hỏi để giao bài. Chỉ lấy câu đã duyệt (status = "da_duyet").
-export async function getFilteredQuestions(filter: QuestionFilter): Promise<FilteredQuestions> {
+export async function getFilteredQuestions(
+  filter: QuestionFilter,
+  page = 1,
+): Promise<FilteredQuestions> {
   const supabase = createServerClient();
+
+  const currentPage = Math.max(1, Math.floor(page));
+  const from = (currentPage - 1) * ASSIGN_QUESTION_LIMIT;
+  const to = from + ASSIGN_QUESTION_LIMIT - 1;
 
   // Lọc theo kỹ năng phải đi qua bảng nối question_tags trước, lấy ra danh
   // sách question_id rồi mới lọc bảng questions — vì 1 câu có thể mang nhiều tag.
@@ -212,7 +221,7 @@ export async function getFilteredQuestions(filter: QuestionFilter): Promise<Filt
 
     questionIds = tagRows.map((row) => row.question_id);
     if (questionIds.length === 0) {
-      return { questions: [], total: 0 };
+      return { questions: [], total: 0, page: 1, totalPages: 1 };
     }
   }
 
@@ -222,7 +231,7 @@ export async function getFilteredQuestions(filter: QuestionFilter): Promise<Filt
     .eq("status", "da_duyet")
     .order("grade", { ascending: true })
     .order("id", { ascending: true })
-    .range(0, ASSIGN_QUESTION_LIMIT - 1);
+    .range(from, to);
 
   if (filter.grade) {
     query = query.eq("grade", filter.grade);
@@ -240,5 +249,12 @@ export async function getFilteredQuestions(filter: QuestionFilter): Promise<Filt
     throw new Error(`Không đọc được danh sách câu hỏi: ${error.message}`);
   }
 
-  return { questions: data, total: count ?? data.length };
+  const total = count ?? data.length;
+
+  return {
+    questions: data,
+    total,
+    page: currentPage,
+    totalPages: Math.max(1, Math.ceil(total / ASSIGN_QUESTION_LIMIT)),
+  };
 }

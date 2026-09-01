@@ -19,7 +19,13 @@ export default async function AssignPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; grade?: string; difficulty?: string; skill?: string }>;
+  searchParams: Promise<{
+    error?: string;
+    grade?: string;
+    difficulty?: string;
+    skill?: string;
+    trang?: string;
+  }>;
 }) {
   const teacherId = await getCurrentUserId();
   if (!teacherId) {
@@ -27,7 +33,7 @@ export default async function AssignPage({
   }
 
   const { id } = await params;
-  const { error, grade, difficulty, skill } = await searchParams;
+  const { error, grade, difficulty, skill, trang } = await searchParams;
 
   const klass = await getClassById(id, teacherId);
   if (!klass) {
@@ -35,11 +41,32 @@ export default async function AssignPage({
   }
 
   const skillTags = await getSkillTags();
-  const { questions, total: totalMatching } = await getFilteredQuestions({
-    grade: grade ? Number(grade) : undefined,
-    difficulty: difficulty || undefined,
-    skillTagId: skill || undefined,
-  });
+  const {
+    questions,
+    total: totalMatching,
+    page: currentPage,
+    totalPages,
+  } = await getFilteredQuestions(
+    {
+      grade: grade ? Number(grade) : undefined,
+      difficulty: difficulty || undefined,
+      skillTagId: skill || undefined,
+    },
+    Number(trang) || 1,
+  );
+
+  // Chuyển trang phải giữ nguyên bộ lọc đang chọn (khối/độ khó/kỹ năng),
+  // chỉ đổi mỗi "trang". Đổi bộ lọc thì cố ý quay về trang 1 (không thêm
+  // "trang" vào query của form Lọc), vì kết quả đã khác thì trang cũ không
+  // còn ý nghĩa gì.
+  function pageHref(targetPage: number): string {
+    const query = new URLSearchParams();
+    if (grade) query.set("grade", grade);
+    if (difficulty) query.set("difficulty", difficulty);
+    if (skill) query.set("skill", skill);
+    query.set("trang", String(targetPage));
+    return `/classes/${id}/assign?${query.toString()}`;
+  }
 
   const createAssignmentForClass = createAssignment.bind(null, id);
 
@@ -153,18 +180,39 @@ export default async function AssignPage({
 
         {error && <p className="mt-3 text-sm text-red-pen">{error}</p>}
 
-        {/* Danh sách bị cắt bớt thì phải NÓI RA. Im lặng cắt là kiểu lỗi tệ
-            nhất: thầy tưởng ngân hàng chỉ có bấy nhiêu câu. */}
-        {totalMatching > questions.length && (
-          <p className="mt-4 rounded-lg border border-gold/40 bg-gold/10 px-3 py-2 text-sm text-gold-dark">
-            Đang hiện {questions.length} câu đầu trong tổng số {totalMatching} câu khớp bộ lọc. Lọc
-            hẹp lại theo khối, độ khó hoặc kỹ năng để thấy những câu còn lại.
+        {totalMatching > 0 && (
+          <p className="mt-4 text-sm text-text/60">
+            Trang {currentPage}/{totalPages} · tổng {totalMatching} câu khớp bộ lọc
           </p>
         )}
 
         <div className="mt-4">
           <QuestionPicker classId={id} questions={questions} />
         </div>
+
+        {/* Nút chuyển trang giữ nguyên bộ lọc đang chọn qua pageQuery.
+            Câu đã tick không mất khi đổi trang vì QuestionPicker tự lưu vào
+            localStorage. */}
+        {totalPages > 1 && (
+          <nav className="mt-4 flex flex-wrap items-center gap-2">
+            {currentPage > 1 && (
+              <Link
+                href={pageHref(currentPage - 1)}
+                className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+              >
+                ← Trang trước
+              </Link>
+            )}
+            {currentPage < totalPages && (
+              <Link
+                href={pageHref(currentPage + 1)}
+                className="rounded-full border border-ink/30 bg-white px-3 py-1.5 text-sm font-medium text-ink hover:border-ink/40"
+              >
+                Trang sau →
+              </Link>
+            )}
+          </nav>
+        )}
 
         <SubmitButton
           pendingText="Đang tạo…"
