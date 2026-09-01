@@ -5,8 +5,8 @@ import { getCurrentUserId } from "@/lib/supabase/session";
 import { getClassById } from "@/lib/queries/classes";
 import { getFilteredQuestions, getSkillTags } from "@/lib/queries/questions";
 import { createAssignment } from "@/lib/actions/assignments";
-import { kindLabel, difficultyLabel } from "@/lib/questionLabels";
 import SubmitButton from "@/components/SubmitButton";
+import QuestionPicker from "@/components/QuestionPicker";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -162,34 +162,9 @@ export default async function AssignPage({
           </p>
         )}
 
-        {questions.length === 0 ? (
-          <p className="mt-4 text-text/60">Không có câu hỏi nào khớp bộ lọc.</p>
-        ) : (
-          <ul className="mt-4 flex flex-col gap-2">
-            {questions.map((question) => (
-              <li
-                key={question.id}
-                className="rounded-xl border border-surface-border bg-surface p-4"
-              >
-                <label className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    name="question_id"
-                    value={question.id}
-                    className="mt-1 accent-ink"
-                  />
-                  <span>
-                    <span className="block text-sm text-text/60">
-                      Khối {question.grade} · {difficultyLabel(question.difficulty)} ·{" "}
-                      {kindLabel(question.kind)}
-                    </span>
-                    <span className="block text-text">{question.content}</span>
-                  </span>
-                </label>
-              </li>
-            ))}
-          </ul>
-        )}
+        <div className="mt-4">
+          <QuestionPicker classId={id} questions={questions} />
+        </div>
 
         <SubmitButton
           pendingText="Đang tạo…"
