@@ -7,6 +7,7 @@ import { getFilteredQuestions, getSkillTags } from "@/lib/queries/questions";
 import { createAssignment } from "@/lib/actions/assignments";
 import SubmitButton from "@/components/SubmitButton";
 import QuestionPicker from "@/components/QuestionPicker";
+import AssignmentFields from "@/components/AssignmentFields";
 
 // Không prerender tĩnh lúc build — trang đọc dữ liệu theo người đang đăng nhập.
 export const dynamic = "force-dynamic";
@@ -69,6 +70,12 @@ export default async function AssignPage({
   }
 
   const createAssignmentForClass = createAssignment.bind(null, id);
+
+  // Vào thẳng /assign không kèm bộ lọc lẫn lỗi = thầy vừa bấm "Giao bài mới"
+  // từ đầu, không phải đang đổi bộ lọc hay sửa lỗi giữa chừng. Lúc này nên
+  // xoá tiêu đề/hạn nộp/câu đã chọn còn sót từ lần giao bài trước, không thì
+  // thầy dễ giao nhầm đề cũ mà không để ý.
+  const freshVisit = !grade && !difficulty && !skill && !trang && !error;
 
   return (
     <NotebookPage>
@@ -150,32 +157,7 @@ export default async function AssignPage({
 
       <form action={createAssignmentForClass}>
         <div className="mb-4 flex flex-wrap items-end gap-3 rounded-2xl border border-surface-border bg-surface p-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="title" className="text-sm font-medium text-text">
-              Tiêu đề bài
-            </label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              required
-              placeholder="BTVN tuần 4 - Bị động"
-              className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="due_at" className="text-sm font-medium text-text">
-              Hạn nộp
-            </label>
-            <input
-              id="due_at"
-              name="due_at"
-              type="datetime-local"
-              required
-              className="rounded-lg border border-ink/30 bg-white px-3 py-2 text-text outline-none focus:border-ink"
-            />
-          </div>
+          <AssignmentFields classId={id} freshVisit={freshVisit} />
         </div>
 
         {error && <p className="mt-3 text-sm text-red-pen">{error}</p>}
@@ -187,7 +169,7 @@ export default async function AssignPage({
         )}
 
         <div className="mt-4">
-          <QuestionPicker classId={id} questions={questions} />
+          <QuestionPicker classId={id} questions={questions} freshVisit={freshVisit} />
         </div>
 
         {/* Nút chuyển trang giữ nguyên bộ lọc đang chọn qua pageQuery.

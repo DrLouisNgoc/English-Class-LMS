@@ -31,9 +31,15 @@ function storageKey(classId: string): string {
 export default function QuestionPicker({
   classId,
   questions,
+  freshVisit,
 }: {
   classId: string;
   questions: PickableQuestion[];
+  // true khi thầy vừa bấm "Giao bài mới" từ đầu (URL không có bộ lọc lẫn
+  // lỗi) — lúc đó nên bỏ tick những câu đã chọn ở lần giao bài trước, không
+  // phải lúc đổi bộ lọc hay sửa lỗi giữa chừng (hai trường hợp đó vẫn cần
+  // giữ nguyên câu đã tick).
+  freshVisit: boolean;
 }) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -43,6 +49,14 @@ export default function QuestionPicker({
   // hợp bắt buộc: localStorage chỉ tồn tại ở trình duyệt, không có cách nào
   // đọc được lúc component vừa dựng lần đầu (kể cả trên server).
   useEffect(() => {
+    if (freshVisit) {
+      try {
+        localStorage.removeItem(storageKey(classId));
+      } catch {
+        // Bỏ qua nếu không xoá được.
+      }
+      return;
+    }
     try {
       const raw = localStorage.getItem(storageKey(classId));
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -52,7 +66,7 @@ export default function QuestionPicker({
       // Coi như chưa chọn gì (state đã mặc định là mảng rỗng), không báo lỗi
       // vì đây không phải lỗi nghiêm trọng.
     }
-  }, [classId]);
+  }, [classId, freshVisit]);
 
   function saveSelection(next: string[]) {
     setSelectedIds(next);
