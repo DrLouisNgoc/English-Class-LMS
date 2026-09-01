@@ -172,3 +172,138 @@ mục lục lấy đúng khoảng trang của Unit cần rồi OCR bấy nhiêu 
 
 Dấu tiếng Việt trong file Mindmap bị vỡ font khi rút bằng `pdftotext`, nhưng **từ
 vựng tiếng Anh thì nguyên vẹn** — phần cần dùng để soạn câu hỏi không bị ảnh hưởng.
+
+### ⚠️ Mindmap và Book Map dạng bảng/sơ đồ hay bị OCR đọc LỆCH Unit
+
+Phát hiện tối 1/9. `Mindmap-Global-Success-Lop-*.pdf` trình bày dạng sơ đồ tư
+duy (từ vựng toả quanh tên Unit ở giữa), và Book Map (trang 6-9 SGK) trình bày
+dạng bảng nhiều cột. `pdftotext`/OCR đọc theo thứ tự **vị trí trên trang**, không
+theo Unit, nên một cụm từ nằm ngay trước nhãn "Unit N:" thường thật ra thuộc về
+**Unit N** (Unit sắp tới), không phải Unit vừa xong — kiểm chứng bằng cách so
+với trang thật của chính Unit đó (ví dụ khối 8: Book Map gán "Sounds: /k/ và
+/g/" cho Unit 6, nhưng mở đúng trang Unit 4 thì trang đó tự ghi rõ đây là mục
+Pronunciation của **Unit 4**).
+
+**Quy tắc rút ra:** dùng Mindmap/Book Map để biết nhanh danh sách từ vựng/điểm
+ngữ pháp/âm luyện của **cả Unit**, nhưng khi cần gán chính xác một mục cho
+**đúng một Unit cụ thể** (đặc biệt là Pronunciation, vì chỉ 1-2 từ dễ đoán sai),
+phải mở đúng trang mở đầu Unit đó ("THIS UNIT INCLUDES") hoặc trang luyện âm
+("A Closer Look 1") để xác nhận, không suy từ vị trí trong bảng.
+
+### Cách dò trang mở đầu từng Unit nhanh (không cần quét cả sách)
+
+Mỗi Unit thường dài 8-10 trang PDF liền nhau (thêm 2 trang cho bài Review sau
+mỗi 3 Unit). Từ trang mở đầu Unit đã biết, +10 trang thường trúng Unit tiếp
+theo trong cùng cụm 3 Unit; qua khỏi một bài Review thì +12. Độ lệch **số trang
+in so với số trang PDF** đã dò được (chỉ dùng để tham khảo, luôn kiểm lại bằng
+mắt vì có thể lệch ở trang bìa/lời nói đầu):
+
+| Sách                        | Unit 1 ở trang PDF | Lệch (in = PDF + x) |
+| ---------------------------- | ------------------- | -------------------- |
+| Tiếng Anh 6 tập 1             | 7                    | không đổi (in = PDF) |
+| Tiếng Anh 6 tập 2 (Unit 7-12) | 7                    | không đổi             |
+| Tiếng Anh 7                   | 10                   | in = PDF − 2          |
+| Tiếng Anh 8                   | 14                   | chưa chốt              |
+| Tiếng Anh 9                   | 7                    | in = PDF − 1          |
+
+⚠️ **Riêng file Tiếng Anh 8 báo lỗi `No display font for 'Symbol'/'ArialUnicode'`
+khi OCR** — ký hiệu IPA trong file này có nguy cơ bị mất/đọc sai cao hơn 3 quyển
+còn lại. Với khối 8, đọc thêm từ ví dụ đi kèm để xác nhận, đừng chỉ tin ký hiệu
+IPA ở đầu mục Pronunciation.
+
+## Everyday English theo Unit (48/48 Unit — tra xong 1/9/2026)
+
+Chủ đề giao tiếp thật của từng Unit, tra trực tiếp từ mục "THIS UNIT INCLUDES"
+hoặc trang "COMMUNICATION" — không suy đoán. Dùng cho dạng bài "Giao tiếp/tình
+huống" (`com.functional_language`). Đã soạn xong câu hỏi cho toàn bộ 48 Unit
+này (xem `QUESTION-BANK.md`), bảng dưới đây giữ lại để dùng khi cần soạn thêm.
+
+### Lớp 6
+
+| Unit | Everyday English                                     |
+| ---- | ------------------------------------------------------ |
+| 1    | Introducing someone                                    |
+| 2    | Giving suggestions                                      |
+| 3    | Asking about appearance and personality                |
+| 4    | Asking for and giving directions                       |
+| 5    | Making and accepting appointments                      |
+| 6    | Saying New Year's wishes                                |
+| 7    | Asking for and giving information about TV programmes  |
+| 8    | Expressing and responding to congratulations            |
+| 9    | Expressing exclamations with What                      |
+| 10   | Expressing surprise                                      |
+| 11   | Giving warnings                                          |
+| 12   | Expressing agreement and disagreement                   |
+
+### Lớp 7
+
+| Unit | Everyday English                                             |
+| ---- | --------------------------------------------------------------- |
+| 1    | Talking about likes and dislikes                                |
+| 2    | Asking for and giving health tips                               |
+| 3    | Giving compliments                                                |
+| 4    | Expressing preferences                                            |
+| 5    | Asking and answering about prices                                |
+| 6    | Asking for details                                                |
+| 7    | Asking and answering questions about means of transport          |
+| 8    | Accepting and declining suggestions                              |
+| 9    | Expressing disappointment                                         |
+| 10   | Asking for explanations                                           |
+| 11   | Making predictions                                                |
+| 12   | Expressing amazement                                              |
+
+### Lớp 8
+
+| Unit | Everyday English                              |
+| ---- | ------------------------------------------------ |
+| 1    | Inviting and accepting invitations                |
+| 2    | Giving and responding to compliments              |
+| 3    | Making requests                                    |
+| 4    | Giving opinions                                    |
+| 5    | Giving advice                                      |
+| 6    | Expressing certainty                               |
+| 7    | Asking for clarification                           |
+| 8    | Making complaints                                  |
+| 9    | Giving and responding to bad news                  |
+| 10   | Interrupting politely                              |
+| 11   | Giving and responding to good news                 |
+| 12   | Expressing uncertainty                             |
+
+### Lớp 9
+
+| Unit | Everyday English                                             |
+| ---- | ---------------------------------------------------------------- |
+| 1    | Seeking help and responding                                       |
+| 2    | Offering help and responding                                      |
+| 3    | Asking for repetition and responding                              |
+| 4    | Thanking and responding                                           |
+| 5    | Apologising and responding                                        |
+| 6    | Making promises                                                    |
+| 7    | Asking for permission and responding                              |
+| 8    | Expressing obligation                                              |
+| 9    | Saying good luck and responding                                   |
+| 10   | Persuading someone to do something and responding                 |
+| 11   | Checking understanding and responding                             |
+| 12   | Expressing hope and responding                                    |
+
+## Ngữ âm theo Unit — khối 6 (xác minh 1/9/2026, dùng lại được ngay)
+
+Cặp âm/trọng âm chuẩn của từng Unit + từ ví dụ **lấy thật từ trang luyện âm**
+("A Closer Look 1") của chính Unit đó, không phải suy từ Book Map. Từ trọng âm
+đã tra chéo qua Wiktionary. Đã soạn câu hỏi cho toàn bộ danh sách này — xem
+`QUESTION-BANK.md`. Khối 7, 8 chưa làm (Việc số 3 đang dở).
+
+| Unit | Cặp âm / trọng âm | Từ ví dụ thật từ SGK                                              |
+| ---- | ------------------- | -------------------------------------------------------------------- |
+| 1    | /ɑː/ vs /ʌ/          | smart, art, class (/ɑː/) — subject, study, compass, Monday (/ʌ/)      |
+| 2    | /s/ vs /z/ (đuôi -s) | lamps, sinks, flats, toilets (/s/) — cupboards, sofas, kitchens, rooms (/z/) |
+| 3    | /b/ vs /p/           | big/pig, bear/pear, buy/pie, robe/rope (cặp tối thiểu SGK cho sẵn)   |
+| 4    | /ɪ/ vs /iː/          | dùng từ phổ thông an toàn: sit, fish, big (/ɪ/) — sheep (/iː/)         |
+| 5    | /t/ vs /d/           | mountain, desert, plaster (/t/) — wonder, island, guide, holiday (/d/) |
+| 6    | /s/ vs /ʃ/           | spring, celebrate, rice (/s/) — shopping, special, wish (/ʃ/)         |
+| 7    | /ð/ vs /θ/           | there, them, weather, than, neither (/ð/) — through, both, anything, earth (/θ/) |
+| 8    | /e/ vs /æ/           | chess, tennis, exercise, contest (/e/) — racket, match, marathon, active (/æ/) |
+| 9    | /aʊ/ vs /əʊ/         | crowded, house, town, tower (/aʊ/) — postcard, coast, boat, pagoda (/əʊ/) |
+| 10   | Trọng âm từ 2 âm tiết | Ví dụ 1 âm tiết đầu (SGK cho sẵn): picture, robot, bedroom, kitchen, palace, village. Cần tự tìm thêm từ trọng âm âm tiết 2 để làm câu "khác vị trí" — đã tra: hotel, guitar (Wiktionary) |
+| 11   | Rhythm in sentences  | Trọng âm **câu**, không phải trọng âm từ — không hợp với dạng `pho.stress` hiện có |
+| 12   | Tones in statements  | Ngữ điệu câu — không hợp với dạng `pho.stress` hiện có, cần dạng bài riêng nếu muốn dùng |

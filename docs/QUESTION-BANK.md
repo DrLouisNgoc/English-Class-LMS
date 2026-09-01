@@ -26,21 +26,32 @@ một bài. Đó là hại chứ không phải lợi.
 
 ## Bản đồ phủ — theo dạng bài
 
-| #   | Dạng bài                | Mục tiêu  | Skill tag                                               |
-| --- | ----------------------- | --------- | ------------------------------------------------------- |
-| 1   | Ngữ âm — phát âm        | 150       | `pho.pronunciation`                                     |
-| 2   | Ngữ âm — trọng âm       | 150       | `pho.stress`                                            |
-| 3   | Ngữ pháp (chọn đáp án)  | 750       | `gra.*`                                                 |
-| 4   | Từ vựng (chọn đáp án)   | 550       | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
-| 5   | Giao tiếp / tình huống  | 200       | `com.functional_language`                               |
-| 6   | Tìm lỗi sai             | 150       | `gra.error_identification`                              |
-| 7   | Đồng nghĩa / trái nghĩa | 150       | `voc.synonym_antonym`                                   |
-| 8   | Điền từ vào đoạn văn    | 250       | `read.vocab_in_context` + `passage_id`                  |
-| 9   | Đọc hiểu                | 350       | `read.*` + `passage_id`                                 |
-| 10  | Sắp xếp câu thành đoạn  | 100       | `wri.sentence_ordering`                                 |
-| 11  | Viết lại câu            | 100       | `wri.sentence_transformation`                           |
-| 12  | Viết câu từ gợi ý       | 100       | `wri.sentence_building`                                 |
-|     | **Tổng**                | **3.000** |                                                         |
+Cột "Có" cập nhật tối 1/9, sau Việc số 1, Việc số 2 và một phần Việc số 3. Một
+câu có thể mang nhiều tag (câu điền đoạn văn thường có thêm tag đọc hiểu phụ),
+nên cộng cột "Có" lại sẽ **lớn hơn** tổng số câu thật trong ngân hàng — đây là
+cách đếm độ phủ, không phải phép chia đoạn.
+
+| #   | Dạng bài                | Có  | Mục tiêu  | Skill tag                                               |
+| --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
+| 1   | Ngữ âm — phát âm        | 20  | 150       | `pho.pronunciation`                                     |
+| 2   | Ngữ âm — trọng âm       | 12  | 150       | `pho.stress`                                            |
+| 3   | Ngữ pháp (chọn đáp án)  | 415 | 750       | `gra.*` (trừ `gra.error_identification`)                |
+| 4   | Từ vựng (chọn đáp án)   | 59  | 550       | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
+| 5   | Giao tiếp / tình huống  | 195 | 200       | `com.functional_language`                               |
+| 6   | Tìm lỗi sai             | 153 | 150       | `gra.error_identification`                              |
+| 7   | Đồng nghĩa / trái nghĩa | 153 | 150       | `voc.synonym_antonym`                                   |
+| 8   | Điền từ vào đoạn văn    | 250 | 250       | `read.vocab_in_context` + `passage_id`                  |
+| 9   | Đọc hiểu                | 361 | 350       | `read.*` + `passage_id`                                 |
+| 10  | Sắp xếp câu thành đoạn  | 2   | 100       | `wri.sentence_ordering`                                 |
+| 11  | Viết lại câu            | 2   | 100       | `wri.sentence_transformation`                           |
+| 12  | Viết câu từ gợi ý       | 2   | 100       | `wri.sentence_building`                                 |
+|     | **Tổng**                |     | **3.000** |                                                         |
+
+**Dạng 8 và 9 đã đạt hoặc vượt mục tiêu** — dừng soạn thêm hai dạng này trừ khi
+thầy yêu cầu riêng. **Dạng 10/11/12 (thầy chấm tay) gần như chưa đụng tới** —
+đây sẽ là việc lớn còn lại sau ngữ âm và câu Khó. Máy không chấm được kiểu này
+nên cần thiết kế thêm màn hình chấm tay trước khi soạn ồ ạt (xem `TASKS.md` và
+`decisions.md` mục 26/8 "Ba dạng câu hỏi phủ hết đề thi").
 
 ## Bản đồ phủ — theo khối
 
@@ -61,40 +72,44 @@ một bài. Đó là hại chứ không phải lợi.
 
 Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh.
 
-## Tiến độ (31/8/2026)
+## Tiến độ (1/9/2026 tối)
 
-**271 / 3.000 câu — 9%**
+**1.383 / 3.000 câu — 46%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 51  | 700      | 649       |
-| 7    | 75  | 700      | 625       |
-| 8    | 50  | 700      | 650       |
-| 9    | 95  | 900      | 805       |
+| 6    | 333 | 700      | 367       |
+| 7    | 348 | 700      | 352       |
+| 8    | 322 | 700      | 378       |
+| 9    | 380 | 900      | 520       |
 
 | Độ khó     | Có  | Mục tiêu |
 | ---------- | --- | -------- |
-| Dễ         | 104 | 900      |
-| Trung bình | 137 | 1.500    |
-| Khó        | 30  | 600      |
+| Dễ         | 591 | 900      |
+| Trung bình | 631 | 1.500    |
+| Khó        | 161 | 600      |
 
 ## Lỗ hổng lớn nhất, theo thứ tự nghiêm trọng
 
-**1. Gần như chỉ có một dạng bài.** 270/271 câu là trắc nghiệm, đúng **1 câu điền
-chữ**. App chấm được cả hai dạng từ 26/8 nhưng ngân hàng chưa dùng.
+Danh sách này đã đổi hẳn so với bản 31/8 — ba lỗ hổng nghiêm trọng nhất lúc đó
+(chỉ một dạng bài, đọc hiểu bằng 0, ba dạng trắng hoàn toàn) **đã được lấp** ở
+Việc số 1 và Việc số 2 (xem "Thứ tự thi công đã chốt" bên dưới). Còn lại:
 
-**2. Chưa có đoạn văn đọc hiểu nào.** Bảng `passages` **rỗng**, không câu nào có
-`passage_id`. Tính năng bài đọc hiểu dùng chung đoạn văn làm xong từ 26/8 (C2)
-nhưng **chưa từng được dùng**. Hai dạng số 8 và 9 — cộng lại 600 câu, tức 20% mục
-tiêu — hiện là con số 0.
+**1. Câu Khó mới đạt 27% mục tiêu** (161/600). Nghiêm trọng nhất hiện tại — thiếu
+câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh giỏi/yếu. Đây là
+Việc số 4 trong thứ tự đã chốt, làm sau khi xong ngữ âm.
 
-**3. Ba dạng bài trống hoàn toàn:** Giao tiếp (0), Tìm lỗi sai (0), Đồng nghĩa /
-trái nghĩa (0). Cộng lại 500 câu chưa có gì.
+**2. Ngữ âm gần như trống ở khối 6, 7, 8.** Khối 6 đã có 11 câu (9 phát âm + 2
+trọng âm, xong tối 1/9). Khối 7, 8 vẫn 0 — chỉ khối 9 có sẵn 21 câu từ trước.
+Đây là Việc số 3, đang làm dở (xem mục "Thứ tự thi công đã chốt").
 
-**4. Ngữ âm chỉ có ở khối 9.** 21 câu, toàn bộ gắn khối 9. Khối 6, 7, 8 chưa có
-câu ngữ âm nào.
+**3. Ba dạng thầy chấm tay gần như chưa đụng tới:** Sắp xếp câu (2/100), Viết lại
+câu (2/100), Viết câu từ gợi ý (2/100). Máy chưa chấm được ba dạng này (xem
+`decisions.md` mục 26/8) nên cần thiết kế màn hình chấm tay trước khi soạn ồ ạt
+— việc lớn, chưa xếp vào thứ tự thi công hiện tại.
 
-**5. Câu Khó mới đạt 5% mục tiêu** (30/600).
+**4. Từ vựng (chọn đáp án) mới 59/550** — dạng số 4 trong bản đồ phủ, chưa được
+ưu tiên soạn riêng (khác với dạng 7 "Đồng nghĩa/trái nghĩa" đã xong).
 
 ## Quy trình soạn
 
@@ -150,39 +165,55 @@ Database còn có **8 ràng buộc CHECK** tự chặn lỗi cấu trúc (xem `S
 nhưng chúng **không bắt được câu sai kiến thức hay tối nghĩa** — việc đó chỉ giáo
 viên làm được. Nên vẫn phải xem lại bằng mắt.
 
-## Thứ tự thi công đã chốt (31/8)
+## Thứ tự thi công đã chốt (31/8, cập nhật tiến độ 1/9)
 
 Làm tuần tự, không nhảy cóc. Lý do xếp thứ tự này: việc trên vừa lấp lỗ hổng lớn
 nhất vừa mở khoá nhiều câu nhất cho mỗi đơn vị công sức bỏ ra.
 
-### 1. Đọc hiểu + điền từ vào đoạn văn — 600 câu
+### 1. ✅ Đọc hiểu + điền từ vào đoạn văn — 600 câu (XONG 1/9)
 
-Mở khoá hai dạng đang bằng 0, chiếm 20% mục tiêu. Tính năng đoạn văn dùng chung
-(C2) đã làm xong 26/8 nhưng chưa dùng lần nào, nên đây là công đã bỏ ra rồi mà
-đang nằm không.
+Kết quả: **120 đoạn văn, 600 câu** (250 điền từ + 350 đọc hiểu, đủ 48 Unit, mỗi
+Unit 2-3 đoạn văn không trùng chủ đề/nhân vật). Bảng `passages` từ 0 → 120 dòng.
 
-Cách làm: mỗi đoạn văn ~150-200 từ theo chủ đề một Unit, kèm 5 câu hỏi. Ghi vào
-bảng `passages` trước để lấy `id`, rồi gắn `passage_id` cho từng câu. Cần khoảng
-**120 đoạn văn** cho đủ 600 câu.
+### 2. ✅ Giao tiếp + Tìm lỗi sai + Đồng nghĩa/trái nghĩa — 500 câu (XONG 1/9)
 
-### 2. Giao tiếp + Tìm lỗi sai + Đồng nghĩa/trái nghĩa — 500 câu
+Kết quả: Giao tiếp 195/200, Tìm lỗi sai 153/150, Đồng nghĩa/trái nghĩa 153/150.
+Phủ đủ 48 Unit cho cả ba dạng.
 
-Ba dạng trống hoàn toàn. Soạn nhanh vì không cần đoạn văn.
+**Ghi chú cho việc tương tự sau này — Giao tiếp cần chủ đề "Everyday English"
+thật của từng Unit, không đoán được từ trí nhớ và không có trong Mindmap/Book
+Map dạng chữ.** Phải OCR đúng trang đầu Unit (mục "THIS UNIT INCLUDES") hoặc
+trang "COMMUNICATION" giữa Unit. **Toàn bộ 48 chủ đề đã tra xong, lưu ở
+`docs/UNITS.md` mục "Everyday English theo Unit"** — phiên sau cần lại thì tra
+ở đó trước, đừng OCR lại.
 
-Riêng **Tìm lỗi sai** cần gạch chân bốn phần A/B/C/D trong câu — dùng quy ước
-ngoặc vuông `He [have] been living here [since] 2010` (xem `SCHEMA.md`).
+### 3. ⏳ Ngữ âm cho khối 6, 7, 8 — ~230 câu (ĐANG DỞ — khối 6 xong, khối 7/8 chưa)
 
-### 3. Ngữ âm cho khối 6, 7, 8 — ~230 câu
+Hiện trạng 1/9 tối: khối 6 xong 11 câu (9 phát âm phủ đủ 9 Unit có cặp âm, 2
+trọng âm từ Unit 10). Khối 7, 8 chưa làm — 24 Unit còn lại.
 
-Hiện 21 câu ngữ âm đều gắn khối 9. Đề kiểm tra khối nào cũng mở đầu bằng phần này.
+**Hai phát hiện kỹ thuật quan trọng, đọc trước khi làm tiếp** (chi tiết đầy đủ ở
+`decisions.md` mục 1/9):
 
-Bắt buộc tra trọng âm trong từ điển Cambridge trước khi ra câu — đề trọng âm trôi
-nổi trên mạng sai rất nhiều.
+1. **Book Map dạng bảng (trang 6-9 SGK) bị OCR đọc lệch cột** khi có nhiều Unit
+   xếp cạnh nhau — ví dụ khối 8 Book Map gán nhầm "Sounds: /k/ và /g/" cho Unit 6
+   trong khi trang thật của Unit 4 mới đúng là /k/ và /g/. **Không tin Book Map
+   dạng bảng cho việc này** — phải OCR đúng trang "A Closer Look 1" (mục
+   Pronunciation) của từng Unit, đọc luôn cả các từ ví dụ đi kèm để chắc cú, không
+   chỉ đọc ký hiệu IPA ở đầu mục (ký hiệu IPA rất hay bị OCR đọc sai/mất dấu).
+2. **Cambridge Dictionary chặn `WebFetch` (403 Forbidden)** khi cần tra trọng âm.
+   Dùng `en.wiktionary.org/wiki/<từ>` thay thế — `WebFetch` đọc được, có IPA và
+   ghi rõ âm tiết trọng âm.
+
+**Kết quả đã xác minh của khối 6, lưu ở `docs/UNITS.md`** mục "Ngữ âm theo Unit
+— khối 6" — gồm cặp âm chuẩn + từ ví dụ thật lấy từ đúng trang luyện âm của từng
+Unit, dùng lại được ngay không cần tra lại.
 
 ### 4. Bù câu Khó — lên 600
 
-Mới 30/600. Không đủ câu Khó thì đề trộn ra bị phẳng, không phân loại được học
-sinh. Từ bước này trở đi mỗi lô soạn phải giữ tỉ lệ 30% Dễ / 50% TB / 20% Khó.
+Hiện 161/600 (27%). Không đủ câu Khó thì đề trộn ra bị phẳng, không phân loại
+được học sinh. Từ bước này trở đi mỗi lô soạn phải giữ tỉ lệ 30% Dễ / 50% TB /
+20% Khó.
 
 ### 5. Soạn dày thêm theo Unit cho tới 3.000
 

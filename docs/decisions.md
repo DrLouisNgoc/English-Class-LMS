@@ -476,3 +476,47 @@ nguyên. Hai lý do:
 
 **Phần giải thích tiếng Việt luôn phải tự viết** — sách không có sẵn, và đó mới
 là phần tốn công nhất. Chép câu chỉ tiết kiệm được phần dễ.
+
+## 2026-09-01 — Ba lỗi giao diện cùng một gốc: form GET tải lại trang thì mất hết state chưa gửi
+
+**Phát hiện:** trang `/classes/[id]/assign` (giao bài mới) có 3 lỗi tưởng như
+khác nhau nhưng cùng một nguyên nhân — nút "Lọc" nằm trong `<form method="get">`
+riêng, bấm là **tải lại cả trang** với query string mới:
+
+1. Câu hỏi đã tick chọn bị mất trắng khi đổi bộ lọc.
+2. Chữ đang gõ ở "Tiêu đề bài" và "Hạn nộp" cũng mất theo.
+3. Ngân hàng câu hỏi giới hạn cứng 100 câu, không có nút xem tiếp — cố tình bỏ
+   phân trang từ đầu (xem `lib/queries/questions.ts`) chính vì sợ chuyển trang
+   cũng gây mất tick giống lỗi 1.
+
+**Cách sửa, dùng chung một pattern cho cả ba:** lưu state vào `localStorage`
+của trình duyệt, khoá theo `classId`, qua hai component client mới —
+`components/QuestionPicker.tsx` (câu đã chọn) và `components/AssignmentFields.tsx`
+(tiêu đề/hạn nộp). Component tự đọc lại `localStorage` mỗi lần trang tải lại,
+kể cả sau khi đổi bộ lọc hoặc chuyển trang. Có `freshVisit` (tính từ URL không
+kèm bộ lọc/lỗi = vừa bấm "Giao bài mới" từ đầu) để **chủ động xoá** dữ liệu cũ
+lúc bắt đầu giao bài mới thật sự — tránh giao nhầm đề cũ mà không để ý. Sau khi
+sửa, phân trang thật đã thêm lại được an toàn (giống hệt cách `/questions` đã
+làm), vì tick không còn phụ thuộc vào việc ở nguyên một trang nữa.
+
+**Pattern dùng chung cho form nào sau này gặp lỗi tương tự:** đọc `localStorage`
+trong `useEffect` (không đọc lúc render đầu vì server không có `localStorage`) —
+ESLint (`react-hooks/set-state-in-effect`) sẽ cảnh báo gọi `setState` trong
+effect, nhưng đây là trường hợp hợp lệ cần tắt cảnh báo có chú thích rõ lý do,
+không phải bug cần né bằng `useSyncExternalStore` (over-engineering cho form đơn
+giản của một trình duyệt, không phải state dùng chung nhiều tab/nhiều người xem).
+
+## 2026-09-01 — Cambridge Dictionary chặn WebFetch, dùng Wiktionary tra trọng âm thay thế
+
+`dictionary.cambridge.org` trả **403 Forbidden** khi gọi bằng tool `WebFetch`
+(chặn bot). `en.wiktionary.org/wiki/<từ>` đọc được bình thường, có ký hiệu IPA
+đầy đủ và ghi rõ âm tiết trọng âm bằng dấu `ˈ`. Từ nay tra trọng âm dùng
+Wiktionary, không mất công thử Cambridge trước nữa.
+
+## 2026-09-01 — Book Map/Mindmap dạng bảng bị OCR đọc lệch Unit, không tin trực tiếp
+
+Xem chi tiết đầy đủ + bảng dữ liệu đã xác minh ở `docs/UNITS.md` mục "⚠️ Mindmap
+và Book Map dạng bảng/sơ đồ hay bị OCR đọc LỆCH Unit". Tóm tắt: bảng nhiều cột
+bị đọc theo thứ tự vị trí trên trang chứ không theo đúng Unit, nên một mục
+(đặc biệt là Pronunciation) rất dễ bị gán nhầm sang Unit liền kề. Phải xác nhận
+lại bằng cách mở đúng trang của Unit đó trước khi tin.
