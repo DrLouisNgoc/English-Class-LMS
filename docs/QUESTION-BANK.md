@@ -74,19 +74,19 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**1.968 / 3.000 câu — 66%**
+**2.008 / 3.000 câu — 67%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 469 | 700      | 231       |
-| 7    | 497 | 700      | 203       |
-| 8    | 477 | 700      | 223       |
-| 9    | 525 | 900      | 375       |
+| 6    | 477 | 700      | 223       |
+| 7    | 507 | 700      | 193       |
+| 8    | 488 | 700      | 212       |
+| 9    | 536 | 900      | 364       |
 
 | Độ khó     | Có    | Mục tiêu |
 | ---------- | ----- | -------- |
-| Dễ         | 670   | 900      |
-| Trung bình | 689   | 1.500    |
+| Dễ         | 689   | 900      |
+| Trung bình | 710   | 1.500    |
 | Khó        | 609   | 600 — ĐẠT |
 
 ⚠️ **Số liệu "Có" ở đây là TỔNG toàn ngân hàng — không nói lên độ phủ theo
@@ -269,6 +269,15 @@ Khó, thiếu hẳn Dễ để ra đề cho học sinh yếu. Đã bù đợt đ
   `gra.passive` (11/4). Phát hiện và sửa 1 câu trùng đề bài do tự lặp lại
   ("The letter ______ yesterday." dùng cho cả khối 7 và khối 9) — nhắc để ý
   khi soạn nhiều câu cùng cấu trúc ngữ pháp dễ vô tình gõ trùng câu mẫu.
+- **Đợt 3: +40 câu Dễ/TB** cho `gra.word_form` (2 Dễ trước đợt, gần như trắng),
+  `gra.comparison`, và bù thêm `voc.collocation`/`voc.phrasal_verb` (vẫn còn
+  Khó áp đảo sau đợt 2). Ngân hàng vượt mốc **2.000 câu** ở đợt này.
+
+Ba đợt cộng lại: **+120 câu Dễ/TB**, không thêm câu Khó nào (mục tiêu Khó đã
+đạt). Vẫn còn lệch nhẹ: `gra.grammar_general` (bucket gộp lớn nhất, Khó vẫn
+nhỉnh hơn) và các `read.*` (đọc hiểu) — độ khó của `read.*` gắn theo đoạn văn
+dùng chung nên phải cân ở cấp đoạn văn, không sửa được bằng cách thêm câu rời
+như trên; để lại cho một đợt riêng nếu cần.
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
