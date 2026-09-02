@@ -35,7 +35,7 @@ cách đếm độ phủ, không phải phép chia đoạn.
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
 | 1   | Ngữ âm — phát âm        | 36  | 150       | `pho.pronunciation`                                     |
 | 2   | Ngữ âm — trọng âm       | 16  | 150       | `pho.stress`                                            |
-| 3   | Ngữ pháp (chọn đáp án)  | 415 | 750       | `gra.*` (trừ `gra.error_identification`)                |
+| 3   | Ngữ pháp (chọn đáp án)  | 455 | 750       | `gra.*` (trừ `gra.error_identification`)                |
 | 4   | Từ vựng (chọn đáp án)   | 59  | 550       | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | 195 | 200       | `com.functional_language`                               |
 | 6   | Tìm lỗi sai             | 153 | 150       | `gra.error_identification`                              |
@@ -74,20 +74,20 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026)
 
-**1.403 / 3.000 câu — 47%**
+**1.443 / 3.000 câu — 48%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 333 | 700      | 367       |
-| 7    | 358 | 700      | 342       |
-| 8    | 332 | 700      | 368       |
-| 9    | 380 | 900      | 520       |
+| 6    | 343 | 700      | 357       |
+| 7    | 368 | 700      | 332       |
+| 8    | 342 | 700      | 358       |
+| 9    | 390 | 900      | 510       |
 
 | Độ khó     | Có  | Mục tiêu |
 | ---------- | --- | -------- |
 | Dễ         | 611 | 900      |
 | Trung bình | 631 | 1.500    |
-| Khó        | 161 | 600      |
+| Khó        | 201 | 600      |
 
 ## Lỗ hổng lớn nhất, theo thứ tự nghiêm trọng
 
@@ -95,9 +95,9 @@ Danh sách này đã đổi hẳn so với bản 31/8 — ba lỗ hổng nghiêm
 (chỉ một dạng bài, đọc hiểu bằng 0, ba dạng trắng hoàn toàn) **đã được lấp** ở
 Việc số 1 và Việc số 2 (xem "Thứ tự thi công đã chốt" bên dưới). Còn lại:
 
-**1. Câu Khó mới đạt 27% mục tiêu** (161/600). Nghiêm trọng nhất hiện tại — thiếu
+**1. Câu Khó mới đạt 34% mục tiêu** (201/600). Nghiêm trọng nhất hiện tại — thiếu
 câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh giỏi/yếu. Đây là
-Việc số 4 trong thứ tự đã chốt, làm tiếp theo.
+Việc số 4 trong thứ tự đã chốt, đang làm dở (xem mục "Thứ tự thi công đã chốt").
 
 **2. Ngữ âm khối 6, 7, 8 đã xong phần soạn được** (Việc số 3 hoàn tất 2/9,
 xem mục "Thứ tự thi công đã chốt"). Khối 6: 11 câu, khối 7: 10 câu, khối 8: 10
@@ -218,11 +218,28 @@ cùng một cặp âm — soạn thêm biến thể sẽ làm ở bước 5 "So�
 — khối 6" — gồm cặp âm chuẩn + từ ví dụ thật lấy từ đúng trang luyện âm của từng
 Unit, dùng lại được ngay không cần tra lại.
 
-### 4. Bù câu Khó — lên 600
+### 4. ⏳ Bù câu Khó — lên 600 (ĐANG DỞ)
 
-Hiện 161/600 (27%). Không đủ câu Khó thì đề trộn ra bị phẳng, không phân loại
+Hiện 201/600 (34%). Không đủ câu Khó thì đề trộn ra bị phẳng, không phân loại
 được học sinh. Từ bước này trở đi mỗi lô soạn phải giữ tỉ lệ 30% Dễ / 50% TB /
 20% Khó.
+
+**Đợt 1 (2/9): +40 câu ngữ pháp Khó**, 10 câu/khối, dàn đều các Unit và các
+điểm ngữ pháp còn mỏng (`gra.modal_verb`, `gra.relative_clause`,
+`gra.conditional`, `gra.reported_speech`, `gra.gerund_infinitive`,
+`gra.word_form`, `gra.comparison`, `gra.article`, `gra.preposition`). Vừa lấp
+Việc số 4 vừa lấp thêm dạng bài #3 (ngữ pháp chọn đáp án, 415 → 455/750).
+
+**Lệch khỏi quy trình đã ghi ở trên — cần biết trước khi làm tiếp:** quy trình
+"Câu Khó chép thẳng từ Mai Lan Hương" **không thực hiện được** với đợt này vì
+lý do kỹ thuật, không phải đổi ý — xem `decisions.md` mục 2/9 "Mai Lan Hương
+PDF lỗi font, không chép được". Đợt 1 là **tự soạn** các bẫy ngữ pháp kinh
+điển (not only...but also, needn't/mustn't, regret to V/V-ing, mixed
+conditional, whose/which/who trong mệnh đề quan hệ, v.v.), không copy nguyên
+văn từ sách nào — giữ nguyên chuẩn đúng ngữ pháp nhưng câu do AI viết mới.
+Nếu muốn quay lại đúng quy trình chép sách cho các đợt sau, cần thầy tự đọc
+trực tiếp từ file PDF (không qua `pdftotext`) và gõ lại câu, hoặc chấp nhận
+cách tự soạn này tiếp tục.
 
 ### 5. Soạn dày thêm theo Unit cho tới 3.000
 

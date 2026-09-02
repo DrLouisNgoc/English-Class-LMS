@@ -520,3 +520,33 @@ và Book Map dạng bảng/sơ đồ hay bị OCR đọc LỆCH Unit". Tóm tắ
 bị đọc theo thứ tự vị trí trên trang chứ không theo đúng Unit, nên một mục
 (đặc biệt là Pronunciation) rất dễ bị gán nhầm sang Unit liền kề. Phải xác nhận
 lại bằng cách mở đúng trang của Unit đó trước khi tin.
+
+## 2026-09-02 — Mai Lan Hương PDF lỗi font, không chép được bằng `pdftotext`
+
+Quy trình 31/8 (`QUESTION-BANK.md` mục "Quy trình soạn") ghi rõ **câu Khó chép
+thẳng từ Mai Lan Hương**. Khi bắt tay vào Việc số 4 (bù câu Khó), chạy
+`pdftotext` trên file `GIẢI THÍCH NGỮ PHÁP TIẾNG ANH (MAI LAN HƯƠNG).pdf` thì
+chữ tiếng Việt ra sai hoàn toàn — ví dụ "GIẢI THÍCH NGỮ PHÁP" đọc ra "GIAI
+THICH NGU PHAP", "chương" ra "chuang". Đây là PDF gõ bằng bảng mã cũ (kiểu
+VNI/TCVN3) nhúng font riêng, `pdftotext` không dịch lại được — khác hẳn lỗi OCR
+đã gặp trước đó (file này CÓ lớp chữ thật, không phải bản scan). Không thử OCR
+thay thế vì OCR chỉ dùng cho bản scan ảnh, ở đây vấn đề là font/encoding của
+lớp chữ có sẵn, OCR không sửa được.
+
+**Ảnh hưởng:** không lấy nguyên văn câu tiếng Việt (giải thích) từ sách này
+được nữa qua công cụ. Phần tiếng Anh của các câu ví dụ trong sách thường không
+bị lỗi (do dùng font chuẩn ASCII), nhưng việc dò đúng câu bài tập nào ở trang
+nào vẫn cần đọc phần tiếng Việt xung quanh để hiểu ngữ cảnh — mà phần đó bị hỏng.
+
+**Quyết định:** với đợt bù câu Khó đầu tiên (40 câu, khối 6-9), chuyển sang
+**tự soạn** các bẫy ngữ pháp kinh điển (not only...but also, needn't/mustn't,
+regret to-V/V-ing, mixed conditional, whose/which/who trong mệnh đề quan hệ,
+v.v.) thay vì chép nguyên văn — vẫn đúng chuẩn ngữ pháp nhưng câu do AI viết
+mới, giải thích tiếng Việt vẫn tự viết như quy trình cũ đã yêu cầu (mục này
+không đổi). Ghi rõ đây là lệch quy trình có chủ đích, không phải quên — xem
+`QUESTION-BANK.md` mục "Thứ tự thi công đã chốt" > Việc số 4.
+
+Nếu vẫn muốn chép nguyên văn Mai Lan Hương ở các đợt sau: cách duy nhất là mở
+file bằng trình đọc PDF thường (không qua `pdftotext`) — phần mềm đọc PDF tự
+dịch đúng font nhúng, chỉ công cụ dòng lệnh mới đọc sai. Việc này cần mở PDF
+thủ công (ngoài khả năng của Claude Code), tốn công hơn hẳn `pdftotext`.
