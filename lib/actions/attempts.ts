@@ -151,7 +151,7 @@ export async function submitAttempt(assignmentId: string, attemptId: string) {
   }
 
   const total = assignmentQuestions.length;
-  const score = total === 0 ? 0 : Math.round((correctCount / total) * 100 * 100) / 100;
+  const score = total === 0 ? 0 : Math.round((correctCount / total) * 10 * 10) / 10;
 
   const { error: submitError } = await supabase
     .from("attempts")

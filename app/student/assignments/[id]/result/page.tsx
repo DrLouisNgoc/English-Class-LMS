@@ -48,11 +48,14 @@ export default async function AssignmentResultPage({
       </h1>
 
       {/* Điểm số đóng dấu như con dấu chấm bài của giáo viên */}
-      <div className="mb-8 flex justify-center md:mb-12">
+      <div className="mb-8 flex flex-col items-center gap-2 md:mb-12">
         <div className="flex -rotate-3 flex-col items-center justify-center rounded-full border-4 border-red-pen px-6 py-5 text-red-pen md:px-9 md:py-7">
           <span className="font-display text-4xl font-bold md:text-6xl">{result.score}</span>
           <span className="text-xs font-medium tracking-wide md:text-sm">ĐIỂM</span>
         </div>
+        <p className="text-sm text-text/60 md:text-base">
+          Đúng {result.questions.filter((q) => q.is_correct).length}/{result.questions.length} câu
+        </p>
       </div>
 
       {/* Lời phê là tuỳ chọn — thầy không viết thì khối này không hiện.

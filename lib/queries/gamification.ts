@@ -2,8 +2,8 @@ import { createServerClient } from "@/lib/supabase/server";
 import { getStudentSkillStats } from "@/lib/queries/students";
 
 // Điểm thưởng cộng thêm cho mỗi bài nộp trước hạn — để khuyến khích nộp đúng
-// hạn chứ không chỉ chạy theo điểm số.
-const ON_TIME_BONUS = 10;
+// hạn chứ không chỉ chạy theo điểm số. Canh theo thang điểm 10 (10% điểm tối đa).
+const ON_TIME_BONUS = 1;
 
 // Đổi một mốc thời gian sang "ngày nào theo giờ Việt Nam", dạng 2026-08-23.
 // Cách làm: cộng thêm 7 tiếng rồi lấy phần ngày. Giờ Việt Nam luôn là UTC+7,
@@ -90,7 +90,7 @@ export async function getStudentProgress(studentId: string): Promise<StudentProg
   for (const attempt of attempts) {
     totalPoints += attempt.score ?? 0;
 
-    if (attempt.score === 100) {
+    if (attempt.score === 10) {
       hasPerfectScore = true;
     }
 
