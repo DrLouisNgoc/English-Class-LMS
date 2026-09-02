@@ -26,15 +26,15 @@ một bài. Đó là hại chứ không phải lợi.
 
 ## Bản đồ phủ — theo dạng bài
 
-Cột "Có" cập nhật tối 1/9, sau Việc số 1, Việc số 2 và một phần Việc số 3. Một
+Cột "Có" cập nhật tối 2/9, sau Việc số 1, Việc số 2 và phần lớn Việc số 3. Một
 câu có thể mang nhiều tag (câu điền đoạn văn thường có thêm tag đọc hiểu phụ),
 nên cộng cột "Có" lại sẽ **lớn hơn** tổng số câu thật trong ngân hàng — đây là
 cách đếm độ phủ, không phải phép chia đoạn.
 
 | #   | Dạng bài                | Có  | Mục tiêu  | Skill tag                                               |
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
-| 1   | Ngữ âm — phát âm        | 20  | 150       | `pho.pronunciation`                                     |
-| 2   | Ngữ âm — trọng âm       | 12  | 150       | `pho.stress`                                            |
+| 1   | Ngữ âm — phát âm        | 36  | 150       | `pho.pronunciation`                                     |
+| 2   | Ngữ âm — trọng âm       | 16  | 150       | `pho.stress`                                            |
 | 3   | Ngữ pháp (chọn đáp án)  | 415 | 750       | `gra.*` (trừ `gra.error_identification`)                |
 | 4   | Từ vựng (chọn đáp án)   | 59  | 550       | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | 195 | 200       | `com.functional_language`                               |
@@ -72,20 +72,20 @@ nên cần thiết kế thêm màn hình chấm tay trước khi soạn ồ ạt
 
 Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh.
 
-## Tiến độ (1/9/2026 tối)
+## Tiến độ (2/9/2026)
 
-**1.383 / 3.000 câu — 46%**
+**1.403 / 3.000 câu — 47%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
 | 6    | 333 | 700      | 367       |
-| 7    | 348 | 700      | 352       |
-| 8    | 322 | 700      | 378       |
+| 7    | 358 | 700      | 342       |
+| 8    | 332 | 700      | 368       |
 | 9    | 380 | 900      | 520       |
 
 | Độ khó     | Có  | Mục tiêu |
 | ---------- | --- | -------- |
-| Dễ         | 591 | 900      |
+| Dễ         | 611 | 900      |
 | Trung bình | 631 | 1.500    |
 | Khó        | 161 | 600      |
 
@@ -97,11 +97,13 @@ Việc số 1 và Việc số 2 (xem "Thứ tự thi công đã chốt" bên dư
 
 **1. Câu Khó mới đạt 27% mục tiêu** (161/600). Nghiêm trọng nhất hiện tại — thiếu
 câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh giỏi/yếu. Đây là
-Việc số 4 trong thứ tự đã chốt, làm sau khi xong ngữ âm.
+Việc số 4 trong thứ tự đã chốt, làm tiếp theo.
 
-**2. Ngữ âm gần như trống ở khối 6, 7, 8.** Khối 6 đã có 11 câu (9 phát âm + 2
-trọng âm, xong tối 1/9). Khối 7, 8 vẫn 0 — chỉ khối 9 có sẵn 21 câu từ trước.
-Đây là Việc số 3, đang làm dở (xem mục "Thứ tự thi công đã chốt").
+**2. Ngữ âm khối 6, 7, 8 đã xong phần soạn được** (Việc số 3 hoàn tất 2/9,
+xem mục "Thứ tự thi công đã chốt"). Khối 6: 11 câu, khối 7: 10 câu, khối 8: 10
+câu — mỗi khối Unit 11/12 không hợp dạng `pho.stress` hiện có (trọng âm câu /
+ngữ điệu, không phải trọng âm từ) nên không soạn được, đã ghi rõ lý do trong
+`UNITS.md`. Khối 9 có sẵn 21 câu từ trước, chưa rà theo cùng chuẩn.
 
 **3. Ba dạng thầy chấm tay gần như chưa đụng tới:** Sắp xếp câu (2/100), Viết lại
 câu (2/100), Viết câu từ gợi ý (2/100). Máy chưa chấm được ba dạng này (xem
@@ -187,10 +189,17 @@ trang "COMMUNICATION" giữa Unit. **Toàn bộ 48 chủ đề đã tra xong, l�
 `docs/UNITS.md` mục "Everyday English theo Unit"** — phiên sau cần lại thì tra
 ở đó trước, đừng OCR lại.
 
-### 3. ⏳ Ngữ âm cho khối 6, 7, 8 — ~230 câu (ĐANG DỞ — khối 6 xong, khối 7/8 chưa)
+### 3. ✅ Ngữ âm cho khối 6, 7, 8 — 31 câu (XONG 2/9)
 
-Hiện trạng 1/9 tối: khối 6 xong 11 câu (9 phát âm phủ đủ 9 Unit có cặp âm, 2
-trọng âm từ Unit 10). Khối 7, 8 chưa làm — 24 Unit còn lại.
+Kết quả: khối 6 = 11 câu (9 phát âm + 2 trọng âm, xong 1/9), khối 7 = 10 câu
+(8 phát âm Unit 1-8 + 2 trọng âm Unit 9-10), khối 8 = 10 câu (8 phát âm Unit
+1-8 + 2 trọng âm Unit 9-10, xong 2/9). Mỗi khối Unit 11 và 12 dùng dạng
+"trọng âm câu" hoặc "ngữ điệu" — không hợp với `pho.stress`/`pho.pronunciation`
+hiện có (drill từ đơn/âm đơn), nên bỏ qua có chủ đích, không phải thiếu sót —
+xem `UNITS.md`. Số câu thấp hơn ước tính ban đầu (~230) vì mục tiêu 150 câu/dạng
+trong bản đồ phủ tính cả biến thể; ở đây ưu tiên **phủ đủ Unit** trước (mỗi Unit
+hợp lệ có đúng 1 câu, giống cách khối 6 đã làm) thay vì nhân bản nhiều câu cho
+cùng một cặp âm — soạn thêm biến thể sẽ làm ở bước 5 "Soạn dày thêm theo Unit".
 
 **Hai phát hiện kỹ thuật quan trọng, đọc trước khi làm tiếp** (chi tiết đầy đủ ở
 `decisions.md` mục 1/9):

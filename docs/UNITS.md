@@ -291,7 +291,7 @@ này (xem `QUESTION-BANK.md`), bảng dưới đây giữ lại để dùng khi 
 Cặp âm/trọng âm chuẩn của từng Unit + từ ví dụ **lấy thật từ trang luyện âm**
 ("A Closer Look 1") của chính Unit đó, không phải suy từ Book Map. Từ trọng âm
 đã tra chéo qua Wiktionary. Đã soạn câu hỏi cho toàn bộ danh sách này — xem
-`QUESTION-BANK.md`. Khối 7, 8 chưa làm (Việc số 3 đang dở).
+`QUESTION-BANK.md`.
 
 | Unit | Cặp âm / trọng âm | Từ ví dụ thật từ SGK                                              |
 | ---- | ------------------- | -------------------------------------------------------------------- |
@@ -307,3 +307,51 @@ Cặp âm/trọng âm chuẩn của từng Unit + từ ví dụ **lấy thật t
 | 10   | Trọng âm từ 2 âm tiết | Ví dụ 1 âm tiết đầu (SGK cho sẵn): picture, robot, bedroom, kitchen, palace, village. Cần tự tìm thêm từ trọng âm âm tiết 2 để làm câu "khác vị trí" — đã tra: hotel, guitar (Wiktionary) |
 | 11   | Rhythm in sentences  | Trọng âm **câu**, không phải trọng âm từ — không hợp với dạng `pho.stress` hiện có |
 | 12   | Tones in statements  | Ngữ điệu câu — không hợp với dạng `pho.stress` hiện có, cần dạng bài riêng nếu muốn dùng |
+
+## Ngữ âm theo Unit — khối 7 (xác minh 2/9/2026, dùng lại được ngay)
+
+Cùng cách làm như khối 6. Unit 11 (Sentence stress) và Unit 12 (Rising/falling
+intonation for questions) **không hợp** với `pho.stress`/`pho.pronunciation`
+hiện có (trọng âm câu và ngữ điệu, không phải âm/trọng âm từ đơn) — bỏ qua,
+giống lý do đã ghi ở khối 6 Unit 11/12. Đã soạn câu hỏi cho danh sách dưới —
+xem `QUESTION-BANK.md`.
+
+| Unit | Cặp âm / trọng âm      | Từ ví dụ thật từ SGK                                                          |
+| ---- | ----------------------- | ------------------------------------------------------------------------------ |
+| 1    | /ə/ vs /ɜː/              | amazing, yoga, collect (/ə/) — learn, work, thirteen (/ɜː/)                    |
+| 2    | /f/ vs /v/               | favourite, fit, fish (/f/) — vegetables, vitamin, never (/v/)                  |
+| 3    | Đuôi -ed: /t/, /d/, /ɪd/ | cooked, helped, passed (/t/) — watered, cleaned, volunteered (/d/) — collected, donated, provided (/ɪd/) |
+| 4    | /ʃ/ vs /ʒ/               | show, share, nation (/ʃ/) — television, visual, decision (/ʒ/)                 |
+| 5    | /ɒ/ vs /ɔː/              | fond, lot, not (/ɒ/) — short, call, water (/ɔː/)                               |
+| 6    | /tʃ/ vs /dʒ/             | cherry, children, teacher (/tʃ/) — jam, gym, juice, large (/dʒ/)               |
+| 7    | /aɪ/ vs /eɪ/             | cycle, fly, fine, sign, motorbike (/aɪ/) — sail, train, plane, station (/eɪ/)  |
+| 8    | /ɪə/ vs /eə/             | idea, pier, fear, ear (/ɪə/) — nightmare, their, share, hair, chair (/eə/)     |
+| 9    | Trọng âm từ 2 âm tiết    | costume, turkey, happy (âm tiết 1) — enjoy, decide, discuss, prepare (âm tiết 2) |
+| 10   | Trọng âm từ 3 âm tiết    | energy, dangerous, government (âm tiết 1) — recycle, expensive, polluting, resources (âm tiết 2) |
+| 11   | Sentence stress          | Trọng âm **câu** — không hợp với dạng `pho.stress` hiện có                     |
+| 12   | Rising/falling intonation for questions | Ngữ điệu câu hỏi — không hợp với dạng `pho.stress` hiện có     |
+
+## Ngữ âm theo Unit — khối 8 (xác minh 2/9/2026, dùng lại được ngay)
+
+Unit 9 (đuôi -al/-ous) và Unit 10 (đuôi -ese/-ee) là một cặp cố ý đối lập nhau
+trong chính SGK: đuôi -al/-ous **không** kéo trọng âm (từ vẫn giữ trọng âm gốc),
+còn đuôi -ese/-ee **luôn** mang trọng âm chính. Vì mỗi Unit tự nó không có từ
+"khác vị trí" để hỏi, câu hỏi Unit 9 mượn 1 từ của Unit 10 làm phương án khác
+(và ngược lại) — cùng SGK khối 8, không cần tra ngoài. Unit 11 (Sentence
+stress) và Unit 12 (Intonation for making lists) không hợp với `pho.stress`
+hiện có, bỏ qua như khối 6/7.
+
+| Unit | Cặp âm / trọng âm        | Từ ví dụ thật từ SGK                                                        |
+| ---- | -------------------------- | ------------------------------------------------------------------------------ |
+| 1    | /uː/ vs /ʊ/                 | pool, cool, soup (/uː/) — wolf, pudding, sugar (/ʊ/)                          |
+| 2    | /ə/ vs /ɪ/                  | activity, hospitable, garden (/ə/) — village, busy, cottage (/ɪ/)             |
+| 3    | /ɔɪ/ vs /ʊə/                | noisy, voices, annoy (/ɔɪ/) — tour, curious, mature (/ʊə/)                    |
+| 4    | /k/ vs /g/                  | cultural, musical, folk (/k/) — garden, gong, tiger (/g/)                     |
+| 5    | /n/ vs /ŋ/                  | thin, land, tradition (/n/) — language, thing, thank, single (/ŋ/)           |
+| 6    | /br/ vs /pr/                | bridge, breakfast, celebrate (/br/) — present, practise, programme (/pr/)     |
+| 7    | /bl/ vs /kl/                | block, blanket, black (/bl/) — clean, club, class (/kl/)                      |
+| 8    | /sp/ vs /st/                | spend, respect, clasp (/sp/) — stall, staff, outstanding (/st/)               |
+| 9    | Trọng âm đuôi -al/-ous (không đổi) | personal, dangerous, practical (giữ trọng âm gốc, âm tiết 1) — đối lập với Unit 10 |
+| 10   | Trọng âm đuôi -ese/-ee (luôn mang trọng âm) | Chinese, Japanese, guarantee (trọng âm rơi vào đuôi) — đối lập với Unit 9 |
+| 11   | Sentence stress             | Trọng âm **câu** — không hợp với dạng `pho.stress` hiện có                    |
+| 12   | Intonation for making lists | Ngữ điệu liệt kê — không hợp với dạng `pho.stress` hiện có                    |
