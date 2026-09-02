@@ -33,8 +33,8 @@ cách đếm độ phủ, không phải phép chia đoạn.
 
 | #   | Dạng bài                | Có  | Mục tiêu  | Skill tag                                               |
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
-| 1   | Ngữ âm — phát âm        | 61  | 150       | `pho.pronunciation`                                     |
-| 2   | Ngữ âm — trọng âm       | 21  | 150       | `pho.stress`                                            |
+| 1   | Ngữ âm — phát âm        | 111 | 150       | `pho.pronunciation`                                     |
+| 2   | Ngữ âm — trọng âm       | 31  | 150       | `pho.stress`                                            |
 | 3   | Ngữ pháp (chọn đáp án)  | **750** | 750 — **ĐẠT** | `gra.*` (trừ `gra.error_identification`)          |
 | 4   | Từ vựng (chọn đáp án)   | **550** | 550 — **ĐẠT** | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | **200** | 200 — **ĐẠT** | `com.functional_language`                          |
@@ -74,13 +74,13 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**2.264 / 3.000 câu — 75%**
+**2.324 / 3.000 câu — 77%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 546 | 700      | 154       |
-| 7    | 573 | 700      | 127       |
-| 8    | 554 | 700      | 146       |
+| 6    | 566 | 700      | 134       |
+| 7    | 593 | 700      | 107       |
+| 8    | 574 | 700      | 126       |
 | 9    | 591 | 900      | 309       |
 
 | Độ khó     | Có    | Mục tiêu |
@@ -330,10 +330,24 @@ thức ngữ âm chuẩn (từ phổ thông, không tra cứu thêm vì đã đ�
 phải OCR lại SGK — nhanh hơn nhưng **chưa qua giáo viên duyệt**, cần thầy rà
 lại kỹ hơn các câu khác vì đây là lần đầu dùng cách này cho ngữ âm.
 
-Kết quả: phát âm 36 → **61/150**, trọng âm 16 → **21/150**. Còn thiếu 89 +
-129 = 218 câu. Cách làm: lặp lại đúng quy trình này (mỗi Unit thêm 1-2 biến
-thể/lần) cho tới khi đạt, mỗi Unit tối đa làm được khoảng 4-6 câu trước khi
-hết từ phổ thông phù hợp trình độ mà không phải lặp.
+Kết quả: phát âm 36 → **61/150**, trọng âm 16 → **21/150**.
+
+**+30 câu nữa (biến thể 2, cùng tối 2/9):** lặp lại đúng cách trên, mỗi Unit
+thêm biến thể thứ 2. Phát âm → **86/150**, trọng âm → **26/150**.
+
+**+30 câu nữa (biến thể 3):** mỗi Unit đã có 3 câu (gốc + 2 biến thể), phải
+cẩn thận hơn để không trùng 20-24 từ đã dùng ở các câu trước. Đã kiểm thêm
+(ngoài bộ kiểm 5 cột chuẩn) **không có câu nào trùng cả 4 phương án + đáp án**
+— vì content câu ngữ âm dùng chung một dòng đề bài nên bộ kiểm chuẩn không
+bắt được kiểu trùng này, phải tự kiểm riêng bằng SQL so `options` + `correct_answer`.
+
+Kết quả sau 3 đợt: phát âm 36 → **111/150**, trọng âm 16 → **31/150**. Còn
+thiếu 39 + 119 = 158 câu. Mỗi Unit hiện đã có 3-4 câu; **càng làm thêm biến
+thể càng khó tìm từ phổ thông chưa dùng** — dấu hiệu cho thấy phần "biến
+thể dễ" của Unit khối 6/7/8 đang cạn dần, có thể cần OCR lại SGK để tìm thêm
+từ ví dụ thật (như Việc số 3 ban đầu) thay vì tiếp tục tự nghĩ, hoặc chuyển
+sang xác minh + phủ khối 9 (hiện có 21 câu cũ, source=null, chưa rà theo
+chuẩn Unit như khối 6/7/8).
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
