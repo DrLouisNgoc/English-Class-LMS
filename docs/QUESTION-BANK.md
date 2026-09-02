@@ -74,19 +74,19 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**1.928 / 3.000 câu — 64%**
+**1.968 / 3.000 câu — 66%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 461 | 700      | 239       |
-| 7    | 486 | 700      | 214       |
-| 8    | 466 | 700      | 234       |
-| 9    | 515 | 900      | 385       |
+| 6    | 469 | 700      | 231       |
+| 7    | 497 | 700      | 203       |
+| 8    | 477 | 700      | 223       |
+| 9    | 525 | 900      | 375       |
 
 | Độ khó     | Có    | Mục tiêu |
 | ---------- | ----- | -------- |
-| Dễ         | 648   | 900      |
-| Trung bình | 671   | 1.500    |
+| Dễ         | 670   | 900      |
+| Trung bình | 689   | 1.500    |
 | Khó        | 609   | 600 — ĐẠT |
 
 ⚠️ **Số liệu "Có" ở đây là TỔNG toàn ngân hàng — không nói lên độ phủ theo
@@ -264,6 +264,11 @@ Khó, thiếu hẳn Dễ để ra đề cho học sinh yếu. Đã bù đợt đ
   trình — ví dụ câu điều kiện chỉ đưa vào khối 7 trở lên).
 - **+40 câu từ vựng Dễ/TB** dàn đều `voc.vocabulary`/`voc.collocation`/
   `voc.phrasal_verb`, không thêm Khó nữa (mục tiêu Khó đã đạt ở Việc số 4).
+- **Đợt 2: +40 câu Dễ/TB** nhắm đúng 3 kỹ năng vẫn lệch nặng nhất sau đợt 1:
+  `voc.collocation` (73 Khó/16 Dễ+TB trước đợt), `voc.phrasal_verb` (71/15),
+  `gra.passive` (11/4). Phát hiện và sửa 1 câu trùng đề bài do tự lặp lại
+  ("The letter ______ yesterday." dùng cho cả khối 7 và khối 9) — nhắc để ý
+  khi soạn nhiều câu cùng cấu trúc ngữ pháp dễ vô tình gõ trùng câu mẫu.
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
