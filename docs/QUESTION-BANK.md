@@ -74,20 +74,27 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**1.843 / 3.000 câu — 61%**
+**1.928 / 3.000 câu — 64%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 443 | 700      | 257       |
-| 7    | 468 | 700      | 232       |
-| 8    | 442 | 700      | 258       |
-| 9    | 490 | 900      | 410       |
+| 6    | 461 | 700      | 239       |
+| 7    | 486 | 700      | 214       |
+| 8    | 466 | 700      | 234       |
+| 9    | 515 | 900      | 385       |
 
 | Độ khó     | Có    | Mục tiêu |
 | ---------- | ----- | -------- |
-| Dễ         | 611   | 900      |
-| Trung bình | 631   | 1.500    |
-| Khó        | **601** | **600 — ĐẠT** |
+| Dễ         | 648   | 900      |
+| Trung bình | 671   | 1.500    |
+| Khó        | 609   | 600 — ĐẠT |
+
+⚠️ **Số liệu "Có" ở đây là TỔNG toàn ngân hàng — không nói lên độ phủ theo
+từng kỹ năng con.** Ví dụ tổng `voc.vocabulary` khối 6 trông ổn (28 câu) nhưng
+tách theo độ khó thì DE chỉ có 2/28 — gần như không dùng được để ra đề Dễ. Sau
+đợt bù câu Khó (Việc số 4), nhiều `skill_tag` (đặc biệt `voc.collocation`,
+`voc.phrasal_verb`) bị lệch gần 100% sang Khó, thiếu hẳn Dễ/TB. Đang sửa dần —
+xem mục "Thứ tự thi công đã chốt" bước 5.
 
 ## Lỗ hổng lớn nhất, theo thứ tự nghiêm trọng
 
@@ -241,9 +248,35 @@ Nếu muốn quay lại đúng quy trình chép sách Mai Lan Hương cho các �
 thầy tự đọc trực tiếp từ file PDF (không qua `pdftotext`) và gõ lại câu, hoặc
 chấp nhận cách tự soạn này tiếp tục.
 
-### 5. Soạn dày thêm theo Unit cho tới 3.000
+### 5. ⏳ Soạn dày thêm theo Unit cho tới 3.000 (ĐANG DỞ)
 
-Lúc đó mới thi công tính năng **trộn đề tự động**.
+Lúc xong mới thi công tính năng **trộn đề tự động**.
+
+**Phát hiện 2/9 tối — ưu tiên trong bước này: cân lại độ khó theo từng
+`skill_tag`, không chỉ theo tổng.** Đợt bù câu Khó (Việc số 4) dồn gần hết
+440 câu mới vào độ khó Khó, khiến nhiều điểm ngữ pháp/từ vựng gần như chỉ có
+Khó, thiếu hẳn Dễ để ra đề cho học sinh yếu. Đã bù đợt đầu 2/9 tối:
+
+- **+40 câu ngữ pháp Dễ/TB** cho 9 điểm còn mỏng nhất: `gra.article`,
+  `gra.modal_verb`, `gra.conditional`, `gra.reported_speech`,
+  `gra.relative_clause`, `gra.gerund_infinitive`, `gra.preposition`,
+  `gra.word_form`, `gra.passive` (5 câu/điểm, dàn khối 6-9 theo đúng chương
+  trình — ví dụ câu điều kiện chỉ đưa vào khối 7 trở lên).
+- **+40 câu từ vựng Dễ/TB** dàn đều `voc.vocabulary`/`voc.collocation`/
+  `voc.phrasal_verb`, không thêm Khó nữa (mục tiêu Khó đã đạt ở Việc số 4).
+
+**Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
+(không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
+tra nhanh:
+
+```sql
+select q.grade, st.code, q.difficulty, count(*)
+from questions q
+join question_tags qt on qt.question_id = q.id
+join skill_tags st on st.id = qt.skill_tag_id
+group by q.grade, st.code, q.difficulty
+order by st.code, q.grade, q.difficulty;
+```
 
 ## Chặn kỹ thuật cần xử lý trước khi ngân hàng lớn
 
