@@ -74,19 +74,19 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**2.048 / 3.000 câu — 68%**
+**2.088 / 3.000 câu — 70%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 487 | 700      | 213       |
-| 7    | 517 | 700      | 183       |
-| 8    | 498 | 700      | 202       |
-| 9    | 546 | 900      | 354       |
+| 6    | 498 | 700      | 202       |
+| 7    | 526 | 700      | 174       |
+| 8    | 508 | 700      | 192       |
+| 9    | 556 | 900      | 344       |
 
 | Độ khó     | Có    | Mục tiêu |
 | ---------- | ----- | -------- |
-| Dễ         | 712   | 900      |
-| Trung bình | 727   | 1.500    |
+| Dễ         | 737   | 900      |
+| Trung bình | 742   | 1.500    |
 | Khó        | 609   | 600 — ĐẠT |
 
 ⚠️ **Số liệu "Có" ở đây là TỔNG toàn ngân hàng — không nói lên độ phủ theo
@@ -278,11 +278,16 @@ Khó, thiếu hẳn Dễ để ra đề cho học sinh yếu. Đã bù đợt đ
   trùng đề bài **kèm trùng cả đáp án** ("The more you practise, the better you
   become.") — tôi vô tình lặp lại y hệt câu đã soạn ở đợt bù Khó đầu tiên.
 
-Bốn đợt cộng lại: **+160 câu Dễ/TB**, không thêm câu Khó nào (mục tiêu Khó đã
-đạt). Còn lại `read.*` (đọc hiểu) — độ khó gắn theo đoạn văn dùng chung nên
-phải cân ở cấp đoạn văn, không sửa được bằng cách thêm câu rời như trên; theo
-đúng chính sách đã ghi ở trên ("dừng soạn thêm dạng 8/9 trừ khi thầy yêu cầu
-riêng") nên **cố ý để nguyên**, không phải bỏ sót.
+- **Đợt 5: +40 câu Dễ/TB** dồn hết vào 3 kỹ năng từ vựng còn lệch nhất
+  (`voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb`) và `gra.preposition`.
+
+Năm đợt cộng lại: **+200 câu Dễ/TB**, không thêm câu Khó nào (mục tiêu Khó đã
+đạt). Tỉ lệ Dễ:TB:Khó tổng ngân hàng giờ khá cân (737:742:609, gần đúng tinh
+thần 30/50/20 dù chưa hoàn hảo). Còn lại `read.*` (đọc hiểu) — độ khó gắn theo
+đoạn văn dùng chung nên phải cân ở cấp đoạn văn, không sửa được bằng cách
+thêm câu rời như trên; theo đúng chính sách đã ghi ở trên ("dừng soạn thêm
+dạng 8/9 trừ khi thầy yêu cầu riêng") nên **cố ý để nguyên**, không phải bỏ
+sót.
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
