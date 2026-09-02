@@ -36,7 +36,7 @@ cách đếm độ phủ, không phải phép chia đoạn.
 | 1   | Ngữ âm — phát âm        | 36  | 150       | `pho.pronunciation`                                     |
 | 2   | Ngữ âm — trọng âm       | 16  | 150       | `pho.stress`                                            |
 | 3   | Ngữ pháp (chọn đáp án)  | 615 | 750       | `gra.*` (trừ `gra.error_identification`)                |
-| 4   | Từ vựng (chọn đáp án)   | 59  | 550       | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
+| 4   | Từ vựng (chọn đáp án)   | 299 | 550       | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | 195 | 200       | `com.functional_language`                               |
 | 6   | Tìm lỗi sai             | 153 | 150       | `gra.error_identification`                              |
 | 7   | Đồng nghĩa / trái nghĩa | 153 | 150       | `voc.synonym_antonym`                                   |
@@ -72,22 +72,22 @@ nên cần thiết kế thêm màn hình chấm tay trước khi soạn ồ ạt
 
 Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh.
 
-## Tiến độ (2/9/2026)
+## Tiến độ (2/9/2026 tối)
 
-**1.603 / 3.000 câu — 53%**
+**1.843 / 3.000 câu — 61%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 383 | 700      | 317       |
-| 7    | 408 | 700      | 292       |
-| 8    | 382 | 700      | 318       |
-| 9    | 430 | 900      | 470       |
+| 6    | 443 | 700      | 257       |
+| 7    | 468 | 700      | 232       |
+| 8    | 442 | 700      | 258       |
+| 9    | 490 | 900      | 410       |
 
-| Độ khó     | Có  | Mục tiêu |
-| ---------- | --- | -------- |
-| Dễ         | 611 | 900      |
-| Trung bình | 631 | 1.500    |
-| Khó        | 361 | 600      |
+| Độ khó     | Có    | Mục tiêu |
+| ---------- | ----- | -------- |
+| Dễ         | 611   | 900      |
+| Trung bình | 631   | 1.500    |
+| Khó        | **601** | **600 — ĐẠT** |
 
 ## Lỗ hổng lớn nhất, theo thứ tự nghiêm trọng
 
@@ -95,23 +95,22 @@ Danh sách này đã đổi hẳn so với bản 31/8 — ba lỗ hổng nghiêm
 (chỉ một dạng bài, đọc hiểu bằng 0, ba dạng trắng hoàn toàn) **đã được lấp** ở
 Việc số 1 và Việc số 2 (xem "Thứ tự thi công đã chốt" bên dưới). Còn lại:
 
-**1. Câu Khó mới đạt 60% mục tiêu** (361/600). Nghiêm trọng nhất hiện tại — thiếu
-câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh giỏi/yếu. Đây là
-Việc số 4 trong thứ tự đã chốt, đang làm dở (xem mục "Thứ tự thi công đã chốt").
-
-**2. Ngữ âm khối 6, 7, 8 đã xong phần soạn được** (Việc số 3 hoàn tất 2/9,
-xem mục "Thứ tự thi công đã chốt"). Khối 6: 11 câu, khối 7: 10 câu, khối 8: 10
-câu — mỗi khối Unit 11/12 không hợp dạng `pho.stress` hiện có (trọng âm câu /
-ngữ điệu, không phải trọng âm từ) nên không soạn được, đã ghi rõ lý do trong
-`UNITS.md`. Khối 9 có sẵn 21 câu từ trước, chưa rà theo cùng chuẩn.
-
-**3. Ba dạng thầy chấm tay gần như chưa đụng tới:** Sắp xếp câu (2/100), Viết lại
+**1. Ba dạng thầy chấm tay gần như chưa đụng tới:** Sắp xếp câu (2/100), Viết lại
 câu (2/100), Viết câu từ gợi ý (2/100). Máy chưa chấm được ba dạng này (xem
 `decisions.md` mục 26/8) nên cần thiết kế màn hình chấm tay trước khi soạn ồ ạt
-— việc lớn, chưa xếp vào thứ tự thi công hiện tại.
+— việc lớn, chưa xếp vào thứ tự thi công hiện tại. **Đây là lỗ hổng nghiêm
+trọng nhất còn lại** sau khi Việc số 1-4 đều đã xong.
 
-**4. Từ vựng (chọn đáp án) mới 59/550** — dạng số 4 trong bản đồ phủ, chưa được
-ưu tiên soạn riêng (khác với dạng 7 "Đồng nghĩa/trái nghĩa" đã xong).
+**2. Từ vựng (chọn đáp án) mới 299/550** — dạng số 4 trong bản đồ phủ, đã được
+đẩy mạnh nhờ đợt bù câu Khó (Việc số 4) nhưng vẫn còn thiếu hơn nửa mục tiêu.
+
+**3. Khối 9 còn thiếu nhiều nhất về số lượng tổng** (490/900, thiếu 410) —
+không phải vì bỏ sót mà vì mục tiêu khối 9 cao hơn hẳn ba khối kia (900 so
+với 700), do có thêm phần ôn thi vào 10.
+
+**Đã xong, không còn là lỗ hổng:** Câu Khó (601/600 — Việc số 4, xong 2/9 tối).
+Ngữ âm khối 6/7/8 (Việc số 3, xong 2/9 — Unit 11/12 mỗi khối không hợp dạng
+`pho.stress` hiện có nên bỏ qua có chủ đích, xem `UNITS.md`).
 
 ## Quy trình soạn
 
@@ -125,7 +124,7 @@ loại:
 | --------------------- | ---------------------------------------------- | ---------------------------------------------- |
 | Đoạn văn đọc hiểu     | Chép từ sách, chỉnh cho hợp lứa tuổi           | Viết từ đầu là phần nặng nhất của cả 3.000 câu |
 | Câu ngữ pháp          | Chép khung câu, đổi ngữ cảnh sang từ vựng Unit | Gần như cùng công sức mà khớp SGK              |
-| Câu Khó               | Chép thẳng từ Mai Lan Hương                    | Quy tắc chi li khó tự nghĩ đủ                  |
+| Câu Khó               | **Đổi sang tự soạn** từ 2/9 (Mai Lan Hương PDF lỗi font, không chép được — xem `decisions.md`) | Bẫy ngữ pháp/từ vựng kinh điển (not only...but also, needn't/mustn't, confusable words...) không cần chép nguyên văn vẫn đủ khó |
 | Giải thích tiếng Việt | **Luôn tự viết**                               | Sách không có sẵn                              |
 
 ⚠️ **Đáp án Destination B1 và English Grammar in Use tra Google ra trong vài
@@ -218,35 +217,29 @@ cùng một cặp âm — soạn thêm biến thể sẽ làm ở bước 5 "So�
 — khối 6" — gồm cặp âm chuẩn + từ ví dụ thật lấy từ đúng trang luyện âm của từng
 Unit, dùng lại được ngay không cần tra lại.
 
-### 4. ⏳ Bù câu Khó — lên 600 (ĐANG DỞ)
+### 4. ✅ Bù câu Khó — lên 600 (XONG 2/9 tối)
 
-Hiện 361/600 (60%). Không đủ câu Khó thì đề trộn ra bị phẳng, không phân loại
-được học sinh. Từ bước này trở đi mỗi lô soạn phải giữ tỉ lệ 30% Dễ / 50% TB /
-20% Khó.
+Kết quả: **601/600 câu Khó — vượt mục tiêu**. Làm trong 11 đợt × 40 câu
+(10 câu/khối/đợt): đợt 1-5 là câu ngữ pháp Khó (200 câu, cũng lấp thêm dạng
+bài #3 "ngữ pháp chọn đáp án": 415 → 615/750, gần chạm mục tiêu 750 nên dừng
+lại ở đó), đợt 6-11 chuyển sang câu từ vựng Khó (240 câu: từ đồng nghĩa dễ
+nhầm, collocation, cụm động từ — lấp dạng bài #4 "từ vựng chọn đáp án":
+59 → 299/550, còn nhiều chỗ nên có thể soạn tiếp sau này).
 
-**Đợt 1-5 (2/9): +200 câu ngữ pháp Khó** (5 đợt × 40 câu, 10 câu/khối mỗi đợt),
-dàn đều các Unit và rất nhiều điểm ngữ pháp khác nhau (modal verb, mệnh đề
-quan hệ, câu điều kiện, câu tường thuật, gerund/infinitive, word form, so
-sánh, mạo từ, giới từ, bị động, đảo ngữ, câu giả định...). Vừa lấp Việc số 4
-vừa lấp thêm dạng bài #3 (ngữ pháp chọn đáp án, 415 → 615/750).
-
-**Dạng #3 sắp chạm mục tiêu 750 (chỉ còn 135 chỗ trống)** — từ đợt sau, chuyển
-hướng câu Khó sang **dạng #4 Từ vựng (chọn đáp án)** (`voc.vocabulary`,
-`voc.collocation`, `voc.phrasal_verb`), hiện mới 109/550, còn rất nhiều chỗ và
-chưa được ưu tiên soạn riêng bao giờ (xem lỗ hổng #4 bên dưới). Tránh thêm
-nữa vào dạng #5/6/7 (giao tiếp/tìm lỗi/đồng nghĩa) vì các dạng này đã đạt hoặc
-vượt mục tiêu. Còn thiếu 239 câu Khó nữa mới tới 600.
-
-**Lệch khỏi quy trình đã ghi ở trên — cần biết trước khi làm tiếp:** quy trình
-"Câu Khó chép thẳng từ Mai Lan Hương" **không thực hiện được** với đợt này vì
-lý do kỹ thuật, không phải đổi ý — xem `decisions.md` mục 2/9 "Mai Lan Hương
-PDF lỗi font, không chép được". Đợt 1 là **tự soạn** các bẫy ngữ pháp kinh
-điển (not only...but also, needn't/mustn't, regret to V/V-ing, mixed
-conditional, whose/which/who trong mệnh đề quan hệ, v.v.), không copy nguyên
-văn từ sách nào — giữ nguyên chuẩn đúng ngữ pháp nhưng câu do AI viết mới.
-Nếu muốn quay lại đúng quy trình chép sách cho các đợt sau, cần thầy tự đọc
-trực tiếp từ file PDF (không qua `pdftotext`) và gõ lại câu, hoặc chấp nhận
-cách tự soạn này tiếp tục.
+**Lệch khỏi quy trình đã ghi ở trên — cần biết cho các đợt sau:** quy trình
+gốc ghi "Câu Khó chép thẳng từ Mai Lan Hương" **không thực hiện được** vì lý
+do kỹ thuật, không phải đổi ý — xem `decisions.md` mục 2/9 "Mai Lan Hương PDF
+lỗi font, không chép được". Toàn bộ 440 câu Khó mới đều là **tự soạn**: bẫy
+ngữ pháp kinh điển (not only...but also, needn't/mustn't, mixed conditional,
+mệnh đề quan hệ, câu giả định, đảo ngữ...) và từ dễ nhầm/collocation/cụm động
+từ (affect/effect, make/do/take, look after/look into...) — không copy nguyên
+văn từ sách nào, giữ chuẩn đúng ngữ pháp/nghĩa nhưng câu do AI viết mới.
+**Chưa qua giáo viên duyệt từng câu** — cần thầy tự kiểm tra trước khi giao
+cho học sinh làm thật, đặc biệt các câu có nhiều đáp án gần nghĩa (ví dụ
+respectful/respectable/respective, disinterested/uninterested).
+Nếu muốn quay lại đúng quy trình chép sách Mai Lan Hương cho các đợt sau, cần
+thầy tự đọc trực tiếp từ file PDF (không qua `pdftotext`) và gõ lại câu, hoặc
+chấp nhận cách tự soạn này tiếp tục.
 
 ### 5. Soạn dày thêm theo Unit cho tới 3.000
 
