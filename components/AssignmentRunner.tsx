@@ -114,7 +114,7 @@ export default function AssignmentRunner({
             </div>
           )}
 
-          <p className="mb-5 text-base leading-relaxed text-text md:mb-8 md:text-xl md:leading-relaxed">
+          <p className="mb-5 text-base leading-relaxed whitespace-pre-wrap text-text md:mb-8 md:text-xl md:leading-relaxed">
             {renderUnderline(question.content)}
           </p>
 

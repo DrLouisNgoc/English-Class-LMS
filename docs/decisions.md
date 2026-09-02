@@ -521,6 +521,38 @@ bị đọc theo thứ tự vị trí trên trang chứ không theo đúng Unit,
 (đặc biệt là Pronunciation) rất dễ bị gán nhầm sang Unit liền kề. Phải xác nhận
 lại bằng cách mở đúng trang của Unit đó trước khi tin.
 
+## 2026-09-02 — Sửa 2 lỗi dữ liệu phát hiện từ giáo viên: thiếu đề bài, xuống dòng giả
+
+Giáo viên báo hai lỗi khi xem lại ngân hàng câu hỏi (cả hai đều có từ trước
+phiên này, soạn ở Việc số 2 ngày 1/9):
+
+1. **153/153 câu "Tìm lỗi sai" (`gra.error_identification`) thiếu câu lệnh đề
+   bài** — `content` chỉ có câu văn kèm (A)(B)(C)(D), không có dòng "Chọn
+   phương án chứa lỗi sai". Đã update thêm câu lệnh vào đầu `content` cho cả
+   153 câu.
+2. **195/195 câu "Giao tiếp/tình huống" (`com.functional_language`) bị xuống
+   dòng giả** — chỗ ngăn cách hai lượt thoại lưu thành 2 ký tự `\` + `n` (chữ
+   thường) thay vì ký tự xuống dòng thật, nên hiện nguyên văn `\n` ra màn
+   hình. Nguyên nhân: câu lệnh SQL insert dùng chuỗi Postgres thường (`'...'`)
+   thay vì chuỗi escape (`E'...'`), nên `\n` gõ trong câu lệnh không được dịch
+   thành ký tự xuống dòng. Đã update `replace(content, '\n', chr(10))` cho cả
+   195 câu.
+
+**Bài học cho lần sau khi ghi thẳng vào database bằng SQL:** muốn chèn ký tự
+xuống dòng thật vào cột text, dùng `chr(10)` nối chuỗi (`'A' || chr(10) || 'B'`)
+thay vì gõ `\n` trong chuỗi — Postgres không tự dịch `\n` trừ khi dùng cú pháp
+`E'...'`.
+
+Kèm theo: thêm `whitespace-pre-wrap` vào 3 chỗ hiển thị `content` câu hỏi
+(`components/AssignmentRunner.tsx`, trang kết quả học sinh, trang giáo viên
+xem bài làm) — nếu không thêm class này, trình duyệt tự gộp ký tự xuống dòng
+thật thành một khoảng trắng, sửa xong dữ liệu vẫn không hiện đúng.
+
+⚠️ Toàn bộ 440 câu Khó tự soạn thêm ngày 2/9 (xem mục dưới) và các câu cũ đều
+**chưa được giáo viên duyệt từng câu một** — hai lỗi này chỉ được phát hiện
+nhờ giáo viên đọc lướt qua, cho thấy bộ kiểm 5 cột tự động không bắt được lỗi
+thiếu đề bài hay lỗi định dạng chuỗi. Cần thêm thời gian rà bằng mắt định kỳ.
+
 ## 2026-09-02 — Mai Lan Hương PDF lỗi font, không chép được bằng `pdftotext`
 
 Quy trình 31/8 (`QUESTION-BANK.md` mục "Quy trình soạn") ghi rõ **câu Khó chép

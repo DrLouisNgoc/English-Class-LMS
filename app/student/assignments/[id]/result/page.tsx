@@ -103,7 +103,7 @@ export default async function AssignmentResultPage({
                   </span>
                   <span className="text-text/60">Câu {index + 1}</span>
                 </p>
-                <p className="mt-1 text-text md:text-lg md:leading-relaxed">
+                <p className="mt-1 whitespace-pre-wrap text-text md:text-lg md:leading-relaxed">
                   {renderUnderline(q.content)}
                 </p>
                 <p className="mt-2 text-sm text-text/70 md:text-base">

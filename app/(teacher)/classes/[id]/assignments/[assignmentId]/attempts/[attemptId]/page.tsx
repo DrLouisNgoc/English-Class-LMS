@@ -89,7 +89,7 @@ export default async function TeacherAttemptDetailPage({
                   </span>
                   <span className="text-text/60">Câu {index + 1}</span>
                 </p>
-                <p className="mt-1 text-text">{q.content}</p>
+                <p className="mt-1 whitespace-pre-wrap text-text">{q.content}</p>
                 <p className="mt-2 text-sm text-text/70">
                   Em trả lời:{" "}
                   <span className={`font-medium ${q.is_correct ? "text-correct" : "text-red-pen"}`}>
