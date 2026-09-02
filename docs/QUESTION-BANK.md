@@ -74,19 +74,19 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**2.008 / 3.000 câu — 67%**
+**2.048 / 3.000 câu — 68%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 477 | 700      | 223       |
-| 7    | 507 | 700      | 193       |
-| 8    | 488 | 700      | 212       |
-| 9    | 536 | 900      | 364       |
+| 6    | 487 | 700      | 213       |
+| 7    | 517 | 700      | 183       |
+| 8    | 498 | 700      | 202       |
+| 9    | 546 | 900      | 354       |
 
 | Độ khó     | Có    | Mục tiêu |
 | ---------- | ----- | -------- |
-| Dễ         | 689   | 900      |
-| Trung bình | 710   | 1.500    |
+| Dễ         | 712   | 900      |
+| Trung bình | 727   | 1.500    |
 | Khó        | 609   | 600 — ĐẠT |
 
 ⚠️ **Số liệu "Có" ở đây là TỔNG toàn ngân hàng — không nói lên độ phủ theo
@@ -273,11 +273,16 @@ Khó, thiếu hẳn Dễ để ra đề cho học sinh yếu. Đã bù đợt đ
   `gra.comparison`, và bù thêm `voc.collocation`/`voc.phrasal_verb` (vẫn còn
   Khó áp đảo sau đợt 2). Ngân hàng vượt mốc **2.000 câu** ở đợt này.
 
-Ba đợt cộng lại: **+120 câu Dễ/TB**, không thêm câu Khó nào (mục tiêu Khó đã
-đạt). Vẫn còn lệch nhẹ: `gra.grammar_general` (bucket gộp lớn nhất, Khó vẫn
-nhỉnh hơn) và các `read.*` (đọc hiểu) — độ khó của `read.*` gắn theo đoạn văn
-dùng chung nên phải cân ở cấp đoạn văn, không sửa được bằng cách thêm câu rời
-như trên; để lại cho một đợt riêng nếu cần.
+- **Đợt 4: +40 câu Dễ/TB cho `gra.grammar_general`**, ưu tiên khối 6 và khối 8
+  (Dễ trước đợt chỉ 3-4 câu so với hơn chục câu Khó). Phát hiện và sửa 1 câu
+  trùng đề bài **kèm trùng cả đáp án** ("The more you practise, the better you
+  become.") — tôi vô tình lặp lại y hệt câu đã soạn ở đợt bù Khó đầu tiên.
+
+Bốn đợt cộng lại: **+160 câu Dễ/TB**, không thêm câu Khó nào (mục tiêu Khó đã
+đạt). Còn lại `read.*` (đọc hiểu) — độ khó gắn theo đoạn văn dùng chung nên
+phải cân ở cấp đoạn văn, không sửa được bằng cách thêm câu rời như trên; theo
+đúng chính sách đã ghi ở trên ("dừng soạn thêm dạng 8/9 trừ khi thầy yêu cầu
+riêng") nên **cố ý để nguyên**, không phải bỏ sót.
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
