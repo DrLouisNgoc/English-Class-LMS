@@ -35,9 +35,9 @@ cách đếm độ phủ, không phải phép chia đoạn.
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
 | 1   | Ngữ âm — phát âm        | 36  | 150       | `pho.pronunciation`                                     |
 | 2   | Ngữ âm — trọng âm       | 16  | 150       | `pho.stress`                                            |
-| 3   | Ngữ pháp (chọn đáp án)  | 615 | 750       | `gra.*` (trừ `gra.error_identification`)                |
-| 4   | Từ vựng (chọn đáp án)   | 299 | 550       | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
-| 5   | Giao tiếp / tình huống  | 195 | 200       | `com.functional_language`                               |
+| 3   | Ngữ pháp (chọn đáp án)  | **750** | 750 — **ĐẠT** | `gra.*` (trừ `gra.error_identification`)          |
+| 4   | Từ vựng (chọn đáp án)   | **550** | 550 — **ĐẠT** | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
+| 5   | Giao tiếp / tình huống  | **200** | 200 — **ĐẠT** | `com.functional_language`                          |
 | 6   | Tìm lỗi sai             | 153 | 150       | `gra.error_identification`                              |
 | 7   | Đồng nghĩa / trái nghĩa | 153 | 150       | `voc.synonym_antonym`                                   |
 | 8   | Điền từ vào đoạn văn    | 250 | 250       | `read.vocab_in_context` + `passage_id`                  |
@@ -74,20 +74,40 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**2.088 / 3.000 câu — 70%**
+**2.234 / 3.000 câu — 74%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 498 | 700      | 202       |
-| 7    | 526 | 700      | 174       |
-| 8    | 508 | 700      | 192       |
-| 9    | 556 | 900      | 344       |
+| 6    | 536 | 700      | 164       |
+| 7    | 563 | 700      | 137       |
+| 8    | 544 | 700      | 156       |
+| 9    | 591 | 900      | 309       |
 
 | Độ khó     | Có    | Mục tiêu |
 | ---------- | ----- | -------- |
-| Dễ         | 737   | 900      |
-| Trung bình | 742   | 1.500    |
+| Dễ         | 828   | 900      |
+| Trung bình | 797   | 1.500    |
 | Khó        | 609   | 600 — ĐẠT |
+
+**Cả 3 dạng bài còn phòng trống (ngữ pháp, từ vựng, giao tiếp) đã chạm đúng
+mục tiêu** — xem bản đồ phủ ở trên. **Từ đây trở đi, ngân hàng không thể lấp
+tiếp bằng cách soạn thêm câu MCQ/DIEN rời như 8 đợt vừa qua** — mọi dạng bài
+máy chấm được đều đã đầy hoặc gần đầy. Đường duy nhất còn lại tới 3.000 là
+hai việc lớn, khác hẳn về bản chất công việc:
+
+1. **Ngữ âm (dạng #1, #2) — còn thiếu 248 câu** (36→150 phát âm, 16→150 trọng
+   âm). Không soạn nhanh được như từ vựng/ngữ pháp vì mỗi câu cần từ ví dụ
+   THẬT lấy từ đúng trang luyện âm của SGK (OCR), không tự nghĩ ra được — xem
+   quy trình ở `UNITS.md`. Việc số 3 khi trước chỉ làm hết những Unit CÓ dạng
+   bài phù hợp; muốn thêm nữa phải soạn thêm biến thể cho các Unit đã làm.
+2. **3 dạng thầy chấm tay (dạng #10-12) — thiếu 894 câu** (2→100 mỗi dạng).
+   Bị chặn hoàn toàn cho tới khi có màn hình chấm tay — xem mục "Lỗ hổng lớn
+   nhất" #1. Đây là phần lớn nhất trong khoảng cách tới 3.000.
+
+Cộng cả hai: 248 + 894 = 1.142, xấp xỉ đúng khoảng cách còn lại (766, có
+chênh lệch vì các dạng đọc hiểu/đồng nghĩa/tìm lỗi đã vượt nhẹ mục tiêu bù
+qua). **Nói thẳng: không thể chạm 3.000 chỉ bằng soạn thêm câu rời — cần thầy
+quyết định có làm màn hình chấm tay hay không trước khi đi tiếp.**
 
 ⚠️ **Số liệu "Có" ở đây là TỔNG toàn ngân hàng — không nói lên độ phủ theo
 từng kỹ năng con.** Ví dụ tổng `voc.vocabulary` khối 6 trông ổn (28 câu) nhưng
@@ -282,12 +302,24 @@ Khó, thiếu hẳn Dễ để ra đề cho học sinh yếu. Đã bù đợt đ
   (`voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb`) và `gra.preposition`.
 
 Năm đợt cộng lại: **+200 câu Dễ/TB**, không thêm câu Khó nào (mục tiêu Khó đã
-đạt). Tỉ lệ Dễ:TB:Khó tổng ngân hàng giờ khá cân (737:742:609, gần đúng tinh
-thần 30/50/20 dù chưa hoàn hảo). Còn lại `read.*` (đọc hiểu) — độ khó gắn theo
-đoạn văn dùng chung nên phải cân ở cấp đoạn văn, không sửa được bằng cách
-thêm câu rời như trên; theo đúng chính sách đã ghi ở trên ("dừng soạn thêm
-dạng 8/9 trừ khi thầy yêu cầu riêng") nên **cố ý để nguyên**, không phải bỏ
-sót.
+đạt). Còn lại `read.*` (đọc hiểu) — độ khó gắn theo đoạn văn dùng chung nên
+phải cân ở cấp đoạn văn; theo đúng chính sách "dừng soạn thêm dạng 8/9" nên
+**cố ý để nguyên**.
+
+### Sau bước cân độ khó: lấp nốt 3 dạng bài còn phòng trống (đã ĐẠT cả 3)
+
+Sau 5 đợt cân độ khó, ngữ pháp còn thiếu 14 câu, từ vựng thiếu 127 câu, giao
+tiếp thiếu 5 câu mới chạm mục tiêu dạng bài. Soạn 3 đợt (40+40+66 câu, toàn
+bộ Dễ/TB) lấp đúng khớp cả ba — không thừa không thiếu:
+
+- Ngữ pháp: 736 → **750/750**
+- Từ vựng: 423 → **550/550**
+- Giao tiếp: 195 → **200/200**
+
+Tổng ngân hàng: 1.843 → **2.234 câu**. Đây là điểm dừng tự nhiên của Việc số
+5 theo hướng "soạn câu rời" — xem cảnh báo ở mục "Tiến độ" phía trên về hai
+việc lớn còn lại (ngữ âm cần OCR, 3 dạng viết cần màn hình chấm tay) để đi
+tiếp tới 3.000.
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
