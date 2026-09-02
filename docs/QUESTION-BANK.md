@@ -33,8 +33,8 @@ cách đếm độ phủ, không phải phép chia đoạn.
 
 | #   | Dạng bài                | Có  | Mục tiêu  | Skill tag                                               |
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
-| 1   | Ngữ âm — phát âm        | 36  | 150       | `pho.pronunciation`                                     |
-| 2   | Ngữ âm — trọng âm       | 16  | 150       | `pho.stress`                                            |
+| 1   | Ngữ âm — phát âm        | 61  | 150       | `pho.pronunciation`                                     |
+| 2   | Ngữ âm — trọng âm       | 21  | 150       | `pho.stress`                                            |
 | 3   | Ngữ pháp (chọn đáp án)  | **750** | 750 — **ĐẠT** | `gra.*` (trừ `gra.error_identification`)          |
 | 4   | Từ vựng (chọn đáp án)   | **550** | 550 — **ĐẠT** | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | **200** | 200 — **ĐẠT** | `com.functional_language`                          |
@@ -74,13 +74,13 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**2.234 / 3.000 câu — 74%**
+**2.264 / 3.000 câu — 75%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 536 | 700      | 164       |
-| 7    | 563 | 700      | 137       |
-| 8    | 544 | 700      | 156       |
+| 6    | 546 | 700      | 154       |
+| 7    | 573 | 700      | 127       |
+| 8    | 554 | 700      | 146       |
 | 9    | 591 | 900      | 309       |
 
 | Độ khó     | Có    | Mục tiêu |
@@ -320,6 +320,20 @@ Tổng ngân hàng: 1.843 → **2.234 câu**. Đây là điểm dừng tự nhi�
 5 theo hướng "soạn câu rời" — xem cảnh báo ở mục "Tiến độ" phía trên về hai
 việc lớn còn lại (ngữ âm cần OCR, 3 dạng viết cần màn hình chấm tay) để đi
 tiếp tới 3.000.
+
+### Sau đó: bắt đầu lấp ngữ âm — thêm biến thể cho các Unit đã làm
+
+**+30 câu (2/9 tối):** mỗi Unit đã làm ở Việc số 3 (9 Unit khối 6, 8 Unit
+khối 7, 8 Unit khối 8) được thêm đúng 1 câu biến thể — dùng **từ khác** cho
+cùng cặp âm/trọng âm đã xác minh, không lặp từ đã dùng ở câu gốc. Nguồn: kiến
+thức ngữ âm chuẩn (từ phổ thông, không tra cứu thêm vì đã đủ tự tin), không
+phải OCR lại SGK — nhanh hơn nhưng **chưa qua giáo viên duyệt**, cần thầy rà
+lại kỹ hơn các câu khác vì đây là lần đầu dùng cách này cho ngữ âm.
+
+Kết quả: phát âm 36 → **61/150**, trọng âm 16 → **21/150**. Còn thiếu 89 +
+129 = 218 câu. Cách làm: lặp lại đúng quy trình này (mỗi Unit thêm 1-2 biến
+thể/lần) cho tới khi đạt, mỗi Unit tối đa làm được khoảng 4-6 câu trước khi
+hết từ phổ thông phù hợp trình độ mà không phải lặp.
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
