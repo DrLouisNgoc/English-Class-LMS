@@ -35,7 +35,7 @@ cách đếm độ phủ, không phải phép chia đoạn.
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
 | 1   | Ngữ âm — phát âm        | 36  | 150       | `pho.pronunciation`                                     |
 | 2   | Ngữ âm — trọng âm       | 16  | 150       | `pho.stress`                                            |
-| 3   | Ngữ pháp (chọn đáp án)  | 495 | 750       | `gra.*` (trừ `gra.error_identification`)                |
+| 3   | Ngữ pháp (chọn đáp án)  | 615 | 750       | `gra.*` (trừ `gra.error_identification`)                |
 | 4   | Từ vựng (chọn đáp án)   | 59  | 550       | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | 195 | 200       | `com.functional_language`                               |
 | 6   | Tìm lỗi sai             | 153 | 150       | `gra.error_identification`                              |
@@ -74,20 +74,20 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026)
 
-**1.483 / 3.000 câu — 49%**
+**1.603 / 3.000 câu — 53%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 353 | 700      | 347       |
-| 7    | 378 | 700      | 322       |
-| 8    | 352 | 700      | 348       |
-| 9    | 400 | 900      | 500       |
+| 6    | 383 | 700      | 317       |
+| 7    | 408 | 700      | 292       |
+| 8    | 382 | 700      | 318       |
+| 9    | 430 | 900      | 470       |
 
 | Độ khó     | Có  | Mục tiêu |
 | ---------- | --- | -------- |
 | Dễ         | 611 | 900      |
 | Trung bình | 631 | 1.500    |
-| Khó        | 241 | 600      |
+| Khó        | 361 | 600      |
 
 ## Lỗ hổng lớn nhất, theo thứ tự nghiêm trọng
 
@@ -95,7 +95,7 @@ Danh sách này đã đổi hẳn so với bản 31/8 — ba lỗ hổng nghiêm
 (chỉ một dạng bài, đọc hiểu bằng 0, ba dạng trắng hoàn toàn) **đã được lấp** ở
 Việc số 1 và Việc số 2 (xem "Thứ tự thi công đã chốt" bên dưới). Còn lại:
 
-**1. Câu Khó mới đạt 40% mục tiêu** (241/600). Nghiêm trọng nhất hiện tại — thiếu
+**1. Câu Khó mới đạt 60% mục tiêu** (361/600). Nghiêm trọng nhất hiện tại — thiếu
 câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh giỏi/yếu. Đây là
 Việc số 4 trong thứ tự đã chốt, đang làm dở (xem mục "Thứ tự thi công đã chốt").
 
@@ -220,18 +220,22 @@ Unit, dùng lại được ngay không cần tra lại.
 
 ### 4. ⏳ Bù câu Khó — lên 600 (ĐANG DỞ)
 
-Hiện 241/600 (40%). Không đủ câu Khó thì đề trộn ra bị phẳng, không phân loại
+Hiện 361/600 (60%). Không đủ câu Khó thì đề trộn ra bị phẳng, không phân loại
 được học sinh. Từ bước này trở đi mỗi lô soạn phải giữ tỉ lệ 30% Dễ / 50% TB /
 20% Khó.
 
-**Đợt 1+2 (2/9): +80 câu ngữ pháp Khó** (2 đợt × 40 câu, 10 câu/khối mỗi đợt),
-dàn đều các Unit và các điểm ngữ pháp còn mỏng (`gra.modal_verb`,
-`gra.relative_clause`, `gra.conditional`, `gra.reported_speech`,
-`gra.gerund_infinitive`, `gra.word_form`, `gra.comparison`, `gra.article`,
-`gra.preposition`, `gra.passive`). Vừa lấp Việc số 4 vừa lấp thêm dạng bài #3
-(ngữ pháp chọn đáp án, 415 → 495/750). Còn thiếu 359 câu Khó nữa mới tới 600 —
-tiếp tục theo cùng cách này ở các phiên sau, tránh trùng chủ điểm ngữ pháp đã
-dùng ở đợt 1/2 (xem danh sách câu hỏi trong database để không lặp lại).
+**Đợt 1-5 (2/9): +200 câu ngữ pháp Khó** (5 đợt × 40 câu, 10 câu/khối mỗi đợt),
+dàn đều các Unit và rất nhiều điểm ngữ pháp khác nhau (modal verb, mệnh đề
+quan hệ, câu điều kiện, câu tường thuật, gerund/infinitive, word form, so
+sánh, mạo từ, giới từ, bị động, đảo ngữ, câu giả định...). Vừa lấp Việc số 4
+vừa lấp thêm dạng bài #3 (ngữ pháp chọn đáp án, 415 → 615/750).
+
+**Dạng #3 sắp chạm mục tiêu 750 (chỉ còn 135 chỗ trống)** — từ đợt sau, chuyển
+hướng câu Khó sang **dạng #4 Từ vựng (chọn đáp án)** (`voc.vocabulary`,
+`voc.collocation`, `voc.phrasal_verb`), hiện mới 109/550, còn rất nhiều chỗ và
+chưa được ưu tiên soạn riêng bao giờ (xem lỗ hổng #4 bên dưới). Tránh thêm
+nữa vào dạng #5/6/7 (giao tiếp/tìm lỗi/đồng nghĩa) vì các dạng này đã đạt hoặc
+vượt mục tiêu. Còn thiếu 239 câu Khó nữa mới tới 600.
 
 **Lệch khỏi quy trình đã ghi ở trên — cần biết trước khi làm tiếp:** quy trình
 "Câu Khó chép thẳng từ Mai Lan Hương" **không thực hiện được** với đợt này vì
