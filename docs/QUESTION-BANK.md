@@ -35,7 +35,7 @@ cách đếm độ phủ, không phải phép chia đoạn.
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
 | 1   | Ngữ âm — phát âm        | **150** | 150 — **ĐẠT** | `pho.pronunciation`                              |
 | 2   | Ngữ âm — trọng âm       | **150** | 150 — **ĐẠT** | `pho.stress`                                     |
-| 3   | Ngữ pháp (chọn đáp án)  | **750** | 750 — **ĐẠT** | `gra.*` (trừ `gra.error_identification`)          |
+| 3   | Ngữ pháp (chọn đáp án)  | **794** | 750 — **VƯỢT** (chủ động, xem "Tiến độ") | `gra.*` (trừ `gra.error_identification`) |
 | 4   | Từ vựng (chọn đáp án)   | **550** | 550 — **ĐẠT** | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | **200** | 200 — **ĐẠT** | `com.functional_language`                          |
 | 6   | Tìm lỗi sai             | 153 | 150       | `gra.error_identification`                              |
@@ -72,16 +72,24 @@ nên cần thiết kế thêm màn hình chấm tay trước khi soạn ồ ạt
 
 Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh.
 
-## Tiến độ (2/9/2026 tối)
+## Tiến độ (3/9/2026)
 
-**2.482 / 3.000 câu — 83%**
+**2.527 / 3.000 câu — 84%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
 | 6    | 636 | 700      | 64        |
 | 7    | 663 | 700      | 37        |
 | 8    | 592 | 700      | 108       |
-| 9    | 591 | 900      | 309       |
+| 9    | 636 | 900      | 264       |
+
+**+45 câu khối 9 (3/9)** — `gra.modal_verb`/`gra.preposition`/`gra.article` (mỗi
+điểm gần như trắng, 2-3 câu) nay lên ~17 câu/điểm, đủ cả Dễ/TB thay vì chỉ có
+Khó. **Cố tình vượt nhẹ mục tiêu dạng bài** (xem bảng "Bản đồ phủ" — ngữ pháp
+749 → 794, vượt mục tiêu 750) để lấp khối 9, theo quyết định của giáo viên
+3/9 — chấp nhận đánh đổi vì mục tiêu khối (900) không thể đạt nếu giữ cứng
+mục tiêu dạng bài 750, khi 3 dạng còn trống (viết) vẫn bị chặn bởi màn hình
+chấm tay.
 
 **Cả 5 dạng bài máy chấm được (ngữ âm ×2, ngữ pháp, từ vựng, giao tiếp) đều
 đã chạm đúng mục tiêu.** Khoảng cách còn lại tới 3.000 (518 câu) gần như
