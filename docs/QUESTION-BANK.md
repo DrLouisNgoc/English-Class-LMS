@@ -34,7 +34,7 @@ cách đếm độ phủ, không phải phép chia đoạn.
 | #   | Dạng bài                | Có  | Mục tiêu  | Skill tag                                               |
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
 | 1   | Ngữ âm — phát âm        | **150** | 150 — **ĐẠT** | `pho.pronunciation`                              |
-| 2   | Ngữ âm — trọng âm       | 100 | 150       | `pho.stress`                                            |
+| 2   | Ngữ âm — trọng âm       | **150** | 150 — **ĐẠT** | `pho.stress`                                     |
 | 3   | Ngữ pháp (chọn đáp án)  | **750** | 750 — **ĐẠT** | `gra.*` (trừ `gra.error_identification`)          |
 | 4   | Từ vựng (chọn đáp án)   | **550** | 550 — **ĐẠT** | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | **200** | 200 — **ĐẠT** | `com.functional_language`                          |
@@ -74,14 +74,19 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**2.432 / 3.000 câu — 81%**
+**2.482 / 3.000 câu — 83%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 614 | 700      | 86        |
-| 7    | 636 | 700      | 64        |
-| 8    | 591 | 700      | 109       |
+| 6    | 636 | 700      | 64        |
+| 7    | 663 | 700      | 37        |
+| 8    | 592 | 700      | 108       |
 | 9    | 591 | 900      | 309       |
+
+**Cả 5 dạng bài máy chấm được (ngữ âm ×2, ngữ pháp, từ vựng, giao tiếp) đều
+đã chạm đúng mục tiêu.** Khoảng cách còn lại tới 3.000 (518 câu) gần như
+toàn bộ nằm ở khối 9 (309/518) và **3 dạng thầy chấm tay** (chỉ giải quyết
+được bằng cách xây màn hình chấm tay — xem mục "Lỗ hổng lớn nhất" #1).
 
 | Độ khó     | Có    | Mục tiêu |
 | ---------- | ----- | -------- |
@@ -382,9 +387,22 @@ biến (Chinese, Japanese, Vietnamese, Taiwanese, Portuguese, trainee,
 employee, referee, guarantee, nominee, refugee, absentee — 12 từ, khó tìm
 thêm) nên dừng ưu tiên khối 8 cho phần trọng âm, dồn lực vào khối 6/7.
 
-Kết quả: trọng âm 46 → **100/150**. Còn thiếu 50 câu — hoàn toàn khả thi
-bằng cách lặp lại đúng công thức trên (khối 6 Unit 10 + khối 7 Unit 9/10,
-Oxford 3000, từ 2-3 âm tiết phổ thông bất kỳ).
+Kết quả: trọng âm 46 → **100/150**.
+
+**+51 câu nữa (đợt cuối, dồn hết vào khối 6 Unit 10 + khối 7 Unit 9/10):**
+tiếp tục đúng công thức trên, khai thác hết các nhóm từ 2 âm tiết còn lại
+trong Oxford 3000 (danh từ, tính từ, động từ tiền tố a-/com-/con-...). **Kết
+quả: trọng âm chạm đúng 150/150 — ĐẠT.**
+
+**Ngữ âm hoàn tất cả hai dạng (phát âm 150/150, trọng âm 150/150)** — mục
+tiêu ban đầu ~230 câu ngữ âm (Việc số 3, 1/9) hóa ra chỉ là điểm khởi đầu;
+mục tiêu thật trong bản đồ phủ 3.000 câu (300 câu ngữ âm) đã đạt đủ nhờ đổi
+sang khai thác Oxford 3000 thay vì chỉ dựa vào SGK. **Bài học lớn nhất của
+việc này:** quy tắc "soạn từ tài liệu thật" đúng ở tầng **kiến thức** (Unit
+nào dạy cặp âm gì) chứ không đúng ở tầng **từ vựng minh họa** (từ ví dụ có
+thể lấy từ nguồn đáng tin cậy khác miễn đúng trình độ và đúng phát âm) — hiểu
+nhầm điều này đã khiến việc lấp ngữ âm bị coi là "việc khó, cần OCR nhiều"
+suốt một thời gian, trong khi thực ra chỉ cần đổi nguồn tra cứu.
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
