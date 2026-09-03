@@ -34,7 +34,7 @@ cách đếm độ phủ, không phải phép chia đoạn.
 | #   | Dạng bài                | Có  | Mục tiêu  | Skill tag                                               |
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
 | 1   | Ngữ âm — phát âm        | **150** | 150 — **ĐẠT** | `pho.pronunciation`                              |
-| 2   | Ngữ âm — trọng âm       | 46  | 150       | `pho.stress`                                            |
+| 2   | Ngữ âm — trọng âm       | 100 | 150       | `pho.stress`                                            |
 | 3   | Ngữ pháp (chọn đáp án)  | **750** | 750 — **ĐẠT** | `gra.*` (trừ `gra.error_identification`)          |
 | 4   | Từ vựng (chọn đáp án)   | **550** | 550 — **ĐẠT** | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | **200** | 200 — **ĐẠT** | `com.functional_language`                          |
@@ -74,13 +74,13 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**2.378 / 3.000 câu — 79%**
+**2.432 / 3.000 câu — 81%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 584 | 700      | 116       |
-| 7    | 613 | 700      | 87        |
-| 8    | 590 | 700      | 110       |
+| 6    | 614 | 700      | 86        |
+| 7    | 636 | 700      | 64        |
+| 8    | 591 | 700      | 109       |
 | 9    | 591 | 900      | 309       |
 
 | Độ khó     | Có    | Mục tiêu |
@@ -369,9 +369,22 @@ của Mindmap). Làm thêm đợt 2 (20 câu, ưu tiên lấp nốt phát âm + 
 
 **Bài học cho phiên sau:** Oxford 3000 là nguồn từ hiệu quả nhất cho ngữ âm
 sau khi Unit/cặp âm đã xác minh — ưu tiên cách này hơn Mindmap hay OCR lại
-SGK. Trọng âm còn thiếu 104 câu, dễ làm hơn phát âm vì không cần ghép cặp
-phụ âm/nguyên âm chính xác — chỉ cần từ 2-3 âm tiết với trọng âm rõ ràng, kho
-từ Oxford 3000 gần như không giới hạn cho việc này.
+SGK.
+
+**+32 câu trọng âm (đợt riêng, dồn vào khối 6 Unit 10 và khối 7 Unit 9/10):**
+trọng âm không cần ghép cặp phụ âm/nguyên âm chính xác như phát âm — chỉ cần
+từ 2-3 âm tiết phổ thông với trọng âm rõ ràng, nên kho Oxford 3000 gần như
+không giới hạn cho việc này (khác hẳn phát âm, vốn cần từ chứa đúng cặp âm
+cụ thể — kho hẹp hơn nhiều). **Khối 8 Unit 9/10 là ngoại lệ** — bị giới hạn
+vào đúng nhóm hậu tố -al/-ous và -ese/-ee, kho từ hẹp hơn hẳn (khối 6/7 dùng
+từ bất kỳ, khối 8 phải đúng hậu tố), gần như đã dùng hết từ -ese/-ee phổ
+biến (Chinese, Japanese, Vietnamese, Taiwanese, Portuguese, trainee,
+employee, referee, guarantee, nominee, refugee, absentee — 12 từ, khó tìm
+thêm) nên dừng ưu tiên khối 8 cho phần trọng âm, dồn lực vào khối 6/7.
+
+Kết quả: trọng âm 46 → **100/150**. Còn thiếu 50 câu — hoàn toàn khả thi
+bằng cách lặp lại đúng công thức trên (khối 6 Unit 10 + khối 7 Unit 9/10,
+Oxford 3000, từ 2-3 âm tiết phổ thông bất kỳ).
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
