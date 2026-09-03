@@ -33,8 +33,8 @@ cách đếm độ phủ, không phải phép chia đoạn.
 
 | #   | Dạng bài                | Có  | Mục tiêu  | Skill tag                                               |
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
-| 1   | Ngữ âm — phát âm        | 114 | 150       | `pho.pronunciation`                                     |
-| 2   | Ngữ âm — trọng âm       | 32  | 150       | `pho.stress`                                            |
+| 1   | Ngữ âm — phát âm        | **150** | 150 — **ĐẠT** | `pho.pronunciation`                              |
+| 2   | Ngữ âm — trọng âm       | 46  | 150       | `pho.stress`                                            |
 | 3   | Ngữ pháp (chọn đáp án)  | **750** | 750 — **ĐẠT** | `gra.*` (trừ `gra.error_identification`)          |
 | 4   | Từ vựng (chọn đáp án)   | **550** | 550 — **ĐẠT** | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | **200** | 200 — **ĐẠT** | `com.functional_language`                          |
@@ -74,13 +74,13 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 
 ## Tiến độ (2/9/2026 tối)
 
-**2.328 / 3.000 câu — 78%**
+**2.378 / 3.000 câu — 79%**
 
 | Khối | Có  | Mục tiêu | Còn thiếu |
 | ---- | --- | -------- | --------- |
-| 6    | 567 | 700      | 133       |
-| 7    | 595 | 700      | 105       |
-| 8    | 575 | 700      | 125       |
+| 6    | 584 | 700      | 116       |
+| 7    | 613 | 700      | 87        |
+| 8    | 590 | 700      | 110       |
 | 9    | 591 | 900      | 309       |
 
 | Độ khó     | Có    | Mục tiêu |
@@ -354,13 +354,24 @@ danh sách từ vựng chủ đề, không đủ để ghép thành một câu 3
 từ vựng theo chủ đề không được thiết kế để phủ đều các âm/vần, khác hẳn
 trang luyện âm chuyên biệt trong SGK.
 
-Kết quả cộng dồn: phát âm → **114/150**, trọng âm → **32/150**. Còn thiếu
-36 + 118 = 154 câu. **Đường duy nhất còn hiệu quả để đi tiếp: quay lại OCR
-trực tiếp SGK** — không phải chỉ trang luyện âm (đã khai thác hết ở Việc số
-3) mà cả phần "Getting Started" (hội thoại) và "Skills" (bài đọc/nghe) của
-từng Unit, vì đó là văn bản liền mạch dài hơn nhiều so với danh sách từ rời
-rạc, xác suất chứa từ trùng cặp âm cao hơn. Việc này tốn công OCR nhiều hơn
-proportional với 24 Unit × khoảng 2-3 trang mỗi Unit — một phiên riêng.
+Kết quả cộng dồn: phát âm → **114/150**, trọng âm → **32/150**.
+
+**Đổi hướng — tra `The_Oxford_3000.pdf` thay vì OCR SGK hay Mindmap:** nhận
+ra quy tắc "soạn từ tài liệu thật" chỉ cần đúng ở chỗ **cặp âm mỗi Unit dạy**
+(đã xác minh từ SGK ở Việc số 3), không bắt buộc từng từ ví dụ phải chép
+nguyên trang sách — miễn từ đó phát âm đúng và đúng trình A1-B2 (Oxford
+3000) là đủ. Cách làm: `pdftotext` toàn bộ Oxford 3000 ra danh sách từ, dùng
+`grep` lọc từ theo mẫu chính tả khớp âm cần luyện (ví dụ "^br" cho /br/,
+"oun|oub" cho /aʊ/), rồi tự kiểm phát âm bằng kiến thức ngữ âm chuẩn.
+**Hiệu quả vượt xa 2 cách trước: 30 câu sạch chỉ trong 1 đợt** (so với 4 câu
+của Mindmap). Làm thêm đợt 2 (20 câu, ưu tiên lấp nốt phát âm + mở đầu trọng
+âm) — **phát âm chạm đúng 150/150**, trọng âm lên 46/150.
+
+**Bài học cho phiên sau:** Oxford 3000 là nguồn từ hiệu quả nhất cho ngữ âm
+sau khi Unit/cặp âm đã xác minh — ưu tiên cách này hơn Mindmap hay OCR lại
+SGK. Trọng âm còn thiếu 104 câu, dễ làm hơn phát âm vì không cần ghép cặp
+phụ âm/nguyên âm chính xác — chỉ cần từ 2-3 âm tiết với trọng âm rõ ràng, kho
+từ Oxford 3000 gần như không giới hạn cho việc này.
 
 **Còn phải làm tiếp:** rà lại toàn bộ bảng độ-khó-theo-từng-`skill_tag`
 (không chỉ vocab) để tìm hết chỗ lệch, không chỉ 2 đợt vừa bù. Câu lệnh kiểm
