@@ -35,97 +35,90 @@ cách đếm độ phủ, không phải phép chia đoạn.
 | --- | ----------------------- | --- | --------- | ------------------------------------------------------- |
 | 1   | Ngữ âm — phát âm        | **150** | 150 — **ĐẠT** | `pho.pronunciation`                              |
 | 2   | Ngữ âm — trọng âm       | **150** | 150 — **ĐẠT** | `pho.stress`                                     |
-| 3   | Ngữ pháp (chọn đáp án)  | **794** | 750 — **VƯỢT** (chủ động, xem "Tiến độ") | `gra.*` (trừ `gra.error_identification`) |
+| 3   | Ngữ pháp (chọn đáp án)  | **973** | 750 — **VƯỢT** (chủ động, xem "Tiến độ") | `gra.*` (trừ `gra.error_identification`) |
 | 4   | Từ vựng (chọn đáp án)   | **550** | 550 — **ĐẠT** | `voc.vocabulary`, `voc.collocation`, `voc.phrasal_verb` |
 | 5   | Giao tiếp / tình huống  | **200** | 200 — **ĐẠT** | `com.functional_language`                          |
 | 6   | Tìm lỗi sai             | 153 | 150       | `gra.error_identification`                              |
 | 7   | Đồng nghĩa / trái nghĩa | 153 | 150       | `voc.synonym_antonym`                                   |
 | 8   | Điền từ vào đoạn văn    | 250 | 250       | `read.vocab_in_context` + `passage_id`                  |
 | 9   | Đọc hiểu                | 361 | 350       | `read.*` + `passage_id`                                 |
-| 10  | Sắp xếp câu thành đoạn  | 2   | 100       | `wri.sentence_ordering`                                 |
-| 11  | Viết lại câu            | 2   | 100       | `wri.sentence_transformation`                           |
-| 12  | Viết câu từ gợi ý       | 2   | 100       | `wri.sentence_building`                                 |
-|     | **Tổng**                |     | **3.000** |                                                         |
+| 10  | Sắp xếp câu thành đoạn  | **100** | 100 — **ĐẠT** | `wri.sentence_ordering`                          |
+| 11  | Viết lại câu            | **100** | 100 — **ĐẠT** | `wri.sentence_transformation`                    |
+| 12  | Viết câu từ gợi ý       | **100** | 100 — **ĐẠT** | `wri.sentence_building`                          |
+|     | **Tổng**                | **3.000** | **3.000 — ĐẠT** |                                                 |
 
-**Dạng 8 và 9 đã đạt hoặc vượt mục tiêu** — dừng soạn thêm hai dạng này trừ khi
-thầy yêu cầu riêng. **Dạng 10/11/12 gần như chưa đụng tới (2/100 mỗi dạng)** —
-đây sẽ là việc lớn còn lại sau khối 9. **Đính chính 3/9:** trước đây nghĩ ba
-dạng này cần màn hình chấm tay (máy không so được câu tự luận tự gõ), nhưng
-tra lại đề vào 10 Hà Nội thật thì cả ba đều ra dưới hình thức **trắc nghiệm 4
-phương án** (chọn câu viết lại đúng nghĩa, chọn câu hoàn chỉnh đúng, chọn đúng
-thứ tự a-b-c-d) — máy chấm được bằng đúng hạ tầng MCQ hiện có, không cần xây gì
-thêm. Xem đính chính đầy đủ ở `decisions.md` mục 26/8 "Ba dạng câu hỏi phủ hết
-đề thi".
+**Cả 12 dạng bài đều đã chạm hoặc vượt mục tiêu — ngân hàng 3.000 câu ĐẠT
+(3/9/2026).** Dạng 10/11/12 (từng nghĩ cần màn hình chấm tay, xem đính chính
+`decisions.md` mục 26/8 "Ba dạng câu hỏi phủ hết đề thi") hoá ra đề thật (thi
+vào 10 Hà Nội) ra cả ba dưới hình thức **trắc nghiệm 4 phương án** — soạn được
+ngay bằng đúng hạ tầng MCQ hiện có, không cần xây gì thêm. Dạng 3 (ngữ pháp)
+vượt mục tiêu 223 câu vì phải "vượt nhẹ mục tiêu dạng bài" để lấp đủ số lượng
+khối 9 (900 câu) — xem giải thích ở mục "Tiến độ".
 
 ## Bản đồ phủ — theo khối
 
-| Khối | Mục tiêu | Ghi chú                      |
-| ---- | -------- | ---------------------------- |
-| 6    | 700      | 12 Unit                      |
-| 7    | 700      | 12 Unit                      |
-| 8    | 700      | 12 Unit                      |
-| 9    | 900      | 12 Unit + phần ôn thi vào 10 |
+| Khối | Có  | Mục tiêu | Ghi chú                      |
+| ---- | --- | -------- | ----------------------------- |
+| 6    | **700** | 700 — **ĐẠT** | 12 Unit                  |
+| 7    | **700** | 700 — **ĐẠT** | 12 Unit                  |
+| 8    | **700** | 700 — **ĐẠT** | 12 Unit                  |
+| 9    | **900** | 900 — **ĐẠT** | 12 Unit + phần ôn thi vào 10 |
 
 ## Tỉ lệ độ khó
 
-| Mức        | Tỉ lệ | Số câu |
-| ---------- | ----- | ------ |
-| Dễ         | 30%   | 900    |
-| Trung bình | 50%   | 1.500  |
-| Khó        | 20%   | 600    |
+| Mức        | Có (3/9) | Tỉ lệ mục tiêu | Số câu mục tiêu |
+| ---------- | -------- | -------------- | ---------------- |
+| Dễ         | 1.246    | 30%             | 900              |
+| Trung bình | 1.097    | 50%             | 1.500            |
+| Khó        | 657      | 20%             | 600              |
 
 Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loại được học sinh.
 
-## Tiến độ (3/9/2026)
+⚠️ **Lệch khỏi tỉ lệ mục tiêu, ghi rõ để không quên:** thực tế Dễ 41,5% / TB
+36,6% / Khó 21,9% — Dễ vượt hẳn, TB hụt gần 400 câu. Nguyên nhân: đợt lấp 179
+câu cuối (3/9) để chạm khối/dạng đúng mục tiêu chỉ dùng toàn Dễ/TB (không thêm
+Khó vì Khó đã đạt từ trước), nhưng nghiêng nhiều về Dễ hơn dự tính ban đầu. Đề
+trộn ra vẫn phân loại được học sinh (Khó vẫn đạt 657/600), nhưng nếu thầy thấy
+đề "hơi dễ" khi trộn thử, đây là lý do — cần một đợt riêng đổi một phần câu Dễ
+sang TB nếu muốn khớp đúng tỉ lệ 30/50/20.
 
-**2.527 / 3.000 câu — 84%**
+## Tiến độ — ĐẠT 3.000/3.000 (3/9/2026)
 
-| Khối | Có  | Mục tiêu | Còn thiếu |
-| ---- | --- | -------- | --------- |
-| 6    | 636 | 700      | 64        |
-| 7    | 663 | 700      | 37        |
-| 8    | 592 | 700      | 108       |
-| 9    | 636 | 900      | 264       |
+**3.000 / 3.000 câu — 100%.** Cả 4 khối và cả 12 dạng bài đều chạm đúng hoặc
+vượt mục tiêu. Bộ kiểm 5 cột: 0 lỗi.
 
-**+45 câu khối 9 (3/9)** — `gra.modal_verb`/`gra.preposition`/`gra.article` (mỗi
-điểm gần như trắng, 2-3 câu) nay lên ~17 câu/điểm, đủ cả Dễ/TB thay vì chỉ có
-Khó. **Cố tình vượt nhẹ mục tiêu dạng bài** (xem bảng "Bản đồ phủ" — ngữ pháp
-749 → 794, vượt mục tiêu 750) để lấp khối 9, theo quyết định của giáo viên
-3/9 — chấp nhận đánh đổi vì mục tiêu khối (900) không thể đạt nếu giữ cứng
-mục tiêu dạng bài 750, khi 3 dạng viết vẫn còn gần như trắng (2/100 mỗi dạng).
+Ba việc lớn cuối cùng trong cùng một phiên (3/9), làm tuần tự:
 
-**Cả 5 dạng bài máy chấm được (ngữ âm ×2, ngữ pháp, từ vựng, giao tiếp) đều
-đã chạm đúng mục tiêu.** Khoảng cách còn lại tới 3.000 gần như toàn bộ nằm ở
-khối 9 (264 câu) và **3 dạng viết (10/11/12)** — nay đã xác nhận soạn được
-bằng câu MCQ bình thường (xem đính chính ở trên), không còn bị chặn bởi việc
-thiết kế màn hình chấm tay như ghi nhận trước 3/9.
+**1. +45 câu khối 9** — `gra.modal_verb`/`gra.preposition`/`gra.article` (mỗi
+điểm gần như trắng, 2-3 câu) lên ~17 câu/điểm, đủ cả Dễ/TB thay vì chỉ có Khó.
 
-| Độ khó     | Có    | Mục tiêu |
-| ---------- | ----- | -------- |
-| Dễ         | 828   | 900      |
-| Trung bình | 797   | 1.500    |
-| Khó        | 609   | 600 — ĐẠT |
+**2. Lấp đủ 300 câu cho 3 dạng viết (10/11/12), từ 6/300 lên 300/300** — sau
+khi đính chính rằng cả ba dạng ra được dưới hình thức trắc nghiệm (xem mục
+"Bản đồ phủ"). Soạn theo khối tỉ lệ với phần khối đang thiếu (khối 9 nhiều
+nhất): khối 6 = 39 câu/dạng, khối 7 = 24, khối 8 = 66, khối 9 = 165 — mỗi câu
+là 1 đoạn văn 4 câu xáo trộn (sắp xếp đoạn), 1 câu gốc + 4 phương án viết lại
+(viết lại câu), hoặc 1 cụm từ gợi ý + 4 phương án hoàn chỉnh (viết câu từ gợi
+ý). Toàn bộ 294 câu là **tự soạn**, không copy nguyên văn từ sách nào.
 
-**Cả 3 dạng bài còn phòng trống (ngữ pháp, từ vựng, giao tiếp) đã chạm đúng
-mục tiêu** — xem bản đồ phủ ở trên. **Từ đây trở đi, ngân hàng không thể lấp
-tiếp bằng cách soạn thêm câu MCQ/DIEN rời như 8 đợt vừa qua** — mọi dạng bài
-máy chấm được đều đã đầy hoặc gần đầy. Đường duy nhất còn lại tới 3.000 là
-hai việc lớn, khác hẳn về bản chất công việc:
+**3. Lấp nốt 179 câu còn lại để chạm đúng khối/tổng 3.000** — dồn vào các
+`skill_tag` ngữ pháp còn mỏng nhất mỗi khối (`gra.passive`, `gra.word_form`,
+`gra.gerund_infinitive` cho khối 6; `gra.conditional`, `gra.reported_speech`,
+`gra.relative_clause` cho khối 7; `gra.modal_verb`, `gra.relative_clause`,
+`gra.word_form`, `gra.passive` cho khối 8; `gra.word_form`, `gra.comparison`,
+`gra.tense`, `gra.conditional`, `gra.passive` cho khối 9 — 99 câu, nhiều nhất
+vì khối 9 thiếu nhiều nhất). **Chủ động chấp nhận vượt mục tiêu dạng "ngữ
+pháp"** (750 → 973) vì mục tiêu khối không thể đạt nếu giữ cứng mục tiêu dạng.
 
-1. **Ngữ âm (dạng #1, #2) — còn thiếu 248 câu** (36→150 phát âm, 16→150 trọng
-   âm). Không soạn nhanh được như từ vựng/ngữ pháp vì mỗi câu cần từ ví dụ
-   THẬT lấy từ đúng trang luyện âm của SGK (OCR), không tự nghĩ ra được — xem
-   quy trình ở `UNITS.md`. Việc số 3 khi trước chỉ làm hết những Unit CÓ dạng
-   bài phù hợp; muốn thêm nữa phải soạn thêm biến thể cho các Unit đã làm.
-2. **3 dạng thầy chấm tay (dạng #10-12) — thiếu 894 câu** (2→100 mỗi dạng).
-   Bị chặn hoàn toàn cho tới khi có màn hình chấm tay — xem mục "Lỗ hổng lớn
-   nhất" #1. Đây là phần lớn nhất trong khoảng cách tới 3.000.
+**Sự cố nhỏ trong lúc soạn — đã sửa:** bộ kiểm phát hiện 8 câu trùng đề bài
+(6 câu trùng tình cờ với câu cũ có sẵn trong ngân hàng, 2 câu tự trùng giữa
+khối 8/9 do soạn cùng một mẫu câu bị động "The results ______ tomorrow." cho
+cả hai khối). Đã đổi lại nội dung 8 câu này (giữ nguyên điểm ngữ pháp đang
+kiểm tra), bộ kiểm chạy lại: 0 lỗi.
 
-Cộng cả hai: 248 + 894 = 1.142, xấp xỉ đúng khoảng cách còn lại (766, có
-chênh lệch vì các dạng đọc hiểu/đồng nghĩa/tìm lỗi đã vượt nhẹ mục tiêu bù
-qua). **Đính chính 3/9:** đoạn này từng viết "cần màn hình chấm tay mới đi
-tiếp được" — không còn đúng, xem đính chính ở mục "Bản đồ phủ". Cả 894 câu
-còn thiếu của 3 dạng viết soạn được ngay bằng câu MCQ như mọi dạng khác.
+⚠️ **Chưa qua giáo viên duyệt từng câu** — toàn bộ ~520 câu mới của phiên 3/9
+(179 câu lấp khối + 294 câu 3 dạng viết + 45 câu khối 9 đầu phiên) là tự soạn,
+cần thầy rà lại bằng mắt trước khi giao học sinh làm thật, đặc biệt các câu
+ngữ pháp có đáp án gần nghĩa.
 
 ⚠️ **Số liệu "Có" ở đây là TỔNG toàn ngân hàng — không nói lên độ phủ theo
 từng kỹ năng con.** Ví dụ tổng `voc.vocabulary` khối 6 trông ổn (28 câu) nhưng
@@ -134,30 +127,18 @@ tách theo độ khó thì DE chỉ có 2/28 — gần như không dùng đượ
 `voc.phrasal_verb`) bị lệch gần 100% sang Khó, thiếu hẳn Dễ/TB. Đang sửa dần —
 xem mục "Thứ tự thi công đã chốt" bước 5.
 
-## Lỗ hổng lớn nhất, theo thứ tự nghiêm trọng
+## Lỗ hổng lớn nhất — KHÔNG CÒN, ngân hàng đã ĐẠT 3.000/3.000 (3/9/2026)
 
-Danh sách này đã đổi hẳn so với bản 31/8 — ba lỗ hổng nghiêm trọng nhất lúc đó
-(chỉ một dạng bài, đọc hiểu bằng 0, ba dạng trắng hoàn toàn) **đã được lấp** ở
-Việc số 1 và Việc số 2 (xem "Thứ tự thi công đã chốt" bên dưới). Còn lại:
+Toàn bộ mục này lịch sử — giữ lại để nhớ hành trình, không còn là việc phải làm:
 
-**1. Ba dạng viết gần như chưa đụng tới:** Sắp xếp câu (2/100), Viết lại
-câu (2/100), Viết câu từ gợi ý (2/100). **Đính chính 3/9:** trước đây tưởng cần
-màn hình chấm tay (xem `decisions.md` mục 26/8, đã đính chính) — thực ra đề
-thật (thi vào 10 Hà Nội) ra cả ba dưới hình thức trắc nghiệm 4 phương án, soạn
-được ngay bằng đúng cách đang làm với các dạng khác, không cần xây gì thêm.
-**Vẫn là lỗ hổng lớn nhất còn lại** (894 câu) nhưng nay là việc soạn câu bình
-thường, không còn bị chặn kỹ thuật.
+- ~~Ba dạng viết gần như chưa đụng tới~~ → **ĐẠT 300/300** (xem "Tiến độ").
+- ~~Từ vựng (chọn đáp án) mới 299/550~~ → **ĐẠT 550/550** (Việc số 5, xong 2/9).
+- ~~Khối 9 còn thiếu nhiều nhất~~ → **ĐẠT 900/900** (xong 3/9).
+- Câu Khó (601/600), Ngữ âm cả 2 dạng (300/300) — đã xong từ 2/9.
 
-**2. Từ vựng (chọn đáp án) mới 299/550** — dạng số 4 trong bản đồ phủ, đã được
-đẩy mạnh nhờ đợt bù câu Khó (Việc số 4) nhưng vẫn còn thiếu hơn nửa mục tiêu.
-
-**3. Khối 9 còn thiếu nhiều nhất về số lượng tổng** (490/900, thiếu 410) —
-không phải vì bỏ sót mà vì mục tiêu khối 9 cao hơn hẳn ba khối kia (900 so
-với 700), do có thêm phần ôn thi vào 10.
-
-**Đã xong, không còn là lỗ hổng:** Câu Khó (601/600 — Việc số 4, xong 2/9 tối).
-Ngữ âm khối 6/7/8 (Việc số 3, xong 2/9 — Unit 11/12 mỗi khối không hợp dạng
-`pho.stress` hiện có nên bỏ qua có chủ đích, xem `UNITS.md`).
+**Việc còn lại của dự án không nằm ở ngân hàng câu hỏi nữa** — xem `TASKS.md`
+mục "Sau MVP" và "Tuần 7-8" (trộn đề tự động, cho học sinh thật làm tại lớp,
+giao bài thật) để biết bước tiếp theo.
 
 ## Quy trình soạn
 
@@ -288,7 +269,7 @@ Nếu muốn quay lại đúng quy trình chép sách Mai Lan Hương cho các �
 thầy tự đọc trực tiếp từ file PDF (không qua `pdftotext`) và gõ lại câu, hoặc
 chấp nhận cách tự soạn này tiếp tục.
 
-### 5. ⏳ Soạn dày thêm theo Unit cho tới 3.000 (ĐANG DỞ)
+### 5. ✅ Soạn dày thêm theo Unit — cân độ khó + lấp 3 dạng phòng trống (XONG, dẫn tới Việc số 6)
 
 Lúc xong mới thi công tính năng **trộn đề tự động**.
 
@@ -337,9 +318,16 @@ bộ Dễ/TB) lấp đúng khớp cả ba — không thừa không thiếu:
 - Giao tiếp: 195 → **200/200**
 
 Tổng ngân hàng: 1.843 → **2.234 câu**. Đây là điểm dừng tự nhiên của Việc số
-5 theo hướng "soạn câu rời" — xem cảnh báo ở mục "Tiến độ" phía trên về hai
-việc lớn còn lại (ngữ âm cần OCR, 3 dạng viết cần màn hình chấm tay) để đi
-tiếp tới 3.000.
+5 theo hướng "soạn câu rời" — hai việc lớn còn lại lúc đó (ngữ âm, 3 dạng viết)
+đều đã xong sau, xem Việc số 6 và mục "Tiến độ" phía trên.
+
+### 6. ✅ Ngữ âm hoàn tất + lấp đủ 3.000 câu (XONG 3/9)
+
+Ngữ âm cả hai dạng (phát âm, trọng âm) ĐẠT 300/300 tối 2/9 (xem chi tiết ở
+mục dưới "bắt đầu lấp ngữ âm"). Sáng/chiều 3/9: lấp đủ 300 câu cho 3 dạng viết
+(từng tưởng cần màn hình chấm tay, đã đính chính — xem mục "Bản đồ phủ") và
+179 câu còn lại để chạm đúng khối/tổng 3.000. **Ngân hàng ĐẠT 3.000/3.000.**
+Chi tiết đầy đủ ở mục "Tiến độ" phía trên.
 
 ### Sau đó: bắt đầu lấp ngữ âm — thêm biến thể cho các Unit đã làm
 
