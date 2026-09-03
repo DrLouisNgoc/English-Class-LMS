@@ -348,6 +348,16 @@ tính năng riêng ngang cỡ B4 (điểm phải tính được khi còn câu ch
 màn chấm từng câu, học sinh phải thấy "đang chờ thầy chấm"). Tin tốt:
 `answers.is_correct` vốn cho phép NULL nên "chưa chấm" đã có chỗ chứa sẵn.
 
+> **Đính chính 3/9 — giả định trên sai, không cần làm màn chấm tay.** Khi soạn
+> thử 6 câu đầu cho 3 dạng này (theo đúng đề vào 10 Hà Nội thật), hoá ra cả ba
+> đều ra dưới hình thức **trắc nghiệm 4 phương án** — "chọn câu viết lại đúng
+> nghĩa nhất", "chọn câu hoàn chỉnh đúng từ các từ gợi ý", "chọn đúng thứ tự
+> a-b-c-d" — chứ đề thật không bắt học sinh tự gõ câu hoàn chỉnh. Nghĩa là máy
+> chấm được bằng đúng hạ tầng MCQ hiện có, không cần thêm `kind` mới, không cần
+> migration, không cần màn hình chấm tay. Giữ lại đoạn quyết định gốc ở trên để
+> nhớ lý do từng nghĩ khác, nhưng từ nay lấp 3 dạng này bằng cách soạn câu MCQ
+> như mọi dạng bài khác — xem `QUESTION-BANK.md`.
+
 ## 2026-08-26 — Chấm câu điền chữ phải khoan dung, vì đang kiểm tra tiếng Anh chứ không phải gõ phím
 
 Bộ chấm cũ so chuỗi khớp từng ký tự. Với trắc nghiệm thì đúng — học sinh bấm

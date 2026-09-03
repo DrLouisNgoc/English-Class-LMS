@@ -48,10 +48,14 @@ cách đếm độ phủ, không phải phép chia đoạn.
 |     | **Tổng**                |     | **3.000** |                                                         |
 
 **Dạng 8 và 9 đã đạt hoặc vượt mục tiêu** — dừng soạn thêm hai dạng này trừ khi
-thầy yêu cầu riêng. **Dạng 10/11/12 (thầy chấm tay) gần như chưa đụng tới** —
-đây sẽ là việc lớn còn lại sau ngữ âm và câu Khó. Máy không chấm được kiểu này
-nên cần thiết kế thêm màn hình chấm tay trước khi soạn ồ ạt (xem `TASKS.md` và
-`decisions.md` mục 26/8 "Ba dạng câu hỏi phủ hết đề thi").
+thầy yêu cầu riêng. **Dạng 10/11/12 gần như chưa đụng tới (2/100 mỗi dạng)** —
+đây sẽ là việc lớn còn lại sau khối 9. **Đính chính 3/9:** trước đây nghĩ ba
+dạng này cần màn hình chấm tay (máy không so được câu tự luận tự gõ), nhưng
+tra lại đề vào 10 Hà Nội thật thì cả ba đều ra dưới hình thức **trắc nghiệm 4
+phương án** (chọn câu viết lại đúng nghĩa, chọn câu hoàn chỉnh đúng, chọn đúng
+thứ tự a-b-c-d) — máy chấm được bằng đúng hạ tầng MCQ hiện có, không cần xây gì
+thêm. Xem đính chính đầy đủ ở `decisions.md` mục 26/8 "Ba dạng câu hỏi phủ hết
+đề thi".
 
 ## Bản đồ phủ — theo khối
 
@@ -88,13 +92,13 @@ Không có đủ câu Khó thì đề trộn ra bị phẳng, không phân loạ
 Khó. **Cố tình vượt nhẹ mục tiêu dạng bài** (xem bảng "Bản đồ phủ" — ngữ pháp
 749 → 794, vượt mục tiêu 750) để lấp khối 9, theo quyết định của giáo viên
 3/9 — chấp nhận đánh đổi vì mục tiêu khối (900) không thể đạt nếu giữ cứng
-mục tiêu dạng bài 750, khi 3 dạng còn trống (viết) vẫn bị chặn bởi màn hình
-chấm tay.
+mục tiêu dạng bài 750, khi 3 dạng viết vẫn còn gần như trắng (2/100 mỗi dạng).
 
 **Cả 5 dạng bài máy chấm được (ngữ âm ×2, ngữ pháp, từ vựng, giao tiếp) đều
-đã chạm đúng mục tiêu.** Khoảng cách còn lại tới 3.000 (518 câu) gần như
-toàn bộ nằm ở khối 9 (309/518) và **3 dạng thầy chấm tay** (chỉ giải quyết
-được bằng cách xây màn hình chấm tay — xem mục "Lỗ hổng lớn nhất" #1).
+đã chạm đúng mục tiêu.** Khoảng cách còn lại tới 3.000 gần như toàn bộ nằm ở
+khối 9 (264 câu) và **3 dạng viết (10/11/12)** — nay đã xác nhận soạn được
+bằng câu MCQ bình thường (xem đính chính ở trên), không còn bị chặn bởi việc
+thiết kế màn hình chấm tay như ghi nhận trước 3/9.
 
 | Độ khó     | Có    | Mục tiêu |
 | ---------- | ----- | -------- |
@@ -119,8 +123,9 @@ hai việc lớn, khác hẳn về bản chất công việc:
 
 Cộng cả hai: 248 + 894 = 1.142, xấp xỉ đúng khoảng cách còn lại (766, có
 chênh lệch vì các dạng đọc hiểu/đồng nghĩa/tìm lỗi đã vượt nhẹ mục tiêu bù
-qua). **Nói thẳng: không thể chạm 3.000 chỉ bằng soạn thêm câu rời — cần thầy
-quyết định có làm màn hình chấm tay hay không trước khi đi tiếp.**
+qua). **Đính chính 3/9:** đoạn này từng viết "cần màn hình chấm tay mới đi
+tiếp được" — không còn đúng, xem đính chính ở mục "Bản đồ phủ". Cả 894 câu
+còn thiếu của 3 dạng viết soạn được ngay bằng câu MCQ như mọi dạng khác.
 
 ⚠️ **Số liệu "Có" ở đây là TỔNG toàn ngân hàng — không nói lên độ phủ theo
 từng kỹ năng con.** Ví dụ tổng `voc.vocabulary` khối 6 trông ổn (28 câu) nhưng
@@ -135,11 +140,13 @@ Danh sách này đã đổi hẳn so với bản 31/8 — ba lỗ hổng nghiêm
 (chỉ một dạng bài, đọc hiểu bằng 0, ba dạng trắng hoàn toàn) **đã được lấp** ở
 Việc số 1 và Việc số 2 (xem "Thứ tự thi công đã chốt" bên dưới). Còn lại:
 
-**1. Ba dạng thầy chấm tay gần như chưa đụng tới:** Sắp xếp câu (2/100), Viết lại
-câu (2/100), Viết câu từ gợi ý (2/100). Máy chưa chấm được ba dạng này (xem
-`decisions.md` mục 26/8) nên cần thiết kế màn hình chấm tay trước khi soạn ồ ạt
-— việc lớn, chưa xếp vào thứ tự thi công hiện tại. **Đây là lỗ hổng nghiêm
-trọng nhất còn lại** sau khi Việc số 1-4 đều đã xong.
+**1. Ba dạng viết gần như chưa đụng tới:** Sắp xếp câu (2/100), Viết lại
+câu (2/100), Viết câu từ gợi ý (2/100). **Đính chính 3/9:** trước đây tưởng cần
+màn hình chấm tay (xem `decisions.md` mục 26/8, đã đính chính) — thực ra đề
+thật (thi vào 10 Hà Nội) ra cả ba dưới hình thức trắc nghiệm 4 phương án, soạn
+được ngay bằng đúng cách đang làm với các dạng khác, không cần xây gì thêm.
+**Vẫn là lỗ hổng lớn nhất còn lại** (894 câu) nhưng nay là việc soạn câu bình
+thường, không còn bị chặn kỹ thuật.
 
 **2. Từ vựng (chọn đáp án) mới 299/550** — dạng số 4 trong bản đồ phủ, đã được
 đẩy mạnh nhờ đợt bù câu Khó (Việc số 4) nhưng vẫn còn thiếu hơn nửa mục tiêu.
