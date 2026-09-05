@@ -85,6 +85,13 @@ export default async function AssignPage({
 
       <h1 className="font-display mt-2 mb-4 text-xl font-semibold text-ink">Giao bài mới</h1>
 
+      <Link
+        href={`/classes/${id}/assign/auto`}
+        className="mb-4 inline-block text-sm text-text/60 underline hover:text-ink"
+      >
+        🎲 Trộn đề tự động →
+      </Link>
+
       {/* Bộ lọc: đổi lựa chọn rồi bấm "Lọc" để tải lại trang với query string mới. */}
       <form
         method="get"
